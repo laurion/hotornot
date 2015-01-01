@@ -185,6 +185,11 @@ FB.api('/me', function(response) {
 }
 */
 $(document).ready(function(){
+
+  if(!localStorage["notNewSession"]){
+    $("#genderModal").openModal();
+    localStorage["notNewSession"] = true;
+  }
   
 //   initFacebookThings();
 
