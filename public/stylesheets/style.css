@@ -16,3 +16,31 @@ change "brown" to something of your choosing
  of the button to still show through. */
   background-color: rgba(10, 10, 172, 0.65);
 }
+
+#voting_card {
+  width: 100%;
+}
+
+.voting_buttons {
+  padding-top: 20px;
+  padding-left: 0px;
+  /* list-style-type: none; */
+  display: flex;
+}
+
+.voting_button_li {
+  padding: 1px;
+}
+
+.waves-circle {
+  width: 2.4em;
+  height: 2.4em;
+}
+
+.leaderboard-item {
+  width: 100%;
+}
+
+.leaderboard_list {
+  margin-right: 10px;
+}

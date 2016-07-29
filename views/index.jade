@@ -7,23 +7,33 @@ block content
         li.tab.col.s3
           a(href='#voting_tab') Votează
         li.tab.col.s3
-          a(href='#leaderboard_tab') Clasament
+          a.active(href='#leaderboard_tab') Clasament
         li.tab.col.s3
-          a(href='#profile_tab') Profil
+          a(href='#profile_tab') Adaugă
     #voting_tab.col.s12
-      span#voting_title
+      h5#voting_title
         | Cât de sexy este #{current_person_name}?
-      .card
+      #voting_card.card
         .card-image
-          img(src='https://placekitten.com/200/300')
-          span.card-title Card Title
+          img(src='https://placekitten.com/350/400')
+          span.card-title #{current_person_name}
         .card-content
           p
-            | I am a very simple card. I am good at containing small bits of information.
-            | I am convenient because I require little markup to use effectively.
-        .card-action
-          a(href='#') This is a link
-        a.waves-effect.waves-circle.waves-red.btn-floating.secondary-content(href='#!')
-          i.material-icons add
-    #leaderboard_tab.col.s12 Aici apar cele mai hot persoane
+            | #{current_person_name}
+      ul.voting_buttons
+        each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+          li.voting_button_li
+            a.voting_button.waves-effect.waves-circle.waves-red.btn-floating(href='#!')
+              = val
+    #leaderboard_tab.col.s12
+      h5
+        | Top 10
+      ul.leaderboard_list
+        each name in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+          .card.horizontal.leaderboard-item
+            .card-image
+              img(src='https://placekitten.com/60/60')
+            .card-stacked
+              .card-content
+                p= name
     #profile_tab.col.s12 Acesta e profilul tau
