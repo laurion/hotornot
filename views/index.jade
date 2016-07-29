@@ -13,7 +13,16 @@ block content
     #voting_tab.col.s12
       span#voting_title
         | Cât de sexy este #{current_person_name}?
-        <!--//card-->
+      .card
+        .card-image
+          img(src='https://placekitten.com/200/300')
+          span.card-title Card Title
+        .card-content
+          p
+            | I am a very simple card. I am good at containing small bits of information.
+            | I am convenient because I require little markup to use effectively.
+        .card-action
+          a(href='#') This is a link
         a.waves-effect.waves-circle.waves-red.btn-floating.secondary-content(href='#!')
           i.material-icons add
     #leaderboard_tab.col.s12 Aici apar cele mai hot persoane
