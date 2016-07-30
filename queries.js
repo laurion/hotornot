@@ -1,8 +1,6 @@
 
 var Parse = require('parse').Parse;
-
-exports.fetchUserById = function(userId) {
-  Parse.initialize("utXysazDczvny5sBUme5HZIzfUrybjppWIc8aVGb", "kxPSoHg7ziVYonOCWfjVx3v6EHGFN6n4NYzxU5Ed");
+exports.fetchUserById = function (userId) {
   var User = Parse.Object.extend('Ga');
   var userQuery = new Parse.Query('Alien');
   userQuery.equalTo('name', 'Ana');
@@ -19,7 +17,6 @@ exports.fetchUserById = function(userId) {
 }
 
 exports.updateUserWithScore = function(fbId, score) {
-   Parse.initialize("utXysazDczvny5sBUme5HZIzfUrybjppWIc8aVGb", "kxPSoHg7ziVYonOCWfjVx3v6EHGFN6n4NYzxU5Ed");
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
    query.equalTo('fbId', fbId);
@@ -40,7 +37,6 @@ exports.updateUserWithScore = function(fbId, score) {
 }
 
 exports.getUsersOrderedByScore = function(limit) {
-  Parse.initialize("utXysazDczvny5sBUme5HZIzfUrybjppWIc8aVGb", "kxPSoHg7ziVYonOCWfjVx3v6EHGFN6n4NYzxU5Ed");
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
    query.ascending('score');
