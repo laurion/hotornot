@@ -7,9 +7,9 @@ block content
         li.tab.col.s3
           a(href='#voting_tab') Votează
         li.tab.col.s3
-          a.active(href='#leaderboard_tab') Clasament
+          a(href='#leaderboard_tab') Clasament
         li.tab.col.s3
-          a(href='#profile_tab') Adaugă
+          a(href='#profile_tab') +
     #voting_tab.col.s12
       h5#voting_title
         | Cât de sexy este #{current_person_name}?
@@ -20,15 +20,15 @@ block content
         .card-content
           p
             | #{current_person_name}
-      ul.voting_buttons
+      ul.voting-buttons
         each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-          li.voting_button_li
-            a.voting_button.waves-effect.waves-circle.waves-red.btn-floating(href='#!')
+          li.voting-button-li
+            a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(href='#!', name= val)
               = val
     #leaderboard_tab.col.s12
       h5
         | Top 10
-      ul.leaderboard_list
+      ul.leaderboard-list
         each name in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           .card.horizontal.leaderboard-item
             .card-image
@@ -36,4 +36,4 @@ block content
             .card-stacked
               .card-content
                 p= name
-    #profile_tab.col.s12 Acesta e profilul tau
+    #profile_tab.col.s12 Adaugă o poza

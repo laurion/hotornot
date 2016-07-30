@@ -21,14 +21,14 @@ change "brown" to something of your choosing
   width: 100%;
 }
 
-.voting_buttons {
+.voting-buttons {
   padding-top: 20px;
   padding-left: 0px;
   /* list-style-type: none; */
   display: flex;
 }
 
-.voting_button_li {
+.voting-button-li {
   padding: 1px;
 }
 
@@ -41,6 +41,6 @@ change "brown" to something of your choosing
   width: 100%;
 }
 
-.leaderboard_list {
+.leaderboard-list {
   margin-right: 10px;
 }

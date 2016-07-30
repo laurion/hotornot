@@ -10,15 +10,15 @@ var users = require('./routes/users');
 
 const app = module.exports = express(); // ok
 
-if(module.hot) {
+// if(module.hot) {
 
-  var acceptedDepencies = ['./routing-app'];
+//   var acceptedDepencies = ['./routing-app'];
 
-  module.hot.accept(acceptedDepencies, function() {
-    // require again...
-    require('./routing-app');
-  });
-}
+//   module.hot.accept(acceptedDepencies, function() {
+//     // require again...
+//     require('./routing-app');
+//   });
+// }
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -64,6 +64,20 @@ app.use(function(err, req, res, next) {
     message: err.message,
     error: {}
   });
+});
+
+//event handlers
+
+$(".voting-button-li").on("click", function(){ 
+  // Materialize.toast(message, displayLength, className, completeCallback);
+  Materialize.toast("this.name", 4000) // 4000 is the duration of the toast
+  //var $toastContent = $('<span>I am toast content</span>');
+  //Materialize.toast($toastContent, 5000);
+  console.log("test LAUR #$$#$");
+});
+
+$("#voting_card").on("click", function(){
+  console.log("clicked card #$#@!@#@!$")
 });
 
 
