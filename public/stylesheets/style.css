@@ -44,3 +44,12 @@ change "brown" to something of your choosing
 .leaderboard-list {
   margin-right: 10px;
 }
+
+.card.horizontal.leaderboard-item > .card-content {
+  display: flex;
+  flex: 1;
+}
+.card.horizontal.leaderboard-item > .card-content > .card-content-right {
+  direction: rtl;
+  flex: 1;
+}

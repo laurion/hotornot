@@ -27,13 +27,16 @@ block content
               = val
     #leaderboard_tab.col.s12
       h5
-        | Top 10
+        | un titlu destept?, share button etc
       ul.leaderboard-list
-        each name in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        each person in leaderboard_list
           .card.horizontal.leaderboard-item
             .card-image
               img(src='https://placekitten.com/60/60')
-            .card-stacked
-              .card-content
-                p= name
+            .card-content
+              .card-content-left
+                p= person.name
+              .card-content-right
+                p= person.score
+                p= person.nrOfVotes
     #profile_tab.col.s12 Adaugă o poza

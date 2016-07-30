@@ -9,11 +9,15 @@ router.get('/', function(req, res, next) {
     "score":10,
     "nrOfVotes":1
   };
-  var leaderboard_list = [1,2,3,4,5,6,7,8,9,10];
+  var leaderboard_list = [];
+  for(var i = 0; i < 10; i ++)
+    leaderboard_list.push(current_person);
+  console.log(leaderboard_list)
   res.render('index', { current_person: current_person, leaderboard_list: leaderboard_list });
 });
 
 router.get('/voted/:voteValue', function(req, res, next) {
+  //register vote to parse for last generated person for this user (only if exists)
   console.log("#$#$#@@#@")
   var current_person = {
     "name":"BogdanNext1",
@@ -21,7 +25,10 @@ router.get('/voted/:voteValue', function(req, res, next) {
     "score":10,
     "nrOfVotes":1
   };
-  var leaderboard_list = [1,2,3,4,5,6,7,8,9,10];
+  var leaderboard_list = [];
+  for(var i = 0; i < 10; i ++)
+    leaderboard_list.push(current_person);
+  console.log(leaderboard_list)
   res.render('index', { current_person: current_person, leaderboard_list: leaderboard_list });
 });
 
