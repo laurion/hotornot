@@ -66,19 +66,5 @@ app.use(function(err, req, res, next) {
   });
 });
 
-//event handlers
-
-$(".voting-button-li").on("click", function(){ 
-  // Materialize.toast(message, displayLength, className, completeCallback);
-  Materialize.toast("this.name", 4000) // 4000 is the duration of the toast
-  //var $toastContent = $('<span>I am toast content</span>');
-  //Materialize.toast($toastContent, 5000);
-  console.log("test LAUR #$$#$");
-});
-
-$("#voting_card").on("click", function(){
-  console.log("clicked card #$#@!@#@!$")
-});
-
 
 module.exports = app;
