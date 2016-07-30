@@ -12,18 +12,18 @@ block content
           a(href='#profile_tab') +
     #voting_tab.col.s12
       h5#voting_title
-        | Cât de sexy este #{current_person_name}?
+        | Cât de sexy este #{current_person.name}?
       #voting_card.card
         .card-image
           img(src='https://placekitten.com/350/400')
-          span.card-title #{current_person_name}
+          span.card-title #{current_person.name}
         .card-content
           p
-            | #{current_person_name}
+            | #{current_person.name}
       ul.voting-buttons
         each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           li.voting-button-li
-            a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(href='#!', name= val)
+            a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}')
               = val
     #leaderboard_tab.col.s12
       h5
