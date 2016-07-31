@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/:voteValue', function(req, res, next) {
-  console.log("#$#$#@@#@")
+  console.log("#$#$#@@#@" + JSON.stringify(req.body));
   var current_person = {
     "name":"Bogdan22222",
     "fbId": 100001008058747,

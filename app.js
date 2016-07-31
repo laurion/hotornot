@@ -4,13 +4,23 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var ParseServer = require('parse-server').ParseServer;
 var routes = require('./routes/index');
 // var users = require('./routes/users');
 // var voted = require('./routes/voted');
 
 const app = module.exports = express(); // ok
-
+var api = new ParseServer({
+  databaseURI: 'mongodb://intersect:4wabbit4@ds033015.mlab.com:33015/hotornot',
+  masterKey: '1o6z9ePR3qPnRU0jHIP4iWToNzkANKIr3UNHwelq',
+  appId: process.env.APP_ID || 'utXysazDczvny5sBUme5HZIzfUrybjppWIc8aVGb', //Add your master key here. Keep it secret!
+  serverURL: 'http://localhost:3000/parse',
+  liveQuery: {
+    classNames: ["Posts", "Comments","User"] // List of classes to support for query subscriptions
+  }
+});
+var mountPath = process.env.PARSE_MOUNT || '/parse';
+app.use(mountPath, api);
 // if(module.hot) {
 
 //   var acceptedDepencies = ['./routing-app'];
