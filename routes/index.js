@@ -8,7 +8,7 @@ var queries = require('../queries.js');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var current_person = {
-    "name":"Bogdan",
+    "name":"Bogdan Mihail Tirca",
     "fbId": 100001008058747,
     "score":10,
     "nrOfVotes":1

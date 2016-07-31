@@ -1,6 +1,6 @@
-// //event handlers
+//event handlers
 
-// $(document).ready(function(){
+$(document).ready(function(){
   
 //   $(".voting-button-li").on("click", function(event){ 
 //     // Materialize.toast(message, displayLength, className, completeCallback);
@@ -12,10 +12,17 @@
 //     Materialize.toast($toastContent, 500);
 //   });
 
-//   $("#voting_card").on("click", function(){
-//     console.log("clicked card #$#@!@#@!$")
-//     console.log($("span.card-title")[0].innerHTML);
-// //     Materialize.toast("##$", 500);
-//   });
+  $(".leaderboard-item").on("click", function(event){
+//     console.log(event.currentTarget);
+    var currentCard = $(event.currentTarget);
+    if(currentCard.hasClass("horizontal")){
+      currentCard.removeClass("horizontal");
+      currentCard.find(".extraContent").css("display","block");
+    }
+    else {
+      currentCard.find(".extraContent").css("display","none");
+      $(event.target.parentNode).addClass("horizontal");
+    }
+  });
 
-// });
+});

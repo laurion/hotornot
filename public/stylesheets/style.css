@@ -21,6 +21,12 @@ change "brown" to something of your choosing
   width: 100%;
 }
 
+#voting_title {
+  overflow-x: scroll;
+  white-space: nowrap;
+  font-size: 1.4rem;
+}
+
 .voting-buttons {
   /* padding-left: 0px; */
   /* list-style-type: none; */
@@ -51,4 +57,41 @@ change "brown" to something of your choosing
 .card.horizontal.leaderboard-item > .card-content > .card-content-right {
   direction: rtl;
   flex: 1;
+}
+
+.card .card-content .card-title {
+    line-height: 20px;
+    /* overflow-x: scroll; */
+    /* width: 250px; */
+}
+
+.card-content-left {font-size: 16px;}
+
+.card-content-left p {
+    /* height: 42px; */
+    line-height: 42px;
+}
+
+span.activator.card-title {
+    overflow-x: scroll;
+    max-width: 50%;
+    white-space: nowrap;
+    font-size: 22px;
+}
+
+.card-content-left > p {
+    /* overflow-x: scroll; */
+    /* white-space: nowrap; */
+}
+
+.leaderboard-item > i.material-icons.right {
+    /* top: -100px; */
+    transform: translateY(-1900%);
+    margin-right: 20px;
+    position: relative;
+    background-color: #fff;
+}
+
+.extraContent {
+  display: none;
 }

@@ -7,7 +7,7 @@ block content
         li.tab.col.s3
           a(href='#voting_tab') Votează
         li.tab.col.s3
-          a(href='#leaderboard_tab') Clasament
+          a.active(href='#leaderboard_tab') Clasament
         li.tab.col.s3
           a(href='#profile_tab') +
 
@@ -19,23 +19,26 @@ block content
       #voting_card.card
         .card-image.waves-effect.waves-block.waves-light
           img.activator(src='https://placekitten.com/350/400')
-          span.card-title #{current_person.name}
         .card-content
-          span.card-title.activator.grey-text.text-darken-4
+          span.activator.card-title
             | #{current_person.name}
             i.material-icons.right more_vert
         .card-reveal
           span.card-title.grey-text.text-darken-4
-            | Card Title
+            | #{current_person.name}
             i.material-icons.right close
           p
-            | Here is some more information about this product that is only revealed once clicked on.
+            a(href="https://facebook.com/#{current_person.fbId}", target="_blank") Add #{current_person.name} as a friend
+          p
+            a(href="/report/#{current_person.fbId}", target="_blank") Report this profile
+          p
+            a(href="/login/#{current_person.fbId}", target="_blank") This is me. Claim my profile.
       h5#voting_title
         | Cât de sexy este #{current_person.name}?
       ul.voting-buttons
         each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           li.voting-button-li
-            a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/100001008058747')
+            a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}')
               = val
 
 
@@ -47,12 +50,19 @@ block content
         | un titlu destept?, share button etc
       ul.leaderboard-list
         each person in leaderboard_list
-          .card.horizontal.leaderboard-item
+          .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-image
-              img(src='https://placekitten.com/60/82')
+              img.activator(src='https://placekitten.com/60/82')
             .card-content
               .card-content-left
                 p= person.name
+                .extraContent
+                  p
+                    a(href="https://facebook.com/#{person.fbId}", target="_blank") Add #{person.name} as a friend
+                  p
+                    a(href="/report/#{person.fbId}", target="_blank") Report this profile
+                  p
+                    a(href="/login/#{person.fbId}", target="_blank") This is me. Claim my profile.
               .card-content-right
                 p= person.score
                 p= person.nrOfVotes
