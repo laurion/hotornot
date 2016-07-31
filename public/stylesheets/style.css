@@ -22,8 +22,7 @@ change "brown" to something of your choosing
 }
 
 .voting-buttons {
-  padding-top: 20px;
-  padding-left: 0px;
+  /* padding-left: 0px; */
   /* list-style-type: none; */
   display: flex;
 }
