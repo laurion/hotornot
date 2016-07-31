@@ -5,8 +5,9 @@ var queries = require('../queries.js');
 var async = require('async');
 var Promise = require('bluebird');
 var wrap = require('co-express');
+var co      = Promise.coroutine;
 /* GET home page. */
-router.get('/', wrap(function* (req, res) {
+router.get('/',function (req, res, next) {
   var current_person = {
     "name":"Bogdan",
     "fbId": 100001008058747,
@@ -17,22 +18,10 @@ router.get('/', wrap(function* (req, res) {
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
    query.ascending('score');
-   query.limit(10);
-
-	var q1= query.find().then(function(users) {
-      console.log("leaderboard fetched " +JSON.stringify(users));
-       var leaderboard_list = [];
-	  for(var i = 0; i < users.length; i ++)
-	    leaderboard_list.push(users[i]);
-	//  console.log("leaderboard_list " + JSON.stringify(lea))
-	   res.render('index', { current_person: current_person, leaderboard_list: leaderboard_list });
-    }, function(err) {
-      console.log("err" + err);
-	  res.render('index', { current_person: current_person, leaderboard_list: "undefined"});
-      console.log(err); 
-    });   // <=== Call callback*/
-
-}));
+   query.limit(1);
+   res.render('index', { current_person: current_person, leaderboard_list: query.find() });
+	
+});
 
 /*router.get('/leaderboard/:leaderBoardSize', function(req, res, next) {
 	console.log("rq" + req.params.leaderBoardSize);

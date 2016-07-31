@@ -41,7 +41,7 @@ exports.getUsersOrderedByScore = function(limit) {
    query.ascending('score');
    query.limit(limit);
 
-   return promise = query.find().then(function(users) {
+   query.find().then(function(users) {
       console.log(JSON.stringify(users));
       return Parse.Promise.as(users);
     }, function(err) {
