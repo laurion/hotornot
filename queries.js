@@ -1,5 +1,4 @@
 
-var Parse = require('parse').Parse;
 exports.fetchUserById = function (userId) {
   var User = Parse.Object.extend('Ga');
   var userQuery = new Parse.Query('Alien');
@@ -42,10 +41,11 @@ exports.getUsersOrderedByScore = function(limit) {
    query.ascending('score');
    query.limit(limit);
 
-   query.find().then(function(users) {
+   return promise = query.find().then(function(users) {
       console.log(JSON.stringify(users));
       return Parse.Promise.as(users);
     }, function(err) {
+      console.log("err" + err);
       return Parse.Promise.error(err);
       console.log(err); 
     });
