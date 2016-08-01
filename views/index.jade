@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  .state-indicator
   .row
     .col.s12
       ul.tabs
@@ -8,8 +9,6 @@ block content
           a.active(href='#voting_tab') Votează
         li.tab.col.s3
           a(href='#leaderboard_tab') Clasament
-        li.tab.col.s3
-          a(href='#profile_tab') +
 
 
 
@@ -18,7 +17,7 @@ block content
     #voting_tab.col.s12
       #voting_card.card
         .card-image.waves-effect.waves-block.waves-light
-          img.activator(src="https://graph.facebook.com/#{current_person.fbId}/picture?width=200&height=200")
+          img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=400')
         .card-content
           span.activator.card-title
             | #{current_person.name}
@@ -29,10 +28,6 @@ block content
             i.material-icons.right close
           p
             a(href="https://facebook.com/#{current_person.fbId}", target="_blank") Add #{current_person.name} as a friend
-          p
-            a(href="/report/#{current_person.fbId}", target="_blank") Report this profile
-          p
-            a(href="/login/#{current_person.fbId}", target="_blank") This is me. Claim my profile.
       h5#voting_title
         | Cât de sexy este #{current_person.name}?
       ul.voting-buttons
@@ -40,6 +35,9 @@ block content
           li.voting-button-li
             a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}')
               = val
+      #hiddenData
+        #prevGivenScore(data= prevGivenScore)
+        #prevAvgScore(data= prevAvgScore)
 
 
 
@@ -47,12 +45,12 @@ block content
 
     #leaderboard_tab.col.s12
       h5
-        | un titlu destept?, share button etc
+        | Cei mai 10 din Buzesti
       ul.leaderboard-list
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-image
-              img.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=60&height=60")
+              img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=400")
 
             .card-content
               .card-content-left
@@ -60,15 +58,12 @@ block content
                 .extraContent
                   p
                     a(href="https://facebook.com/#{person.fbId}", target="_blank") Add #{person.name} as a friend
-                  p
-                    a(href="/report/#{person.fbId}", target="_blank") Report this profile
-                  p
-                    a(href="/login/#{person.fbId}", target="_blank") This is me. Claim my profile.
               .card-content-right
-                p= person.score
-                p= person.nrOfVotes
+                p
+                  | Scor:  
+                  span= person.score
+                p 
+                  | Voturi: 
+                  span= person.nrOfVotes
 
 
-
-
-    #profile_tab.col.s12 Adaugă o poza

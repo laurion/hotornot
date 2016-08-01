@@ -104,7 +104,7 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
 			   queryUser.find().then(function(users) {// query to fetch top scorers
 				  console.log("users fetch from query" + JSON.stringify(users));
 				  nextUserToVote = users;
-				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard });
+				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: 10, prevAvgScore:10});
 				  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error
@@ -112,7 +112,6 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
 		    });
 		}
    });
-  
 });
 
 router.get('/users', function(req, res, next) {
