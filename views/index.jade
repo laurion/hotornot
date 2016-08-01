@@ -45,7 +45,7 @@ block content
 
     #leaderboard_tab.col.s12
       h5
-        | un titlu destept?, share button etc
+        | Cei mai 10 din Buzesti
       ul.leaderboard-list
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
@@ -59,7 +59,11 @@ block content
                   p
                     a(href="https://facebook.com/#{person.fbId}", target="_blank") Add #{person.name} as a friend
               .card-content-right
-                p= person.score
-                p= person.nrOfVotes
+                p
+                  | Scor:  
+                  span= person.score
+                p 
+                  | Voturi: 
+                  span= person.nrOfVotes
 
 
