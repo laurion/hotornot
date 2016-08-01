@@ -20,10 +20,10 @@ router.get('/',function (req, res, next) {
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
    query.ascending('score');
-   query.limit(3);//so
+   query.limit(10);//so
    
    query.find().then(function(users) {// query to fetch top scorers
-	  console.log("users fetch from query" + JSON.stringify(users));
+	  console.log("load data at refresh" + JSON.stringify(users));
 	  var data = {
         url: postUrl,
         method: 'POST',
@@ -104,6 +104,7 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
 			   queryUser.find().then(function(users) {// query to fetch top scorers
 				  console.log("users fetch from query" + JSON.stringify(users));
 				  nextUserToVote = users;
+				  console.log("leaderBoard" + JSON.stringify(leaderboard));
 				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: 10, prevAvgScore:10});
 				  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
