@@ -66,7 +66,7 @@ router.get('/',function (req, res, next) {
 });*/
 router.get('/voted/:voteValue/:fbId', function(req, res, next) {
   //register vote to parse for last generated person for this user (only if exists)
-   var userFetched = functions.vote(req.params.voteValue, req.params.fbId);/// score,fbId
+   var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
    var obj = new Parse.Object('Oameni');

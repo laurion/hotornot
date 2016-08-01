@@ -1,4 +1,5 @@
 
+var Promise = require('bluebird');
 exports.fetchUserById = function (userId) {
   var User = Parse.Object.extend('Ga');
   var userQuery = new Parse.Query('Alien');
@@ -18,25 +19,29 @@ exports.fetchUserById = function (userId) {
 exports.updateUserWithScore = function(fbId, score) {
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
-   query.equalTo('fbId', fbId);
-   query.first().then(function(objAgain) {
-      console.log(JSON.stringify(objAgain));
-      var nrVotes = objAgain.get('nrOfVotes');
-      var oldScore = objAgain.get('score');
-      var newScore = (score + oldScore*nrVotes)/(nrVotes + 1);
+   query.equalTo('fbId', parseInt(fbId));
+   var promise = query.first().then(function(objAgain) {
+      console.log("user found" + JSON.stringify(objAgain));
+      var nrVotes = parseInt(objAgain.get('nrOfVotes'));
+      var oldScore = parseInt(objAgain.get('score'));
+      var newScore = parseInt((score + oldScore*nrVotes)/(nrVotes + 1));
+      console.log("new score" + newScore);
       objAgain.set('score', newScore);
+      objAgain.set('nrOfVotes', nrVotes + 1);
       objAgain.save().then(function(obj) {
           console.log("updated" + JSON.stringify(obj));
-          return Parse.Promise.as(obj);
+          return Promise.resolve(obj);
         }, function(err) {
-          return Parse.Promise.error(err);
+          return Promise.error(err);
          console.log(JSON.stringify(err)); 
        });
     }, function(err) {
        console.log(JSON.stringify(err)); 
-      return Parse.Promise.error(err);
+      return Promise.error(err);
       console.log(err); 
     });
+
+   return promise;
 }
 
 exports.getUsersOrderedByScore = function(limit) {
