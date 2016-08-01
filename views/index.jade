@@ -29,10 +29,6 @@ block content
             i.material-icons.right close
           p
             a(href="https://facebook.com/#{current_person.fbId}", target="_blank") Add #{current_person.name} as a friend
-          p
-            a(href="/report/#{current_person.fbId}", target="_blank") Report this profile
-          p
-            a(href="/login/#{current_person.fbId}", target="_blank") This is me. Claim my profile.
       h5#voting_title
         | Cât de sexy este #{current_person.name}?
       ul.voting-buttons
@@ -60,10 +56,6 @@ block content
                 .extraContent
                   p
                     a(href="https://facebook.com/#{person.fbId}", target="_blank") Add #{person.name} as a friend
-                  p
-                    a(href="/report/#{person.fbId}", target="_blank") Report this profile
-                  p
-                    a(href="/login/#{person.fbId}", target="_blank") This is me. Claim my profile.
               .card-content-right
                 p= person.score
                 p= person.nrOfVotes
