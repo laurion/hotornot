@@ -21,15 +21,19 @@ exports.updateUserWithScore = function(fbId, score) {
    query.equalTo('fbId', fbId);
    query.first().then(function(objAgain) {
       console.log(JSON.stringify(objAgain));
-      objAgain.set('score', score);
+      var nrVotes = objAgain.get('nrOfVotes');
+      var oldScore = objAgain.get('score');
+      var newScore = (score + oldScore*nrVotes)/(nrVotes + 1);
+      objAgain.set('score', newScore);
       objAgain.save().then(function(obj) {
           console.log("updated" + JSON.stringify(obj));
           return Parse.Promise.as(obj);
         }, function(err) {
           return Parse.Promise.error(err);
-         console.log(err); 
+         console.log(JSON.stringify(err)); 
        });
     }, function(err) {
+       console.log(JSON.stringify(err)); 
       return Parse.Promise.error(err);
       console.log(err); 
     });
@@ -41,13 +45,8 @@ exports.getUsersOrderedByScore = function(limit) {
    query.ascending('score');
    query.limit(limit);
 
-   return promise = query.find().then(function(users) {
-      console.log(JSON.stringify(users));
-      return Parse.Promise.as(users);
-    }, function(err) {
-      console.log("err" + err);
-      return Parse.Promise.error(err);
-      console.log(err); 
-    });
+   var users = query.find();
+
+   return Promise.resolve(users);
 }
 

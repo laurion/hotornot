@@ -1,6 +1,6 @@
 {
   "name": "myapp",
-  "version": "0.0.0",
+  "version": "2.0.6",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -13,6 +13,9 @@
     "jade": "~1.11.0",
     "morgan": "~1.7.0",
     "parse-server": "^2.2.17",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "bluebird": "~3.4.1",
+    "request": "~2.74.0",
+    "express-promise": "~0.4.0"
   }
 }

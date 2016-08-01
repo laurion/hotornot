@@ -2,10 +2,8 @@ var express = require('express');
 var router = express.Router();
 var functions = require('../functions.js');
 var queries = require('../queries.js');
-var async = require('async');
 var Promise = require('bluebird');
-var wrap = require('co-express');
-var co      = Promise.coroutine;
+var requestLib = Promise.promisify(require("request"));
 /* GET home page. */
 router.get('/',function (req, res, next) {
   var current_person = {
@@ -14,6 +12,10 @@ router.get('/',function (req, res, next) {
     "score":10,
     "nrOfVotes":1
   };
+
+   var postUrl = "http://52.31.174.126:8001/api/saveLastLocation";
+     console.log("postUrl" + postUrl);
+     
   console.log("xx");
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
@@ -22,6 +24,13 @@ router.get('/',function (req, res, next) {
    
    query.find().then(function(users) {// query to fetch top scorers
 	  console.log("users fetch from query" + JSON.stringify(users));
+	  var data = {
+        url: postUrl,
+        method: 'POST',
+        json: true,
+        body: {leaderboard_list: users, cluster : "buzesti", password:"4loc4"}
+     };
+      requestLib(data);
 	  res.render('index', { current_person: current_person, leaderboard_list: users });
 	}, function(err) {// when error
 	  console.log("err" + err);
@@ -58,18 +67,52 @@ router.get('/',function (req, res, next) {
 router.get('/voted/:voteValue/:fbId', function(req, res, next) {
   //register vote to parse for last generated person for this user (only if exists)
    var userFetched = functions.vote(req.params.voteValue, req.params.fbId);/// score,fbId
-   console.log("#$#$#@@#@");
-  var current_person = {
-    "name":"BogdanNext1",
-    "fbId": 100001008058747,
-    "score":10,
-    "nrOfVotes":1
-  };
-  var leaderboard_list = [];
-  for(var i = 0; i < 10; i ++)
-    leaderboard_list.push(current_person);
- // console.log(leaderboard_list)
-  res.render('index', { current_person: current_person, leaderboard_list: leaderboard_list });
+   var leaderboard = [];
+   var skip = 0;
+   var obj = new Parse.Object('Oameni');
+   var query = new Parse.Query('Oameni');
+   var hasUser = 0;
+   var hasTop = false;
+   
+   
+  /* query.find().then(function(users) {// query to fetch top scorers
+	  console.log("users fetch from query" + JSON.stringify(users));
+	  leaderboard = users;
+	  hasTop = true;
+	}, function(err) {// when error
+	  console.log("err" + err);
+	});*/
+     var postUrl = "http://52.31.174.126:8001/api/saveLastMacObjects";
+     console.log("postUrl" + postUrl);
+     var data = {
+        url: postUrl,
+        method: 'POST',
+        json: true,
+        body: {fbId: "100001008058747", cluster : "buzesti", password:"4loc4"}
+     };
+    return Promise.resolve(requestLib(data)).then(function(redis ){
+		console.log("bucket" + JSON.stringify(redis));
+		if(redis.body != null) {
+		  	 //skip = redis.body.;
+		  	 leaderboard = redis.body.leaderboard_list;
+		  	 skip = parseInt(redis.body.bucket) * 3 + parseInt(redis.body.userIndex);
+		  	 var obj = new Parse.Object('Oameni');
+  		     var queryUser = new Parse.Query('Oameni');
+	  		 queryUser.ascending('score');
+			   queryUser.limit(1);//so
+			   queryUser.skip(skip);
+			   queryUser.find().then(function(users) {// query to fetch top scorers
+				  console.log("users fetch from query" + JSON.stringify(users));
+				  nextUserToVote = users;
+				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard });
+				  console.log("next user to vote" + JSON.stringify(users));
+				  hasUser = 1;
+				}, function(err) {// when error
+				  console.log("err" + err);
+		    });
+		}
+   });
+  
 });
 
 router.get('/users', function(req, res, next) {
