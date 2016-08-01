@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  .state-indicator
   .row
     .col.s12
       ul.tabs
@@ -8,8 +9,6 @@ block content
           a.active(href='#voting_tab') Votează
         li.tab.col.s3
           a(href='#leaderboard_tab') Clasament
-        li.tab.col.s3
-          a(href='#profile_tab') +
 
 
 
@@ -18,7 +17,7 @@ block content
     #voting_tab.col.s12
       #voting_card.card
         .card-image.waves-effect.waves-block.waves-light
-          img.activator(src='https://placekitten.com/350/400')
+          img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=400')
         .card-content
           span.activator.card-title
             | #{current_person.name}
@@ -51,7 +50,7 @@ block content
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-image
-              img.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=60&height=60")
+              img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=400")
 
             .card-content
               .card-content-left
@@ -64,6 +63,3 @@ block content
                 p= person.nrOfVotes
 
 
-
-
-    #profile_tab.col.s12 Adaugă o poza

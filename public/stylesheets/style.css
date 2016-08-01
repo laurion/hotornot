@@ -1,12 +1,45 @@
-/* body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/* default state, desktop */
+.state-indicator {
+    position: absolute;
+    top: -999em;
+    left: -999em;
+
+    z-index: 1;
 }
 
-a {
-  color: #00B7FF;
+.row {
+  max-width: 450px;
 }
- */
+
+/* small desktop */
+@media all and (max-width: 1200px) {
+    .state-indicator {
+        z-index: 2;
+    }
+    .row {
+      max-width: 450px;
+    }
+}
+
+/* tablet */
+@media all and (max-width: 1024px) {
+    .state-indicator {
+        z-index: 3;
+    }
+    .row {
+      max-width: 450px;
+    }
+}
+
+/* mobile phone */
+@media all and (max-width: 768px) {
+    .state-indicator {
+        z-index: 4;
+    }
+    .row {
+      max-width: 450px;
+    }
+}
 /*
 When creating your CSS selector,
 change "brown" to something of your choosing
@@ -47,7 +80,7 @@ change "brown" to something of your choosing
 }
 
 .leaderboard-list {
-  margin-right: 10px;
+  margin-right: 0px;
 }
 
 .card.horizontal.leaderboard-item > .card-content {
@@ -102,4 +135,14 @@ span.activator.card-title {
 
 #prevAvgScore {
   display: none;
+}
+
+.bigCardPic {
+  width: 350px;
+  height: 400px;
+}
+
+.smallCardPic {
+  width: 60px;
+  height: 82px;
 }

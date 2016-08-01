@@ -25,9 +25,15 @@ $(document).ready(function(){
     var currentCard = $(event.currentTarget);
     if(currentCard.hasClass("horizontal")){
       currentCard.removeClass("horizontal");
+      var pic = currentCard.find(".smallCardPic");
+      pic.removeClass("smallCardPic");
+      pic.addClass("bigCardPic");
       currentCard.find(".extraContent").css("display","block");
     }
     else {
+      var pic = currentCard.find(".bigCardPic");
+      pic.removeClass("bigCardPic");
+      pic.addClass("smallCardPic");
       currentCard.find(".extraContent").css("display","none");
       $(event.target.parentNode).addClass("horizontal");
     }
