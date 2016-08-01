@@ -5,9 +5,9 @@ block content
     .col.s12
       ul.tabs
         li.tab.col.s3
-          a(href='#voting_tab') Votează
+          a.active(href='#voting_tab') Votează
         li.tab.col.s3
-          a.active(href='#leaderboard_tab') Clasament
+          a(href='#leaderboard_tab') Clasament
         li.tab.col.s3
           a(href='#profile_tab') +
 
@@ -52,7 +52,8 @@ block content
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-image
-              img.activator(src='https://placekitten.com/60/82')
+              img.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=60&height=60")
+
             .card-content
               .card-content-left
                 p= person.name
