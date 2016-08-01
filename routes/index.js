@@ -22,7 +22,7 @@ router.get('/',function (req, res, next) {
    
    query.find().then(function(users) {// query to fetch top scorers
 	  console.log("users fetch from query" + JSON.stringify(users));
-	  res.render('index', { current_person: current_person, leaderboard_list: users });
+	  res.render('index', { current_person: current_person, leaderboard_list: users});
 	}, function(err) {// when error
 	  console.log("err" + err);
 	  res.render('index', { error: "undefined"}); 
@@ -69,7 +69,7 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
   for(var i = 0; i < 10; i ++)
     leaderboard_list.push(current_person);
  // console.log(leaderboard_list)
-  res.render('index', { current_person: current_person, leaderboard_list: leaderboard_list });
+  res.render('index', { current_person: current_person, leaderboard_list: leaderboard_list, prevGivenScore: 10, prevAvgScore:10 });
 });
 
 router.get('/users', function(req, res, next) {

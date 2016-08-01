@@ -95,3 +95,11 @@ span.activator.card-title {
 .extraContent {
   display: none;
 }
+
+#prevGivenScore {
+  display: none;
+}
+
+#prevAvgScore {
+  display: none;
+}

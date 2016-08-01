@@ -1,6 +1,14 @@
 //event handlers
-
+function isNumeric(n){
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 $(document).ready(function(){
+  var prevGivenScore = $("#prevGivenScore")[0].getAttribute("data");
+  var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
+  if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
+    var $toastContent = $('<span> Ai dat nota ' + prevGivenScore + '. Scor mediu: ' + prevAvgScore +'</span>');
+    Materialize.toast($toastContent, 500);
+  }
   
 //   $(".voting-button-li").on("click", function(event){ 
 //     // Materialize.toast(message, displayLength, className, completeCallback);

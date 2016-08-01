@@ -36,6 +36,9 @@ block content
           li.voting-button-li
             a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}')
               = val
+      #hiddenData
+        #prevGivenScore(data= prevGivenScore)
+        #prevAvgScore(data= prevAvgScore)
 
 
 
