@@ -17,7 +17,7 @@ block content
     #voting_tab.col.s12
       #voting_card.card
         .card-image.waves-effect.waves-block.waves-light
-          img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=400')
+          img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=350')
         .card-content
           span.activator.card-title
             | #{current_person.name}
@@ -28,13 +28,15 @@ block content
             i.material-icons.right close
           p
             a(href="https://facebook.com/#{current_person.fbId}", target="_blank") Add #{current_person.name} as a friend
-      h5#voting_title
-        | Cât de sexy este #{current_person.name}?
-      ul.voting-buttons
-        each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-          li.voting-button-li
-            a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}')
-              = val
+      .wrapperCenter
+          h5#voting_title
+            | Cât de hot este #{current_person.name}?
+          .wrapperInlineBlock
+              ul.voting-buttons
+                each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                  li.voting-button-li
+                    a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}')
+                      = val
       #hiddenData
         #prevGivenScore(data= prevGivenScore)
         #prevAvgScore(data= prevAvgScore)
@@ -50,7 +52,7 @@ block content
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-image
-              img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=400")
+              img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=350")
 
             .card-content
               .card-content-left

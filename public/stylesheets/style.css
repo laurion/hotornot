@@ -8,7 +8,7 @@
 }
 
 .row {
-  max-width: 450px;
+  max-width: 400px;
 }
 
 /* small desktop */
@@ -17,7 +17,7 @@
         z-index: 2;
     }
     .row {
-      max-width: 450px;
+      max-width: 400px;
     }
 }
 
@@ -27,7 +27,7 @@
         z-index: 3;
     }
     .row {
-      max-width: 450px;
+      max-width: 400px;
     }
 }
 
@@ -37,7 +37,7 @@
         z-index: 4;
     }
     .row {
-      max-width: 450px;
+      max-width: 400px;
     }
 }
 /*
@@ -139,10 +139,18 @@ span.activator.card-title {
 
 .bigCardPic {
   width: 350px;
-  height: 400px;
+  height: 350px;
 }
 
 .smallCardPic {
   width: 60px;
   height: 82px;
+}
+
+.wrapperInlineBlock {
+  display: inline-block;
+}
+
+.wrapperCenter{
+  text-align: center;
 }
