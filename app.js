@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ParseServer = require('parse-server').ParseServer;
 var routes = require('./routes/index');
+var session = require('express-session')
 // var users = require('./routes/users');
 // var voted = require('./routes/voted');
 
@@ -14,7 +15,7 @@ var api = new ParseServer({
   databaseURI: 'mongodb://intersect:4wabbit4@ds033015.mlab.com:33015/hotornot',
   masterKey: '1o6z9ePR3qPnRU0jHIP4iWToNzkANKIr3UNHwelq',
   appId: 'utXysazDczvny5sBUme5HZIzfUrybjppWIc8aVGb', //Add your master key here. Keep it secret!
-  serverURL: 'http://localhost:3000/parse',
+  serverURL: 'http://hotornot-test-dev.eu-west-1.elasticbeanstalk.com/parse',
   liveQuery: {
     classNames: ["Posts", "Comments","User"] // List of classes to support for query subscriptions
   }
@@ -30,6 +31,12 @@ app.use(mountPath, api);
 //     require('./routing-app');
 //   });
 // }
+app.use(session({
+    secret: '34SDgsdgspxxxxxxxdfsG', // just a long random string
+    resave: false,
+    saveUninitialized: true
+}));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
