@@ -19,7 +19,7 @@ router.get('/',function (req, res, next) {
   console.log("xx");
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
-   query.ascending('score');
+   query.descending('score');
    query.limit(10);//so
    
    query.find().then(function(users) {// query to fetch top scorers
@@ -30,10 +30,11 @@ router.get('/',function (req, res, next) {
         json: true,
         body: {leaderboard_list: users, cluster : "buzesti", password:"4loc4"}
      };
-      requestLib(data);
-	  res.render('index', { current_person: current_person, leaderboard_list: users });
+
+     requestLib(data);
+	  res.render('index', { current_person: users[0], leaderboard_list: users });
 	}, function(err) {// when error
-	  console.log("err" + err);
+	  console.log("err3" + JSON.stringify(err));
 	  res.render('index', { error: "undefined"}); 
 	});
    /*res.render('index', { current_person: current_person, leaderboard_list: query.find() });*/
@@ -65,6 +66,11 @@ router.get('/',function (req, res, next) {
   
 });*/
 router.get('/voted/:voteValue/:fbId', function(req, res, next) {
+
+	//var cookie = req.cookies.espress:sessid;
+	//console.log('Cookies: ', cookie);
+	console.log("req id" + JSON.stringify(req.session.id));
+	var sessid = req.session.id;
   //register vote to parse for last generated person for this user (only if exists)
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
@@ -88,17 +94,17 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: "100001008058747", cluster : "buzesti", password:"4loc4"}
+        body: {fbId: sessid, cluster : "buzesti", password:"4loc4"}
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
 		if(redis.body != null) {
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
-		  	 skip = parseInt(redis.body.bucket) * 3 + parseInt(redis.body.userIndex);
+		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
 		  	 var obj = new Parse.Object('Oameni');
   		     var queryUser = new Parse.Query('Oameni');
-	  		 queryUser.ascending('score');
+	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
 			   queryUser.skip(skip);
 			   queryUser.find().then(function(users) {// query to fetch top scorers
@@ -109,7 +115,7 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
 				  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error
-				  console.log("err" + err);
+				  console.log("er2" + err);
 		    });
 		}
    });
