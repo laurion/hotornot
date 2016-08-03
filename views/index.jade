@@ -36,7 +36,7 @@ block content
               a.fb-add-button.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{current_person.fbId}", target="_blank")
                 i.fa.fa-facebook
                 | Profil facebook
-          a.claim-fb-button.btn.btn-lg(scope='public_profile,email', onclick="fbLogIn();") Acesta este profilul meu
+          a.claim-fb-button.btn.btn-lg.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();") Acesta este profilul meu
           a.report-button.btn.btn-lg(href="#", onclick="report_profile(#{current_person.fbId});") Report this profile
       .wrapperCenter
           .wrapperInlineBlock
@@ -69,7 +69,7 @@ block content
                 a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
                   i.fa.fa-facebook
                   | Facebook profile
-                a.claim-fb-button.btn.btn-lg(scope='public_profile,email', onclick="fbLogIn();") Claim profile
+                a.claim-fb-button.btn.btn-lg.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();") Claim profile
               .card-content-right
                 p
                   | Nota:  
@@ -82,7 +82,7 @@ block content
 
 
     #profile_tab.col.s12
-      #my_score_wrapper
+      .display-when-logged-in
           .voting-card.card
             .card-image
               img#current_user_img.bigCardPic
@@ -101,13 +101,13 @@ block content
                 span.card-title.grey-text.text-darken-4
                   | Setări
                   i.material-icons.right close
-          a#fb_logout_button.btn.btn-lg.settings-button(onclick="fbLogOut();") Logout of facebook
+          a#fb_logout_button.btn.btn-lg.settings-button.display-when-logged-in(onclick="fbLogOut();") Logout of facebook
 
-          a#hide_my_fb_button.btn.btn-lg.settings-button(href="#", onclick="hide_my_fb();") Ascunde profilul meu de Facebook
+          a#hide_my_fb_button.btn.btn-lg.settings-button.display-when-logged-in(href="#", onclick="hide_my_fb();") Ascunde profilul meu de Facebook
 
           //
             a#delete_my_account_button.btn.btn-lg.settings-button(href="#", onclick="delete_my_account();") Ștergere cont
-      a#fb_login_button.btn.btn-block.btn-social.btn-lg.btn-facebook(scope='public_profile,email', onclick="fbLogIn();")
+      a#fb_login_button.btn.btn-block.btn-social.btn-lg.btn-facebook.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();")
         i.fa.fa-facebook
         | Verifică-ți nota cu Facebook
 

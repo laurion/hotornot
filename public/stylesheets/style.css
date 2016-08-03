@@ -179,15 +179,16 @@ span.activator.card-title {
 }
 
 #hide_my_fb_button {
-
-}
-#delete_my_account_button {
-    
-}
-
-#my_score_wrapper {
     display: none;
 }
+#delete_my_account_button {
+    display: none;
+}
+
+.display-when-logged-in {
+    display: none;
+}
+
 /* small desktop */
 @media all and (max-width: 1200px) {
     .state-indicator {

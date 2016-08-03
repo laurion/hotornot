@@ -74,35 +74,36 @@ if (response.status === 'connected') {
   current_user.id = response.authResponse.userID;
   
   console.log("Logged in successfully! ####@#@###");
-FB.api('/me?fields=name', function(responseGraph) {
-   
-     $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
-    .done(function( data ) {
-      $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
-  
-      $("#my_score_wrapper").css("display","block");
-      var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
-      $("#current_user_img").attr("src", pictureUrl);
-      //#("#current_user_name")[0].innerHTML = "";
-    });
-});
-  $("#fb_logout_button").css("display", "block");
-  $("#fb_login_button").css("display", "none");
+  FB.api('/me?fields=name', function(responseGraph) {
+
+       $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
+      .done(function( data ) {
+        $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
+
+        $(".display-when-logged-in").css("display","block");
+        $(".display-when-logged-out").css("display","none");
+        var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
+        $("#current_user_img").attr("src", pictureUrl);
+        //#("#current_user_name")[0].innerHTML = "";
+      });
+  });
+  $(".display-when-logged-in").css("display", "block");
+  $(".display-when-logged-out").css("display", "none");
   //TODO: POST on server the response, token, etc
  
 } else if (response.status === 'not_authorized') {
   // The person is logged into Facebook, but not your app.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into this app.';
-  $("#my_score_wrapper").css("display","none");
-  $("#fb_login_button").css("display", "block");
+  $(".display-when-logged-in").css("display","none");
+  $(".display-when-logged-out").css("display", "block");
 } else {
   // The person is not logged into Facebook, so we're not sure if
   // they are logged into this app or not.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into Facebook.';
-  $("#my_score_wrapper").css("display","none");
-  $("#fb_login_button").css("display", "block");
+  $(".display-when-logged-in").css("display","none");
+  $(".display-when-logged-out").css("display", "block");
 }
 }
 
@@ -130,8 +131,8 @@ FB.logout(function(response) {
   // user is now logged out
   console.log(response);
   checkLoginState();
-  $("#fb_logout_button").css("display", "none");
-  $("#fb_login_button").css("display", "block");
+  $(".display-when-logged-in").css("display", "none");
+  $(".display-when-logged-out").css("display", "block");
 });
 }
 
