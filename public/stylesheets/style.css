@@ -35,6 +35,7 @@ change "brown" to something of your choosing
     /* padding-left: 0px; */
     /* list-style-type: none; */
     display: flex;
+    margin-top: 10px;
 }
 
 .voting-button-li {
