@@ -3,6 +3,37 @@ function isNumeric(n){
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
+var current_user = {
+  id: ""
+}
+
+function hide_my_fb(){
+  var r = confirm("Are you sure you want to hide your facebook profile from other users? They won't be able to see your facebook when looking at your profile");
+  if (r == true) {
+      $.post( "/hide_my_fb", { fbdata: current_user.id })
+        .done(function( data ) {
+          //
+          console.log("hide_my_fb response:");
+          console.log(data);
+        });
+  } else {
+      //nothing
+  }
+}
+function delete_my_account(){
+  var r = confirm("Press a button");
+  if (r == true) {
+      $.post( "/delete_my_account", { fbdata: current_user.id })
+        .done(function( data ) {
+          fbLogOut();
+          console.log("delete_my_account response:");
+          console.log(data);
+        });
+  } else {
+    //
+  }
+}
+
 // ---- init fb things: ----
 
 // This is called with the results from from FB.getLoginStatus().
@@ -17,6 +48,8 @@ console.log(response);
 if (response.status === 'connected') {
   // Logged into your app and Facebook.
   //testAPI();
+
+  current_user.id = response.authResponse.userID;
   
   console.log("Logged in successfully! ####@#@###");
 
@@ -25,7 +58,7 @@ if (response.status === 'connected') {
   //TODO: POST on server the response, token, etc
   $.post( "/login", { fbdata: response.authResponse })
     .done(function( data ) {
-      alert( "Data Loaded: " + data );
+      console.log( "Data Loaded: " + data );
       $("#current_user_score")[0].innerHTML = 10;//TODO
   
       $("#my_score_wrapper").css("display","block");
@@ -37,7 +70,6 @@ if (response.status === 'connected') {
   // The person is logged into Facebook, but not your app.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into this app.';
-  $("#fb_logout_button").css("display", "none");
   $("#my_score_wrapper").css("display","none");
   $("#fb_login_button").css("display", "block");
 } else {
@@ -45,7 +77,6 @@ if (response.status === 'connected') {
   // they are logged into this app or not.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into Facebook.';
-  $("#fb_logout_button").css("display", "none");
   $("#my_score_wrapper").css("display","none");
   $("#fb_login_button").css("display", "block");
 }
