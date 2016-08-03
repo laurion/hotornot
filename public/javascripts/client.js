@@ -23,12 +23,16 @@ if (response.status === 'connected') {
   $("#fb_logout_button").css("display", "block");
   $("#fb_login_button").css("display", "none");
   //TODO: POST on server the response, token, etc
-  $("#current_user_score")[0].innerHTML = 10;//TODO
+  $.post( "/login", { fbdata: response.authResponse })
+    .done(function( data ) {
+      alert( "Data Loaded: " + data );
+      $("#current_user_score")[0].innerHTML = 10;//TODO
   
-  $("#my_score_wrapper").css("display","block");
-  var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
-  $("#current_user_img").attr("src", pictureUrl);
-  //#("#current_user_name")[0].innerHTML = "";
+      $("#my_score_wrapper").css("display","block");
+      var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
+      $("#current_user_img").attr("src", pictureUrl);
+      //#("#current_user_name")[0].innerHTML = "";
+    });
 } else if (response.status === 'not_authorized') {
   // The person is logged into Facebook, but not your app.
   document.getElementById('status').innerHTML = 'Please log ' +
