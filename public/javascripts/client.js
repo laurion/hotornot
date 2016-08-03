@@ -74,20 +74,22 @@ if (response.status === 'connected') {
   current_user.id = response.authResponse.userID;
   
   console.log("Logged in successfully! ####@#@###");
-
-  $("#fb_logout_button").css("display", "block");
-  $("#fb_login_button").css("display", "none");
-  //TODO: POST on server the response, token, etc
-  $.post( "/login", { fbdata: response.authResponse })
+FB.api('/me?fields=name', function(responseGraph) {
+   
+     $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
     .done(function( data ) {
-      console.log( "Data Loaded: " + data );
-      $("#current_user_score")[0].innerHTML = 10;//TODO
+      $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
   
       $("#my_score_wrapper").css("display","block");
       var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
       $("#current_user_img").attr("src", pictureUrl);
       //#("#current_user_name")[0].innerHTML = "";
     });
+});
+  $("#fb_logout_button").css("display", "block");
+  $("#fb_login_button").css("display", "none");
+  //TODO: POST on server the response, token, etc
+ 
 } else if (response.status === 'not_authorized') {
   // The person is logged into Facebook, but not your app.
   document.getElementById('status').innerHTML = 'Please log ' +
@@ -189,7 +191,7 @@ $(document).ready(function(){
   var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
   if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
     var $toastContent = $('<span> Ai dat nota ' + prevGivenScore + '. Scor mediu: ' + prevAvgScore +'</span>');
-    Materialize.toast($toastContent, 1000);
+    Materialize.toast($toastContent, 500);
   }
   
 //   $(".voting-button-li").on("click", function(event){ 

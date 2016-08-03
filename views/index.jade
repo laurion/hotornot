@@ -6,11 +6,11 @@ block content
     .col.s12
       ul.tabs
         li.tab.col.s3
-          a(href='#voting_tab') Votează
+          a.active(href='#voting_tab') Votează
         li.tab.col.s3
           a(href='#leaderboard_tab') Clasament
         li.tab.col.s3
-          a.active(href='#profile_tab') Nota mea
+          a(href='#profile_tab') Nota mea
         
 
 
@@ -20,7 +20,7 @@ block content
     #voting_tab.col.s12
       .wrapperCenter
         h5.voting-title
-          | Cât de hot sunt cei din Carol?
+          | Cât de hot sunt cei de la Untold?
       .voting-card.card
         .card-image.waves-effect.waves-block.waves-light
           img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=350')
@@ -43,7 +43,7 @@ block content
               ul.voting-buttons
                 each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                   li.voting-button-li
-                    a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}')
+                    a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}/#{current_person.nrOfVotes}/#{current_person.score}')
                       = val
       #hiddenData
         #prevGivenScore(data= prevGivenScore)
@@ -55,7 +55,7 @@ block content
 
     #leaderboard_tab.col.s12
       h5.voting-title
-        | Cei mai 10 din Carol
+        | Cei mai hot 10 de la Untold
       ul.leaderboard-list
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
@@ -67,7 +67,7 @@ block content
                 p= person.name
                 .extraContent
                   p
-                    a(href="https://facebook.com/#{person.fbId}", target="_blank") Add #{person.name} as a friend
+                    a(href="https://facebook.com/#{person.fbId}", target="_blank") Profil Facebook
               .card-content-right
                 p
                   | Nota:  

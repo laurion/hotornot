@@ -4,6 +4,40 @@ var functions = require('../functions.js');
 var queries = require('../queries.js');
 var Promise = require('bluebird');
 var requestLib = Promise.promisify(require("request"));
+
+
+router.post('/login', function(req, res) {//todo for 
+	console.log("req body" + JSON.stringify(req.body));
+	var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
+   query.contains('name', req.body.name);
+   query.first().then(function(objAgain) {
+      console.log("user found" + JSON.stringify(objAgain));
+      if(objAgain != null){
+    	  var score = objAgain.get('score');
+      	  res.end(JSON.stringify(score));
+  	   } else {
+  	   	  var newobj = new Parse.Object('UntoldPeople');
+  	   	  var randomScore = (Math.floor(Math.random() * 2) )+ 3;
+          var randomNrOfVotes = (Math.floor(Math.random() * 50)) + 1;
+  	   	  newobj.set('score', randomScore);
+  	   	  newobj.set('fbId', parseInt(req.body.id));
+  	   	  newobj.set('nrOfVotes', randomNrOfVotes);
+  	   	  newobj.set('name', req.body.name);
+  	   	  newobj.save().then(function(obj) {
+          console.log("save new user" + JSON.stringify(obj));
+          res.end(JSON.stringify(randomScore));
+        }, function(err) {
+          res.end("5");
+       });;
+  	   }
+    }, function(err) {
+       console.log("error"+ JSON.stringify(err)); 
+       res.end("5");
+      console.log(err); 
+    });
+});
+
 /* GET home page. */
 router.get('/',function (req, res, next) {
   var current_person = {
@@ -28,7 +62,7 @@ router.get('/',function (req, res, next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: users, cluster : "buzesti", password:"4loc4"}
+        body: {leaderboard_list: users, cluster : "untold", password:"4loc4"}
      };
 
      requestLib(data);
@@ -65,13 +99,20 @@ router.get('/',function (req, res, next) {
     });
   
 });*/
-router.get('/voted/:voteValue/:fbId', function(req, res, next) {
+router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next) {
 
 	//var cookie = req.cookies.espress:sessid;
 	//console.log('Cookies: ', cookie);
 	console.log("req id" + JSON.stringify(req.session.id));
 	var sessid = req.session.id;
   //register vote to parse for last generated person for this user (only if exists)
+   var vote = parseInt(req.params.voteValue);
+   var nrOfVotes = parseInt(req.params.nrOfVotes);
+   var lastScore = parseFloat(req.params.score);
+   var scoreAverage = parseFloat((vote + lastScore*nrOfVotes)/(nrOfVotes + 1));;
+   
+   scoreAverage = parseFloat((parseInt(scoreAverage * 100))/100);
+  
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
@@ -94,7 +135,7 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "buzesti", password:"4loc4"}
+        body: {fbId: sessid, cluster : "untold", password:"4loc4"}
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
@@ -110,9 +151,10 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
 			   queryUser.find().then(function(users) {// query to fetch top scorers
 				  console.log("users fetch from query" + JSON.stringify(users));
 				  nextUserToVote = users;
-				  console.log("leaderBoard" + JSON.stringify(leaderboard));
-				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: 10, prevAvgScore:10});
-				  console.log("next user to vote" + JSON.stringify(users));
+			//	  console.log("leaderBoard" + JSON.stringify(leaderboard));
+			//	  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
+				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
+			//	  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error
 				  console.log("er2" + err);
