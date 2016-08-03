@@ -66,7 +66,7 @@ router.get('/',function (req, res, next) {
      };
 
      requestLib(data);
-	  res.render('index', { current_person: users[0], leaderboard_list: users });
+	  res.render('index', { current_person: users[9], leaderboard_list: users });
 	}, function(err) {// when error
 	  console.log("err3" + JSON.stringify(err));
 	  res.render('index', { error: "undefined"}); 
