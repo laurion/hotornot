@@ -6,9 +6,12 @@ block content
     .col.s12
       ul.tabs
         li.tab.col.s3
-          a.active(href='#voting_tab') Votează
+          a(href='#voting_tab') Votează
         li.tab.col.s3
           a(href='#leaderboard_tab') Clasament
+        li.tab.col.s3
+          a.active(href='#profile_tab') Scorul tău
+        
 
 
 
@@ -70,3 +73,26 @@ block content
                   span= person.nrOfVotes
 
 
+
+
+    #profile_tab.col.s12
+      #my_score_wrapper
+        p Scorul tău:
+        span#my_score
+      a#fb_login_button.btn.btn-block.btn-social.btn-lg.btn-facebook(scope='public_profile,email', onclick="fbLogIn();")
+        i.fa.fa-facebook
+        | Verifică scorul cu Facebook
+      a#fb_logout_button.btn.btn-block.btn-social.btn-lg.btn-facebook(onclick="fbLogOut();")
+        i.fa.fa-facebook
+        | Logout
+      //
+        Below we include the Login Button social plugin. This button uses
+        the JavaScript SDK to present a graphical Login button that triggers
+        the FB.login() function when clicked.
+      
+      //
+        .fb-login-button(data-max-rows="2", data-size="xlarge", data-show-faces="false", data-auto-logout-link="true")
+      //
+        fb:login-button(scope='public_profile,email', onlogin='checkLoginState();')
+      
+      #status

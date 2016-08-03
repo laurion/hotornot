@@ -3,23 +3,21 @@
     position: absolute;
     top: -999em;
     left: -999em;
-
     z-index: 1;
 }
 
 .row {
-  max-width: 400px;
+    max-width: 400px;
 }
-
 
 /*
 When creating your CSS selector,
 change "brown" to something of your choosing
 */
 .waves-effect.waves-rate1 .waves-ripple {
- /* The alpha value allows the text and background color
+    /* The alpha value allows the text and background color
  of the button to still show through. */
-  background-color: rgba(10, 10, 172, 0.65);
+    background-color: rgba(10, 10, 172, 0.65);
 }
 
 #voting_card {
@@ -34,36 +32,36 @@ change "brown" to something of your choosing
 }
 
 .voting-buttons {
-  /* padding-left: 0px; */
-  /* list-style-type: none; */
-  display: flex;
+    /* padding-left: 0px; */
+    /* list-style-type: none; */
+    display: flex;
 }
 
 .voting-button-li {
-  padding: 1px;
-
+    padding: 1px;
 }
 
 .waves-circle {
-  width: 2.4em;
-  height: 2.4em;
+    width: 2.4em;
+    height: 2.4em;
 }
 
 .leaderboard-item {
-  width: 100%;
+    width: 100%;
 }
 
 .leaderboard-list {
-  margin-right: 0px;
+    margin-right: 0px;
 }
 
 .card.horizontal.leaderboard-item > .card-content {
-  display: flex;
-  flex: 1;
+    display: flex;
+    flex: 1;
 }
+
 .card.horizontal.leaderboard-item > .card-content > .card-content-right {
-  direction: rtl;
-  flex: 1;
+    direction: rtl;
+    flex: 1;
 }
 
 .card .card-content .card-title {
@@ -72,7 +70,9 @@ change "brown" to something of your choosing
     /* width: 250px; */
 }
 
-.card-content-left {font-size: 16px;}
+.card-content-left {
+    font-size: 16px;
+}
 
 .card-content-left p {
     /* height: 42px; */
@@ -100,35 +100,51 @@ span.activator.card-title {
 }
 
 .extraContent {
-  display: none;
+    display: none;
 }
 
 #prevGivenScore {
-  display: none;
+    display: none;
 }
 
 #prevAvgScore {
-  display: none;
+    display: none;
 }
 
 .bigCardPic {
-  width: 350px;
-  height: 350px;
+    width: 350px;
+    height: 350px;
 }
 
 .smallCardPic {
-  width: 60px;
-  height: 82px;
+    width: 60px;
+    height: 82px;
 }
 
 .wrapperInlineBlock {
-  display: inline-block;
+    display: inline-block;
 }
 
-.wrapperCenter{
-  text-align: center;
+.wrapperCenter {
+    text-align: center;
 }
 
+#fb_login_button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    background-color: #3b5998;
+}
+
+#fb_logout_button {
+    display: none;
+    font-size: 13px;
+    background-color: #3b5998;
+}
+
+#my_score_wrapper {
+    display: none;
+}
 /* small desktop */
 @media all and (max-width: 1200px) {
     .state-indicator {
