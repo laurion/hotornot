@@ -13,10 +13,24 @@ router.post('/login', function(req, res) {//todo for
    query.contains('name', req.body.name);
    query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
-      var score = objAgain.get('score');
-      res.end(JSON.stringify(score));
+      if(objAgain != null){
+    	  var score = objAgain.get('score');
+      	 res.end(JSON.stringify(score));
+  	   } else {
+  	   	  var newobj = new Parse.Object('Oameni');
+  	   	  newobj.set('score', 5);
+  	   	  newobj.set('fbId', parseInt(req.body.id));
+  	   	  newobj.set('nrOfVotes', 1);
+  	   	  newobj.set('name', "ANA BOB");
+  	   	  newobj.save().then(function(obj) {
+          console.log("save new user" + JSON.stringify(obj));
+          res.end("5");
+        }, function(err) {
+          res.end("5");
+       });;
+  	   }
     }, function(err) {
-       console.log(JSON.stringify(err)); 
+       console.log("error"+ JSON.stringify(err)); 
        res.end("5");
       console.log(err); 
     });
