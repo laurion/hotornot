@@ -1,10 +1,10 @@
 ENV = "test";//comment this in production
 
-
 var appId = '154672038273096';
 if(ENV == "test")
   appId = "155244454882521";
 
+var current_person; //the current person we are shown to vote
 
 //event handlers
 function isNumeric(n){
@@ -187,6 +187,10 @@ $(document).ready(function(){
   
 //   initFacebookThings();
 
+  current_person = {
+    id: $(".fb-add-button",$("div#voting_tab"))[0].href.replace(/.*facebook\.com\//g,"")
+  };
+
   var prevGivenScore = $("#prevGivenScore")[0].getAttribute("data");
   var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
   if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
@@ -253,7 +257,7 @@ $(document).ready(function(){
       eventCategory: 'Actions',
       eventAction: 'addFriend',
       eventLabel: current_user.fbId,
-      eventValue: event.target.href.replace(/.*facebook\.com\//g,"")
+      eventValue: current_person.fbId
     });
   });
 
@@ -264,8 +268,54 @@ $(document).ready(function(){
       hitType: 'event',
       eventCategory: 'Secondary Actions',
       eventAction: 'claimFb',
+      eventLabel: current_user.fbId,
+      eventValue: current_person.fbId
+    });
+  });
+
+  $(".report-button").on("click", function(event){
+    console.log("report button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'reportProfile',
+      eventLabel: current_user.fbId,
+      eventValue: current_person.fbId
+    });
+  });
+
+  $("#fb_login_button").on("click", function(event){
+    console.log("login button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'Login'
+    });
+  });
+
+  $("#fb_logout_button").on("click", function(event){
+    console.log("logout button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'Logout',
       eventLabel: current_user.fbId
     });
   });
+
+  $("#hide_my_fb_button").on("click", function(event){
+    console.log("hide_my_fb button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'hideFb',
+      eventLabel: current_user.fbId
+    });
+  });
+  
 
 });
