@@ -223,4 +223,49 @@ $(document).ready(function(){
     }
   });
 
+  $(".voting-button").on("click", function(event){
+    console.log("voted: " + event.target.name)
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Actions',
+      eventAction: 'vote',
+      eventLabel: event.target.name
+    });
+  });
+  $(".voting-button").on("click", function(event){
+    console.log("voted: " + event.target.name)
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Actions',
+      eventAction: 'vote',
+      eventLabel: current_user.fbId,
+      eventValue: event.target.name
+    });
+  });
+  $(".fb-add-button").on("click", function(event){
+    //for specific tab: $(".fb-add-button",$("div#voting_tab"))
+    console.log("fb button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Actions',
+      eventAction: 'addFriend',
+      eventLabel: current_user.fbId,
+      eventValue: event.target.href.replace(/.*facebook\.com\//g,"")
+    });
+  });
+
+  $(".claim-fb-button").on("click", function(event){
+    console.log("claim fb button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'claimFb',
+      eventLabel: current_user.fbId
+    });
+  });
+
 });

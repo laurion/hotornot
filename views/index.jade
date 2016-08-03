@@ -62,13 +62,14 @@ block content
             .card-image
               img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=350")
 
-            .card-content
+            .card-content.leaderboard-card
               .card-content-left
                 p= person.name
-                .extraContent
-                  a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
-                    i.fa.fa-facebook
-                    | Profil facebook
+              .extraContent
+                a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
+                  i.fa.fa-facebook
+                  | Facebook profile
+                a.claim-fb-button.btn.btn-lg(scope='public_profile,email', onclick="fbLogIn();") Claim profile
               .card-content-right
                 p
                   | Nota:  

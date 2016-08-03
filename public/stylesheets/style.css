@@ -60,9 +60,10 @@ change "brown" to something of your choosing
     flex: 1;
 }
 
-.card.horizontal.leaderboard-item > .card-content > .card-content-right {
+.card-content-right {
     direction: rtl;
     flex: 1;
+    padding-top: 20px;
 }
 
 .card .card-content .card-title {
@@ -71,8 +72,14 @@ change "brown" to something of your choosing
     /* width: 250px; */
 }
 
+.leaderboard-card{
+    margin-top: -20px;
+/*     padding: 0px 20px 20px 20px; */
+}
+
 .card-content-left {
     font-size: 16px;
+    padding-top: 20px;
 }
 
 .card-content-left p {
@@ -153,11 +160,11 @@ span.activator.card-title {
 
 .fb-add-button-leaderboard {
     margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .claim-fb-button {
     margin-top: 12px;
+    width: 100%;
 /*     background-color: #3b5998; */
 }
 .report-button {
