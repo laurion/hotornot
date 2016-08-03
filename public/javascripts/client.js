@@ -19,20 +19,22 @@ if (response.status === 'connected') {
   //testAPI();
   
   console.log("Logged in successfully! ####@#@###");
-
-  $("#fb_logout_button").css("display", "block");
-  $("#fb_login_button").css("display", "none");
-  //TODO: POST on server the response, token, etc
-  $.post( "/login", { fbdata: response.authResponse })
+FB.api('/me?fields=name', function(responseGraph) {
+   
+     $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
     .done(function( data ) {
-      alert( "Data Loaded: " + data );
-      $("#current_user_score")[0].innerHTML = 10;//TODO
+      $("#current_user_score")[0].innerHTML = data;//TODO
   
       $("#my_score_wrapper").css("display","block");
       var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
       $("#current_user_img").attr("src", pictureUrl);
       //#("#current_user_name")[0].innerHTML = "";
     });
+});
+  $("#fb_logout_button").css("display", "block");
+  $("#fb_login_button").css("display", "none");
+  //TODO: POST on server the response, token, etc
+ 
 } else if (response.status === 'not_authorized') {
   // The person is logged into Facebook, but not your app.
   document.getElementById('status').innerHTML = 'Please log ' +

@@ -4,6 +4,24 @@ var functions = require('../functions.js');
 var queries = require('../queries.js');
 var Promise = require('bluebird');
 var requestLib = Promise.promisify(require("request"));
+
+
+router.post('/login', function(req, res) {//todo for 
+	console.log("req body" + JSON.stringify(req.body));
+	var obj = new Parse.Object('Oameni');
+   var query = new Parse.Query('Oameni');
+   query.contains('name', req.body.name);
+   query.first().then(function(objAgain) {
+      console.log("user found" + JSON.stringify(objAgain));
+      var score = objAgain.get('score');
+      res.end(JSON.stringify(score));
+    }, function(err) {
+       console.log(JSON.stringify(err)); 
+       res.end("5");
+      console.log(err); 
+    });
+});
+
 /* GET home page. */
 router.get('/',function (req, res, next) {
   var current_person = {
@@ -65,13 +83,18 @@ router.get('/',function (req, res, next) {
     });
   
 });*/
-router.get('/voted/:voteValue/:fbId', function(req, res, next) {
+router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next) {
 
 	//var cookie = req.cookies.espress:sessid;
 	//console.log('Cookies: ', cookie);
 	console.log("req id" + JSON.stringify(req.session.id));
 	var sessid = req.session.id;
   //register vote to parse for last generated person for this user (only if exists)
+   var vote = parseInt(req.params.voteValue);
+   var nrOfVotes = parseInt(req.params.nrOfVotes);
+   var lastScore = parseInt(req.params.score);
+   var scoreAverage = parseInt((vote + nrOfVotes * lastScore)/(nrOfVotes+1));
+
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
@@ -111,7 +134,8 @@ router.get('/voted/:voteValue/:fbId', function(req, res, next) {
 				  console.log("users fetch from query" + JSON.stringify(users));
 				  nextUserToVote = users;
 				  console.log("leaderBoard" + JSON.stringify(leaderboard));
-				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: 10, prevAvgScore:10});
+				  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
+				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
 				  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error

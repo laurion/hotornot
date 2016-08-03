@@ -25,19 +25,20 @@ exports.updateUserWithScore = function(fbId, score) {
       var nrVotes = parseInt(objAgain.get('nrOfVotes'));
       var oldScore = parseInt(objAgain.get('score'));
       var newScore = parseInt((score + oldScore*nrVotes)/(nrVotes + 1));
+      console.log("oldScore" + oldScore);
       console.log("new score" + newScore);
       objAgain.set('score', newScore);
       objAgain.set('nrOfVotes', nrVotes + 1);
       objAgain.save().then(function(obj) {
           console.log("updated" + JSON.stringify(obj));
-          return Promise.resolve(obj);
+          return Promise.resolve(obj.get('score'));
         }, function(err) {
-          return Promise.error(err);
+          return Promise.resolve("5");
          console.log(JSON.stringify(err)); 
        });
     }, function(err) {
        console.log(JSON.stringify(err)); 
-      return Promise.error(err);
+      return Promise.resolve("5");
       console.log(err); 
     });
 

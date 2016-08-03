@@ -6,11 +6,11 @@ block content
     .col.s12
       ul.tabs
         li.tab.col.s3
-          a(href='#voting_tab') Votează
+          a.active(href='#voting_tab') Votează
         li.tab.col.s3
           a(href='#leaderboard_tab') Clasament
         li.tab.col.s3
-          a.active(href='#profile_tab') Nota mea
+          a(href='#profile_tab') Nota mea
         
 
 
@@ -33,13 +33,13 @@ block content
             | #{current_person.name}
             i.material-icons.right close
           p
-            a(href="https://facebook.com/#{current_person.fbId}", target="_blank") Add #{current_person.name} as a friend
+            a(href="https://facebook.com/#{current_person.fbId}", target="_blank") Adauga pe FB pe #{current_person.name} 
       .wrapperCenter
           .wrapperInlineBlock
               ul.voting-buttons
                 each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                   li.voting-button-li
-                    a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}')
+                    a.voting-button.waves-effect.waves-circle.waves-red.btn-floating(name='#{val}', href='/voted/#{val}/#{current_person.fbId}/#{current_person.nrOfVotes}/#{current_person.score}')
                       = val
       #hiddenData
         #prevGivenScore(data= prevGivenScore)
@@ -63,7 +63,7 @@ block content
                 p= person.name
                 .extraContent
                   p
-                    a(href="https://facebook.com/#{person.fbId}", target="_blank") Add #{person.name} as a friend
+                    a(href="https://facebook.com/#{person.fbId}", target="_blank") Adauga pe FB pe #{person.name} 
               .card-content-right
                 p
                   | Nota:  
@@ -88,15 +88,7 @@ block content
                     p 
                       | Voturi: 
                       span#current_user_votes
-                i.material-icons.right more_vert
-            .card-reveal
-              span.card-title.grey-text.text-darken-4
-                | Setări
-                i.material-icons.right close
-              p
-                a(href="#", onclick="hide_my_fb();") Ascunde profilul meu de Facebook
-              p
-                a(href="#", onclick="delete_my_account();") Ștergere cont
+              
       a#fb_login_button.btn.btn-block.btn-social.btn-lg.btn-facebook(scope='public_profile,email', onclick="fbLogIn();")
         i.fa.fa-facebook
         | Verifică-ți nota cu Facebook
