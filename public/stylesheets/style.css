@@ -146,9 +146,14 @@ span.activator.card-title {
     bottom: 0; */
 }
 
-#fb_add_button {
+.fb-add-button {
     margin-top: 30px;
     background-color: #3b5998;
+}
+
+.fb-add-button-leaderboard {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .claim-fb-button {

@@ -8,8 +8,8 @@ var requestLib = Promise.promisify(require("request"));
 
 router.post('/login', function(req, res) {//todo for 
 	console.log("req body" + JSON.stringify(req.body));
-	var obj = new Parse.Object('UntoldPeople');
-   var query = new Parse.Query('UntoldPeople');
+	var obj = new Parse.Object('Oameni');
+   var query = new Parse.Query('Oameni');
    query.contains('name', req.body.name);
    query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
@@ -17,7 +17,7 @@ router.post('/login', function(req, res) {//todo for
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('UntoldPeople');
+  	   	  var newobj = new Parse.Object('Oameni');
   	   	  var randomScore = (Math.floor(Math.random() * 2) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 50)) + 1;
   	   	  newobj.set('score', randomScore);
