@@ -18,6 +18,9 @@ block content
 
 
     #voting_tab.col.s12
+      .wrapperCenter
+        h5.voting-title
+          | Cât de hot sunt cei din Carol?
       #voting_card.card
         .card-image.waves-effect.waves-block.waves-light
           img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=350')
@@ -32,8 +35,6 @@ block content
           p
             a(href="https://facebook.com/#{current_person.fbId}", target="_blank") Add #{current_person.name} as a friend
       .wrapperCenter
-          h5#voting_title
-            | Cât de hot este #{current_person.name}?
           .wrapperInlineBlock
               ul.voting-buttons
                 each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -49,7 +50,7 @@ block content
 
 
     #leaderboard_tab.col.s12
-      h5
+      h5.voting-title
         | Cei mai 10 din Carol
       ul.leaderboard-list
         each person in leaderboard_list
