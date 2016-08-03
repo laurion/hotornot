@@ -3,6 +3,37 @@ function isNumeric(n){
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
+var current_user = {
+  id: ""
+}
+
+function hide_my_fb(){
+  var r = confirm("Are you sure you want to hide your facebook profile from other users? They won't be able to see your facebook when looking at your profile");
+  if (r == true) {
+      $.post( "/hide_my_fb", { fbdata: current_user.id })
+        .done(function( data ) {
+          //
+          console.log("hide_my_fb response:");
+          console.log(data);
+        });
+  } else {
+      //nothing
+  }
+}
+function delete_my_account(){
+  var r = confirm("Are you sure you want to delete your account? Nobody will be able to see your profile or vote it.");
+  if (r == true) {
+      $.post( "/delete_my_account", { fbdata: current_user.id })
+        .done(function( data ) {
+          fbLogOut();
+          console.log("delete_my_account response:");
+          console.log(data);
+        });
+  } else {
+    //
+  }
+}
+
 // ---- init fb things: ----
 
 // This is called with the results from from FB.getLoginStatus().
@@ -17,6 +48,8 @@ console.log(response);
 if (response.status === 'connected') {
   // Logged into your app and Facebook.
   //testAPI();
+
+  current_user.id = response.authResponse.userID;
   
   console.log("Logged in successfully! ####@#@###");
 FB.api('/me?fields=name', function(responseGraph) {
@@ -39,7 +72,6 @@ FB.api('/me?fields=name', function(responseGraph) {
   // The person is logged into Facebook, but not your app.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into this app.';
-  $("#fb_logout_button").css("display", "none");
   $("#my_score_wrapper").css("display","none");
   $("#fb_login_button").css("display", "block");
 } else {
@@ -47,7 +79,6 @@ FB.api('/me?fields=name', function(responseGraph) {
   // they are logged into this app or not.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into Facebook.';
-  $("#fb_logout_button").css("display", "none");
   $("#my_score_wrapper").css("display","none");
   $("#fb_login_button").css("display", "block");
 }
@@ -138,7 +169,7 @@ $(document).ready(function(){
   var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
   if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
     var $toastContent = $('<span> Ai dat nota ' + prevGivenScore + '. Scor mediu: ' + prevAvgScore +'</span>');
-    Materialize.toast($toastContent, 500);
+    Materialize.toast($toastContent, 1200);
   }
   
 //   $(".voting-button-li").on("click", function(event){ 
