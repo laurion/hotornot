@@ -10,7 +10,7 @@ block content
         li.tab.col.s3
           a(href='#leaderboard_tab') Clasament
         li.tab.col.s3
-          a.active(href='#profile_tab') Scorul tău
+          a.active(href='#profile_tab') Nota mea
         
 
 
@@ -21,7 +21,7 @@ block content
       .wrapperCenter
         h5.voting-title
           | Cât de hot sunt cei din Carol?
-      #voting_card.card
+      .voting-card.card
         .card-image.waves-effect.waves-block.waves-light
           img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=350')
         .card-content
@@ -66,7 +66,7 @@ block content
                     a(href="https://facebook.com/#{person.fbId}", target="_blank") Add #{person.name} as a friend
               .card-content-right
                 p
-                  | Scor:  
+                  | Nota:  
                   span= person.score
                 p 
                   | Voturi: 
@@ -77,22 +77,32 @@ block content
 
     #profile_tab.col.s12
       #my_score_wrapper
-        p Scorul tău:
-        span#my_score
+          .voting-card.card
+            .card-image.waves-effect.waves-block.waves-light
+              img#current_user_img.bigCardPic.activator
+            .card-content
+              span.activator.card-title
+                | Nota: 
+                span#current_user_score
+                //
+                    p 
+                      | Voturi: 
+                      span#current_user_votes
+                i.material-icons.right more_vert
+            .card-reveal
+              span.card-title.grey-text.text-darken-4
+                | Setări
+                i.material-icons.right close
+              p
+                a(href="#", onclick="hide_my_fb();") Ascunde profilul meu de Facebook
+              p
+                a(href="#", onclick="delete_my_account();") Ștergere cont
       a#fb_login_button.btn.btn-block.btn-social.btn-lg.btn-facebook(scope='public_profile,email', onclick="fbLogIn();")
         i.fa.fa-facebook
-        | Verifică scorul cu Facebook
+        | Verifică-ți nota cu Facebook
+      
       a#fb_logout_button.btn.btn-block.btn-social.btn-lg.btn-facebook(onclick="fbLogOut();")
         i.fa.fa-facebook
         | Logout
       //
-        Below we include the Login Button social plugin. This button uses
-        the JavaScript SDK to present a graphical Login button that triggers
-        the FB.login() function when clicked.
-      
-      //
-        .fb-login-button(data-max-rows="2", data-size="xlarge", data-show-faces="false", data-auto-logout-link="true")
-      //
-        fb:login-button(scope='public_profile,email', onlogin='checkLoginState();')
-      
-      #status
+        #status

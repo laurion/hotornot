@@ -20,7 +20,7 @@ change "brown" to something of your choosing
     background-color: rgba(10, 10, 172, 0.65);
 }
 
-#voting_card {
+.voting-card {
   width: 100%;
   margin-bottom: 0.2rem;
 }
@@ -141,6 +141,8 @@ span.activator.card-title {
     display: none;
     font-size: 13px;
     background-color: #3b5998;
+    position: fixed;
+    bottom: 0;
 }
 
 #my_score_wrapper {
@@ -201,6 +203,6 @@ span.activator.card-title {
 @media only screen and (max-width: 600px) {
     #toast-container {
         top: 7%;
-        height:48px;
+        height:10px;
     }
 }
