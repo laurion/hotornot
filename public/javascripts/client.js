@@ -1,3 +1,11 @@
+ENV = "test";//comment this in production
+
+
+var appId = '154672038273096';
+if(ENV == "test")
+  appId = "155244454882521";
+
+
 //event handlers
 function isNumeric(n){
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -127,7 +135,7 @@ FB.logout(function(response) {
 
 window.fbAsyncInit = function() {
 FB.init({
-appId      : '154672038273096',
+appId      : appId,
 cookie     : true,  // enable cookies to allow the server to access 
                     // the session
 xfbml      : true,  // parse social plugins on this page
