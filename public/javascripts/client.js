@@ -23,7 +23,7 @@ FB.api('/me?fields=name', function(responseGraph) {
    
      $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
     .done(function( data ) {
-      $("#current_user_score")[0].innerHTML = data;//TODO
+      $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
   
       $("#my_score_wrapper").css("display","block");
       var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
@@ -138,7 +138,7 @@ $(document).ready(function(){
   var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
   if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
     var $toastContent = $('<span> Ai dat nota ' + prevGivenScore + '. Scor mediu: ' + prevAvgScore +'</span>');
-    Materialize.toast($toastContent, 1000);
+    Materialize.toast($toastContent, 500);
   }
   
 //   $(".voting-button-li").on("click", function(event){ 

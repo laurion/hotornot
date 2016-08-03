@@ -8,23 +8,25 @@ var requestLib = Promise.promisify(require("request"));
 
 router.post('/login', function(req, res) {//todo for 
 	console.log("req body" + JSON.stringify(req.body));
-	var obj = new Parse.Object('Oameni');
-   var query = new Parse.Query('Oameni');
+	var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
    query.contains('name', req.body.name);
    query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
       if(objAgain != null){
     	  var score = objAgain.get('score');
-      	 res.end(JSON.stringify(score));
+      	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('Oameni');
-  	   	  newobj.set('score', 5);
+  	   	  var newobj = new Parse.Object('UntoldPeople');
+  	   	  var randomScore = (Math.floor(Math.random() * 2) )+ 3;
+          var randomNrOfVotes = (Math.floor(Math.random() * 50)) + 1;
+  	   	  newobj.set('score', randomScore);
   	   	  newobj.set('fbId', parseInt(req.body.id));
-  	   	  newobj.set('nrOfVotes', 1);
-  	   	  newobj.set('name', "ANA BOB");
+  	   	  newobj.set('nrOfVotes', randomNrOfVotes);
+  	   	  newobj.set('name', req.body.name);
   	   	  newobj.save().then(function(obj) {
           console.log("save new user" + JSON.stringify(obj));
-          res.end("5");
+          res.end(JSON.stringify(randomScore));
         }, function(err) {
           res.end("5");
        });;
@@ -49,8 +51,8 @@ router.get('/',function (req, res, next) {
      console.log("postUrl" + postUrl);
      
   console.log("xx");
-   var obj = new Parse.Object('Oameni');
-   var query = new Parse.Query('Oameni');
+   var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
    query.descending('score');
    query.limit(10);//so
    
@@ -60,7 +62,7 @@ router.get('/',function (req, res, next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: users, cluster : "buzesti", password:"4loc4"}
+        body: {leaderboard_list: users, cluster : "untold", password:"4loc4"}
      };
 
      requestLib(data);
@@ -106,14 +108,16 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
   //register vote to parse for last generated person for this user (only if exists)
    var vote = parseInt(req.params.voteValue);
    var nrOfVotes = parseInt(req.params.nrOfVotes);
-   var lastScore = parseInt(req.params.score);
-   var scoreAverage = parseInt((vote + nrOfVotes * lastScore)/(nrOfVotes+1));
-
+   var lastScore = parseFloat(req.params.score);
+   var scoreAverage = parseFloat((vote + lastScore*nrOfVotes)/(nrOfVotes + 1));;
+   
+   scoreAverage = parseFloat((parseInt(scoreAverage * 100))/100);
+  
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('Oameni');
-   var query = new Parse.Query('Oameni');
+   var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
    var hasUser = 0;
    var hasTop = false;
    
@@ -131,7 +135,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "buzesti", password:"4loc4"}
+        body: {fbId: sessid, cluster : "untold", password:"4loc4"}
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
@@ -139,18 +143,18 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
 		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
-		  	 var obj = new Parse.Object('Oameni');
-  		     var queryUser = new Parse.Query('Oameni');
+		  	 var obj = new Parse.Object('UntoldPeople');
+  		     var queryUser = new Parse.Query('UntoldPeople');
 	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
 			   queryUser.skip(skip);
 			   queryUser.find().then(function(users) {// query to fetch top scorers
 				  console.log("users fetch from query" + JSON.stringify(users));
 				  nextUserToVote = users;
-				  console.log("leaderBoard" + JSON.stringify(leaderboard));
-				  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
+			//	  console.log("leaderBoard" + JSON.stringify(leaderboard));
+			//	  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
 				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
-				  console.log("next user to vote" + JSON.stringify(users));
+			//	  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error
 				  console.log("er2" + err);

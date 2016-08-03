@@ -20,7 +20,7 @@ block content
     #voting_tab.col.s12
       .wrapperCenter
         h5.voting-title
-          | Cât de hot sunt cei din Carol?
+          | Cât de hot sunt cei de la Untold?
       .voting-card.card
         .card-image.waves-effect.waves-block.waves-light
           img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=350')
@@ -51,7 +51,7 @@ block content
 
     #leaderboard_tab.col.s12
       h5.voting-title
-        | Cei mai 10 din Carol
+        | Cei mai hot 10 de la Untold
       ul.leaderboard-list
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
