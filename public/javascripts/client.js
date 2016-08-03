@@ -21,7 +21,7 @@ function hide_my_fb(){
   }
 }
 function delete_my_account(){
-  var r = confirm("Press a button");
+  var r = confirm("Are you sure you want to delete your account? Nobody will be able to see your profile or vote it.");
   if (r == true) {
       $.post( "/delete_my_account", { fbdata: current_user.id })
         .done(function( data ) {
