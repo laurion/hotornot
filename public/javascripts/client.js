@@ -34,6 +34,20 @@ function delete_my_account(){
   }
 }
 
+function report_profile(fbId){
+  var r = confirm("Are you sure you want to report this person?");
+  if (r == true) {
+      $.post( "/report", { fbId: fbId })
+        .done(function( data ) {
+          console.log("report_profile response:");
+          console.log(data);
+          location.reload();
+        });
+  } else {
+    //
+  }
+}
+
 // ---- init fb things: ----
 
 // This is called with the results from from FB.getLoginStatus().

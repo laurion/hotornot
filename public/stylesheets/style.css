@@ -155,6 +155,10 @@ span.activator.card-title {
     margin-top: 12px;
 /*     background-color: #3b5998; */
 }
+.report-button {
+    margin-top: 12px;
+    width: 100%;
+}
 .settings-button {
     margin-top: 16px;
     background-color: #3b5998;
