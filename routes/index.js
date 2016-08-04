@@ -8,8 +8,11 @@ var requestLib = Promise.promisify(require("request"));
 
 router.post('/login', function(req, res) {//todo for 
 	console.log("req body" + JSON.stringify(req.body));
+	console.log("sessid" + sessid);
 	var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
+
+   
    query.contains('name', req.body.name);
    query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
@@ -107,6 +110,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 
 	//var cookie = req.cookies.espress:sessid;
 	//console.log('Cookies: ', cookie);
+
 	console.log("req id" + JSON.stringify(req.session.id));
 	var sessid = req.session.id;
   //register vote to parse for last generated person for this user (only if exists)
@@ -170,6 +174,16 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 router.post("/interested_in", function(req, res){
 	console.log("POSTed interested_in");
 	console.log(req.body);
+	var sessid = req.session.id;
+	 var postUrl = "http://52.31.174.126:8001/api/identifyUserByGender";
+     console.log("postUrl" + postUrl);
+     var data = {
+        url: postUrl,
+        method: 'POST',
+        json: true,
+        body: {sessionId: sessid, cluster : "untold", password:"4loc4", gender: req.body.interested_in}
+     };
+   requestLib(data);
 	if(req.body.interested_in == "male") 
 		loadRootPage(req,res);//I want to refresh page - go to next card; not sure this works
 	else

@@ -1,8 +1,8 @@
 ENV = "test";//comment this in production
 
 var appId = '154672038273096';
-//if(ENV == "test")
-  //appId = "155244454882521";
+if(ENV == "test")
+  appId = "155244454882521";
 
 var current_person; //the current person we are shown to vote
 
@@ -81,6 +81,7 @@ if (response.status === 'connected') {
     current_user.name = responseGraph.name;
     current_user.gender = responseGraph.gender;
     current_user.age_range = responseGraph.age_range;
+    console.log("current user" + JSON.stringify(current_user));
 
        $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name, "gender": responseGraph.gender, "age_range": responseGraph.age_range })
       .done(function( data ) {
@@ -200,12 +201,13 @@ $(document).ready(function(){
 
   $("#genderForm>p>input").on("click", function(event){
     current_user.interested_in = event.target.getAttribute("data");
+    console.log("current_user genderInt" + current_user.interested_in);
     $("#genderModal").closeModal();
     $.post( "/interested_in", { interested_in: current_user.interested_in })
       .done(function( data ) {
         //
         console.log("chosenGender POST response:");
-        console.log(data);
+      //  console.log(data);
       });
   })
   
