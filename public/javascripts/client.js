@@ -73,10 +73,16 @@ if (response.status === 'connected') {
 
   current_user.id = response.authResponse.userID;
   
-  console.log("Logged in successfully! ####@#@###");
-  FB.api('/me?fields=name', function(responseGraph) {
+  console.log("Logged in successfully!");
+  FB.api('/me?fields=name,gender,age_range', function(responseGraph) {
+    console.log("fb.api responseGraph");
+    console.log(responseGraph);
+    current_user.id = responseGraph.id;
+    current_user.name = responseGraph.name;
+    current_user.gender = responseGraph.gender;
+    current_user.age_range = responseGraph.age_range;
 
-       $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
+       $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name, "gender": responseGraph.gender, "age_range": responseGraph.age_range })
       .done(function( data ) {
         $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
 
@@ -186,10 +192,22 @@ FB.api('/me', function(response) {
 */
 $(document).ready(function(){
 
+  //gender chooser
   if(!localStorage["notNewSession"]){
     $("#genderModal").openModal();
     localStorage["notNewSession"] = true;
   }
+
+  $("#genderForm>p>input").on("click", function(event){
+    current_user.interested_in = event.target.getAttribute("data");
+    $("#genderModal").closeModal();
+    $.post( "/interested_in", { interested_in: current_user.interested_in })
+      .done(function( data ) {
+        //
+        console.log("chosenGender POST response:");
+        console.log(data);
+      });
+  })
   
 //   initFacebookThings();
 

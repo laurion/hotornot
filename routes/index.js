@@ -40,7 +40,11 @@ router.post('/login', function(req, res) {//todo for
 
 /* GET home page. */
 router.get('/',function (req, res, next) {
-  var current_person = {
+	loadRootPage(req,res,next);
+});
+
+function loadRootPage(req,res,next) {
+	var current_person = {
     "name":"Bogdan Mihail Tirca",
     "fbId": 100001008058747,
     "score":10,
@@ -73,7 +77,7 @@ router.get('/',function (req, res, next) {
 	});
    /*res.render('index', { current_person: current_person, leaderboard_list: query.find() });*/
 	console.log("xxx");//asa, nu pot sa vb.....BA
-});
+}
 
 /*router.get('/leaderboard/:leaderBoardSize', function(req, res, next) {
 	console.log("rq" + req.params.leaderBoardSize);
@@ -161,6 +165,15 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 		    });
 		}
    });
+});
+
+router.post("/interested_in", function(req, res){
+	console.log("POSTed interested_in");
+	console.log(req.body);
+	if(req.body.interested_in == "male") 
+		loadRootPage(req,res);//I want to refresh page - go to next card; not sure this works
+	else
+		res.send("interested_in :: go on, success");//TODO
 });
 
 router.get('/users', function(req, res, next) {

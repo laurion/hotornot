@@ -16,10 +16,21 @@ block content
     // Modal Structure
     #genderModal.modal.bottom-sheet
       .modal-content
-        h4 Alege ce vrei sa vezi
-        p A bunch of text
-      .modal-footer
-        a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href='#!') Agree
+        h4 Alege ce vrei să vezi
+        form#genderForm(action='#')
+          p
+            input#femaleGender(name='group1', type='radio', data="female")
+            label(for='femaleGender') Fete
+          p
+            input#maleGender(name='group1', type='radio', data="male")
+            label(for='maleGender') Băieți
+          p
+            input#bothGender(name='group1', type='radio', data="both")
+            label(for='bothGender') Ambele
+
+      //
+        .modal-footer
+            a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href='#!') Agree
 
 
 
