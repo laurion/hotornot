@@ -15,6 +15,18 @@ var current_user = {
   id: ""
 }
 
+function inviteFb(){
+  FB.ui({
+   method: 'send',
+   message: 'Invite your Facebook Friends'
+  },function(response) {
+   if (response) {
+    alert('Successfully Invited');
+   } else {
+    alert('Failed To Invite');
+   }
+  });
+}
 function hide_my_fb(){
   var r = confirm("Are you sure you want to hide your facebook profile from other users? They won't be able to see your facebook when looking at your profile");
   if (r == true) {

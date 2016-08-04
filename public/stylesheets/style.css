@@ -148,7 +148,7 @@ span.activator.card-title {
     display: none;
     font-size: 13px;
     background-color: #3b5998;
-    margin-top: 30px;
+/*     margin-top: 30px; */
 /*     position: fixed;
     bottom: 0; */
 }
@@ -187,6 +187,12 @@ span.activator.card-title {
 
 .display-when-logged-in {
     display: none;
+}
+
+#invite_button {
+    display: block;
+    background-color: #3b5998;
+    margin-top: 30px;
 }
 
 /* small desktop */
