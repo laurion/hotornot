@@ -8,8 +8,8 @@ var requestLib = Promise.promisify(require("request"));
 
 router.post('/login', function(req, res) {//todo for 
 	console.log("req body" + JSON.stringify(req.body));
-	var obj = new Parse.Object('UntoldPeople');
-   var query = new Parse.Query('UntoldPeople');
+	var obj = new Parse.Object('Oameni');
+   var query = new Parse.Query('Oameni');
    query.contains('name', req.body.name);
    query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
@@ -17,7 +17,7 @@ router.post('/login', function(req, res) {//todo for
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('UntoldPeople');
+  	   	  var newobj = new Parse.Object('Oameni');
   	   	  var randomScore = (Math.floor(Math.random() * 2) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 50)) + 1;
   	   	  newobj.set('score', randomScore);
@@ -51,8 +51,8 @@ router.get('/',function (req, res, next) {
      console.log("postUrl" + postUrl);
      
   console.log("xx");
-   var obj = new Parse.Object('UntoldPeople');
-   var query = new Parse.Query('UntoldPeople');
+   var obj = new Parse.Object('Oameni');
+   var query = new Parse.Query('Oameni');
    query.descending('score');
    query.limit(10);//so
    
@@ -116,8 +116,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('UntoldPeople');
-   var query = new Parse.Query('UntoldPeople');
+   var obj = new Parse.Object('Oameni');
+   var query = new Parse.Query('Oameni');
    var hasUser = 0;
    var hasTop = false;
    
@@ -143,8 +143,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
 		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
-		  	 var obj = new Parse.Object('UntoldPeople');
-  		     var queryUser = new Parse.Query('UntoldPeople');
+		  	 var obj = new Parse.Object('Oameni');
+  		     var queryUser = new Parse.Query('Oameni');
 	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
 			   queryUser.skip(skip);

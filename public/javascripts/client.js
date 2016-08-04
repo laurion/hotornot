@@ -1,3 +1,11 @@
+ENV = "test";//comment this in production
+
+var appId = '154672038273096';
+//if(ENV == "test")
+  //appId = "155244454882521";
+
+var current_person; //the current person we are shown to vote
+
 //event handlers
 function isNumeric(n){
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -34,6 +42,20 @@ function delete_my_account(){
   }
 }
 
+function report_profile(fbId){
+  var r = confirm("Are you sure you want to report this person?");
+  if (r == true) {
+      $.post( "/report", { fbId: fbId })
+        .done(function( data ) {
+          console.log("report_profile response:");
+          console.log(data);
+          location.reload();
+        });
+  } else {
+    //
+  }
+}
+
 // ---- init fb things: ----
 
 // This is called with the results from from FB.getLoginStatus().
@@ -52,35 +74,36 @@ if (response.status === 'connected') {
   current_user.id = response.authResponse.userID;
   
   console.log("Logged in successfully! ####@#@###");
-FB.api('/me?fields=name', function(responseGraph) {
-   
-     $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
-    .done(function( data ) {
-      $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
-  
-      $("#my_score_wrapper").css("display","block");
-      var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
-      $("#current_user_img").attr("src", pictureUrl);
-      //#("#current_user_name")[0].innerHTML = "";
-    });
-});
-  $("#fb_logout_button").css("display", "block");
-  $("#fb_login_button").css("display", "none");
+  FB.api('/me?fields=name', function(responseGraph) {
+
+       $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name })
+      .done(function( data ) {
+        $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
+
+        $(".display-when-logged-in").css("display","block");
+        $(".display-when-logged-out").css("display","none");
+        var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
+        $("#current_user_img").attr("src", pictureUrl);
+        //#("#current_user_name")[0].innerHTML = "";
+      });
+  });
+  $(".display-when-logged-in").css("display", "block");
+  $(".display-when-logged-out").css("display", "none");
   //TODO: POST on server the response, token, etc
  
 } else if (response.status === 'not_authorized') {
   // The person is logged into Facebook, but not your app.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into this app.';
-  $("#my_score_wrapper").css("display","none");
-  $("#fb_login_button").css("display", "block");
+  $(".display-when-logged-in").css("display","none");
+  $(".display-when-logged-out").css("display", "block");
 } else {
   // The person is not logged into Facebook, so we're not sure if
   // they are logged into this app or not.
   document.getElementById('status').innerHTML = 'Please log ' +
     'into Facebook.';
-  $("#my_score_wrapper").css("display","none");
-  $("#fb_login_button").css("display", "block");
+  $(".display-when-logged-in").css("display","none");
+  $(".display-when-logged-out").css("display", "block");
 }
 }
 
@@ -108,14 +131,14 @@ FB.logout(function(response) {
   // user is now logged out
   console.log(response);
   checkLoginState();
-  $("#fb_logout_button").css("display", "none");
-  $("#fb_login_button").css("display", "block");
+  $(".display-when-logged-in").css("display", "none");
+  $(".display-when-logged-out").css("display", "block");
 });
 }
 
 window.fbAsyncInit = function() {
 FB.init({
-appId      : '154672038273096',
+appId      : appId,
 cookie     : true,  // enable cookies to allow the server to access 
                     // the session
 xfbml      : true,  // parse social plugins on this page
@@ -165,6 +188,10 @@ $(document).ready(function(){
   
 //   initFacebookThings();
 
+  current_person = {
+    id: $(".fb-add-button",$("div#voting_tab"))[0].href.replace(/.*facebook\.com\//g,"")
+  };
+
   var prevGivenScore = $("#prevGivenScore")[0].getAttribute("data");
   var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
   if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
@@ -200,5 +227,96 @@ $(document).ready(function(){
       $(event.target.parentNode).addClass("horizontal");
     }
   });
+
+  $(".voting-button").on("click", function(event){
+    console.log("voted: " + event.target.name)
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Actions',
+      eventAction: 'vote',
+      eventLabel: event.target.name
+    });
+  });
+  $(".voting-button").on("click", function(event){
+    console.log("voted: " + event.target.name)
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Actions',
+      eventAction: 'vote',
+      eventLabel: current_user.fbId,
+      eventValue: event.target.name
+    });
+  });
+  $(".fb-add-button").on("click", function(event){
+    //for specific tab: $(".fb-add-button",$("div#voting_tab"))
+    console.log("fb button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Actions',
+      eventAction: 'addFriend',
+      eventLabel: current_user.fbId,
+      eventValue: current_person.fbId
+    });
+  });
+
+  $(".claim-fb-button").on("click", function(event){
+    console.log("claim fb button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'claimFb',
+      eventLabel: current_user.fbId,
+      eventValue: current_person.fbId
+    });
+  });
+
+  $(".report-button").on("click", function(event){
+    console.log("report button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'reportProfile',
+      eventLabel: current_user.fbId,
+      eventValue: current_person.fbId
+    });
+  });
+
+  $("#fb_login_button").on("click", function(event){
+    console.log("login button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'Login'
+    });
+  });
+
+  $("#fb_logout_button").on("click", function(event){
+    console.log("logout button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'Logout',
+      eventLabel: current_user.fbId
+    });
+  });
+
+  $("#hide_my_fb_button").on("click", function(event){
+    console.log("hide_my_fb button click")
+    console.log(event);
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Secondary Actions',
+      eventAction: 'hideFb',
+      eventLabel: current_user.fbId
+    });
+  });
+  
 
 });

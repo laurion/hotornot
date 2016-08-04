@@ -60,9 +60,10 @@ change "brown" to something of your choosing
     flex: 1;
 }
 
-.card.horizontal.leaderboard-item > .card-content > .card-content-right {
+.card-content-right {
     direction: rtl;
     flex: 1;
+    padding-top: 20px;
 }
 
 .card .card-content .card-title {
@@ -71,8 +72,14 @@ change "brown" to something of your choosing
     /* width: 250px; */
 }
 
+.leaderboard-card{
+    margin-top: -20px;
+/*     padding: 0px 20px 20px 20px; */
+}
+
 .card-content-left {
     font-size: 16px;
+    padding-top: 20px;
 }
 
 .card-content-left p {
@@ -146,14 +153,23 @@ span.activator.card-title {
     bottom: 0; */
 }
 
-#fb_add_button {
+.fb-add-button {
     margin-top: 30px;
     background-color: #3b5998;
 }
 
+.fb-add-button-leaderboard {
+    margin-top: 10px;
+}
+
 .claim-fb-button {
     margin-top: 12px;
+    width: 100%;
 /*     background-color: #3b5998; */
+}
+.report-button {
+    margin-top: 12px;
+    width: 100%;
 }
 .settings-button {
     margin-top: 16px;
@@ -163,15 +179,16 @@ span.activator.card-title {
 }
 
 #hide_my_fb_button {
-
-}
-#delete_my_account_button {
-    
-}
-
-#my_score_wrapper {
     display: none;
 }
+#delete_my_account_button {
+    display: none;
+}
+
+.display-when-logged-in {
+    display: none;
+}
+
 /* small desktop */
 @media all and (max-width: 1200px) {
     .state-indicator {
