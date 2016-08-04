@@ -85,7 +85,7 @@ if (response.status === 'connected') {
 
        $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name, "gender": responseGraph.gender, "age_range": responseGraph.age_range })
       .done(function( data ) {
-        $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
+        $("#current_user_score")[0].innerHTML = data ;//TODO
 
         $(".display-when-logged-in").css("display","block");
         $(".display-when-logged-out").css("display","none");

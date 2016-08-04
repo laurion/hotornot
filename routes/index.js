@@ -8,6 +8,7 @@ var requestLib = Promise.promisify(require("request"));
 
 router.post('/login', function(req, res) {//todo for 
 	console.log("req body" + JSON.stringify(req.body));
+		var sessid = req.session.id;
 	console.log("sessid" + sessid);
 	var obj = new Parse.Object('UntoldPeople');
    var query = new Parse.Query('UntoldPeople');
