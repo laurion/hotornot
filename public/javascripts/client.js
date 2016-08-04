@@ -196,7 +196,7 @@ $(document).ready(function(){
   var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
   if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
     var $toastContent = $('<span> Ai dat nota ' + prevGivenScore + '. Scor mediu: ' + prevAvgScore +'</span>');
-    Materialize.toast($toastContent, 500);
+    Materialize.toast($toastContent, 1500);
   }
   
 //   $(".voting-button-li").on("click", function(event){ 
