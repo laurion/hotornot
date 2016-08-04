@@ -9,8 +9,8 @@ var requestLib = Promise.promisify(require("request"));
 router.post('/login', function(req, res) {//todo for 
 	console.log("req body" + JSON.stringify(req.body));
 	console.log("sessid" + sessid);
-	var obj = new Parse.Object('Oameni');
-   var query = new Parse.Query('Oameni');
+	var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
 
    
    query.contains('name', req.body.name);
@@ -20,7 +20,7 @@ router.post('/login', function(req, res) {//todo for
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('Oameni');
+  	   	  var newobj = new Parse.Object('UntoldPeople');
   	   	  var randomScore = (Math.floor(Math.random() * 2) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 50)) + 1;
   	   	  newobj.set('score', randomScore);
@@ -58,11 +58,10 @@ function loadRootPage(req,res,next) {
      console.log("postUrl" + postUrl);
      
   console.log("xx");
-   var obj = new Parse.Object('Oameni');
-   var query = new Parse.Query('Oameni');
+   var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
    query.descending('score');
-   query.limit(10);//so
-   
+   query.limit(10);//so 
    query.find().then(function(users) {// query to fetch top scorers
 	  console.log("load data at refresh" + JSON.stringify(users));
 	  var data = {
@@ -72,12 +71,14 @@ function loadRootPage(req,res,next) {
         body: {leaderboard_list: users, cluster : "untold", password:"4loc4"}
      };
 
-     requestLib(data);
-	  res.render('index', { current_person: users[9], leaderboard_list: users });
+      requestLib(data);
+       var randomFirstCard = (Math.floor(Math.random() * 9) );
+	  res.render('index', { current_person: users[randomFirstCard], leaderboard_list: users });
 	}, function(err) {// when error
 	  console.log("err3" + JSON.stringify(err));
 	  res.render('index', { error: "undefined"}); 
 	});
+
    /*res.render('index', { current_person: current_person, leaderboard_list: query.find() });*/
 	console.log("xxx");//asa, nu pot sa vb.....BA
 }
@@ -113,6 +114,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 
 	console.log("req id" + JSON.stringify(req.session.id));
 	var sessid = req.session.id;
+
+ var gender ;
   //register vote to parse for last generated person for this user (only if exists)
    var vote = parseInt(req.params.voteValue);
    var nrOfVotes = parseInt(req.params.nrOfVotes);
@@ -124,8 +127,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('Oameni');
-   var query = new Parse.Query('Oameni');
+   var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
    var hasUser = 0;
    var hasTop = false;
    
@@ -147,14 +150,24 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
+		
 		if(redis.body != null) {
+			gender = redis.body.gender;
+			if(gender == null){
+				console.log("gender null");
+				gender = "female";
+			}
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
 		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
-		  	 var obj = new Parse.Object('Oameni');
-  		     var queryUser = new Parse.Query('Oameni');
+		  	 var obj = new Parse.Object('UntoldPeople');
+  		     var queryUser = new Parse.Query('UntoldPeople');
 	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
+			   if(gender != "both"){
+			   	 	console.log("AAAAAAAAAAAAAA");
+			   		queryUser.equalTo('gender', gender);
+			   }
 			   queryUser.skip(skip);
 			   queryUser.find().then(function(users) {// query to fetch top scorers
 				  console.log("users fetch from query" + JSON.stringify(users));
