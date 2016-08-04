@@ -247,3 +247,16 @@ span.activator.card-title {
         height:10px;
     }
 }
+
+label {
+    color: #000000;
+}
+
+[type="radio"]+label:before, [type="radio"]+label:after {
+    width: 20px;
+    height: 20px;
+}
+
+[type="radio"]:not(:checked)+label, [type="radio"]:checked+label {
+    font-size: 18px;
+}
