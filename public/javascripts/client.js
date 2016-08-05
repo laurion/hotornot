@@ -18,7 +18,8 @@ var current_user = {
 function inviteFb(){
   FB.ui({
    method: 'send',
-   message: 'Invite your Facebook Friends'
+   link: "http://untold.catdehot.com",
+    to: [11111,22222,33333],
   },function(response) {
    if (response) {
     alert('Successfully Invited');
