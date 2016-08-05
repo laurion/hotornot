@@ -108,9 +108,9 @@ block content
             .card-content
               if current_user_id
                   #send_my_profile
+                      .fb-send(data-href="http://untold.catdehot.com/profile/#{current_user_id}", data-size="large")
                       //
-                        .fb-send(data-href="http://untold.catdehot.com/profile/#{current_user_id}", data-size="large")
-                      .fb-send(data-href="http://test.catdehot.com/voted/9/100005187391913/11/1.1", data-size="large")
+                        .fb-send(data-href="http://test.catdehot.com/voted/9/100005187391913/11/1.1", data-size="large")
               span#current_user_score_wrapper.activator.card-title
                 | Nota: 
                 span#current_user_score
