@@ -70,7 +70,7 @@ function loadRootPage(req,res,next) {
    });
  
    query.descending('score');
-   query.limit(10);//so 
+   query.limit(40);//so 
    query.find().then(function(users) {// query to fetch top scorers
 	  console.log("load data at refresh" + JSON.stringify(users));
 	  var data = {
@@ -191,7 +191,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 				  nextUserToVote = users;
 			//	  console.log("leaderBoard" + JSON.stringify(leaderboard));
 			//	  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
-				  res.render('index', { current_user_id: 4, current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
+				  res.render('index', { current_user_id: nextUserToVote[0].fbId, current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
 			//	  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error
