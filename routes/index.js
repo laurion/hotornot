@@ -74,7 +74,7 @@ function loadRootPage(req,res,next) {
 
       requestLib(data);
        var randomFirstCard = (Math.floor(Math.random() * 9) );
-	  res.render('index', { current_person: users[randomFirstCard], leaderboard_list: users });
+	  res.render('index', { current_user_id: 4, current_person: users[randomFirstCard], leaderboard_list: users });
 	}, function(err) {// when error
 	  console.log("err3" + JSON.stringify(err));
 	  res.render('index', { error: "undefined"}); 
@@ -175,7 +175,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 				  nextUserToVote = users;
 			//	  console.log("leaderBoard" + JSON.stringify(leaderboard));
 			//	  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
-				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
+				  res.render('index', { current_user_id: 4, current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
 			//	  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error

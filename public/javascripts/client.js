@@ -18,8 +18,7 @@ var current_user = {
 function inviteFb(){
   FB.ui({
    method: 'send',
-   link: "http://untold.catdehot.com",
-    to: [11111,22222,33333],
+   link: "http://untold.catdehot.com"
   },function(response) {
    if (response) {
     alert('Successfully Invited');
@@ -102,8 +101,13 @@ if (response.status === 'connected') {
 
         $(".display-when-logged-in").css("display","block");
         $(".display-when-logged-out").css("display","none");
+        
         var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
         $("#current_user_img").attr("src", pictureUrl);
+
+//         var profileUrl = "http://untold.catdehot.com/profile/"+ response.authResponse.userID;
+//         var $sendButtonDiv = $("<div>", {"data-href": profileUrl, "data-size":"large"});
+//         $("#send_my_profile").append($sendButtonDiv);
         //#("#current_user_name")[0].innerHTML = "";
       });
   });
