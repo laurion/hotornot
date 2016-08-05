@@ -148,7 +148,7 @@ span.activator.card-title {
     display: none;
     font-size: 13px;
     background-color: #3b5998;
-    margin-top: 30px;
+/*     margin-top: 30px; */
 /*     position: fixed;
     bottom: 0; */
 }
@@ -173,13 +173,14 @@ span.activator.card-title {
 }
 .settings-button {
     margin-top: 16px;
-    background-color: #3b5998;
+    background-color: #ee6e73;
     font-size: 13px;
     width: 100%;
 }
 
 #hide_my_fb_button {
     display: none;
+    background-color: #3b5998;
 }
 #delete_my_account_button {
     display: none;
@@ -187,6 +188,12 @@ span.activator.card-title {
 
 .display-when-logged-in {
     display: none;
+}
+
+#find_friend_button {
+    display: block;
+/*     background-color: #3b5998; */
+    margin-top: 30px;
 }
 
 /* small desktop */
@@ -259,4 +266,15 @@ label {
 
 [type="radio"]:not(:checked)+label, [type="radio"]:checked+label {
     font-size: 18px;
+}
+#current_user_score_wrapper{
+    float:right;
+    display: inline;
+}
+#send_my_profile {
+/*     float: right; */
+    display: inline;
+}
+#send_person {
+    margin-top: 10px;
 }

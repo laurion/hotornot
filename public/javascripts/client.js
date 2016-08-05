@@ -15,6 +15,18 @@ var current_user = {
   id: ""
 }
 
+function inviteFb(){
+  FB.ui({
+   method: 'send',
+   link: "http://economic.catdehot.com"
+  },function(response) {
+   if (response) {
+    alert('Successfully Invited');
+   } else {
+    alert('Failed To Invite');
+   }
+  });
+}
 function hide_my_fb(){
   var r = confirm("Are you sure you want to hide your facebook profile from other users? They won't be able to see your facebook when looking at your profile");
   if (r == true) {
@@ -89,8 +101,13 @@ if (response.status === 'connected') {
 
         $(".display-when-logged-in").css("display","block");
         $(".display-when-logged-out").css("display","none");
+        
         var pictureUrl = "https://graph.facebook.com/" + response.authResponse.userID + "/picture?width=350&height=350";
         $("#current_user_img").attr("src", pictureUrl);
+
+//         var profileUrl = "http://untold.catdehot.com/profile/"+ response.authResponse.userID;
+//         var $sendButtonDiv = $("<div>", {"data-href": profileUrl, "data-size":"large"});
+//         $("#send_my_profile").append($sendButtonDiv);
         //#("#current_user_name")[0].innerHTML = "";
       });
   });

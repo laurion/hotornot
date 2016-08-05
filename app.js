@@ -15,7 +15,7 @@ var api = new ParseServer({
   databaseURI: 'mongodb://intersect:4wabbit4@ds033015.mlab.com:33015/hotornot',
   masterKey: '1o6z9ePR3qPnRU0jHIP4iWToNzkANKIr3UNHwelq',
   appId: 'utXysazDczvny5sBUme5HZIzfUrybjppWIc8aVGb', //Add your master key here. Keep it secret!
-  serverURL: 'http://hotornottest-envintersect.eu-west-1.elasticbeanstalk.com/parse',
+  serverURL: 'http://parseserver-2qqi8-env-test.eu-west-1.elasticbeanstalk.com//parse',
   liveQuery: {
     classNames: ["Posts", "Comments","User"] // List of classes to support for query subscriptions
   }

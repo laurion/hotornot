@@ -17,7 +17,20 @@ html
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta property="og:image" content="https://s3-eu-west-1.amazonaws.com/intersectbucket/u1.png">
+    <meta property="og:url" content="http://test.catdehot.com">
+    <meta property="og:site_name" content="CatDeHot">
+    <meta property="og:title" content="Cat de hot">
+    <meta property="og:description" content="Afla CatDeHot esti considerat de ceilalti de la economic si voteaza de la 1-10">
+    if !is_profile
+      <meta property="og:image" content="https://s3-eu-west-1.amazonaws.com/intersectbucket/e1.jpg">
+      <meta property="og:image:width" content="1689">
+      <meta property="og:image:height" content="875">
+      <meta property="og:image:type" content="image/png"> 
+    else
+      <meta property="og:image" content="https://graph.facebook.com/#{current_person.fbId}/picture?width=1689&height=875">
+      <meta property="og:image:width" content="1689">
+      <meta property="og:image:height" content="875">
+      <meta property="og:image:type" content="image/jpg">
   body
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -32,7 +45,7 @@ html
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-81716363-2', 'auto');
+      ga('create', 'UA-81716363-3', 'auto');
       ga('send', 'pageview');
-
+    
     block content

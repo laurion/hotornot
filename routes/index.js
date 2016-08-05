@@ -10,8 +10,8 @@ router.post('/login', function(req, res) {//todo for
 	console.log("req body" + JSON.stringify(req.body));
 		var sessid = req.session.id;
 	console.log("sessid" + sessid);
-	var obj = new Parse.Object('UntoldPeople');
-   var query = new Parse.Query('UntoldPeople');
+	var obj = new Parse.Object('EconomicPeople');
+   var query = new Parse.Query('EconomicPeople');
 
    
    query.contains('name', req.body.name);
@@ -21,7 +21,7 @@ router.post('/login', function(req, res) {//todo for
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('UntoldPeople');
+  	   	  var newobj = new Parse.Object('EconomicPeople');
   	   	  var randomScore = (Math.floor(Math.random() * 2) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 50)) + 1;
   	   	  newobj.set('score', randomScore);
@@ -41,26 +41,34 @@ router.post('/login', function(req, res) {//todo for
       console.log(err); 
     });
 });
+router.get('/profile/:current_user_id', function(req, res, next) {//todo for 
+	console.log("bb");
+	var currentUserId = req.params.current_user_id;
+	console.log("current_user_id" + JSON.stringify(req.params));
+	loadRootPage(req, res,next);
+});
 
 /* GET home page. */
-router.get('/',function (req, res, next) {
+router.get('/', function (req, res, next) {
 	loadRootPage(req,res,next);
 });
 
 function loadRootPage(req,res,next) {
-	var current_person = {
-    "name":"Bogdan Mihail Tirca",
-    "fbId": 100001008058747,
-    "score":10,
-    "nrOfVotes":1
-  };
 
    var postUrl = "http://52.31.174.126:8001/api/saveLastLocation";
      console.log("postUrl" + postUrl);
      
-  console.log("xx");
-   var obj = new Parse.Object('UntoldPeople');
-   var query = new Parse.Query('UntoldPeople');
+   var currentUser;
+   var obj = new Parse.Object('EconomicPeople');
+   var query = new Parse.Query('EconomicPeople');
+   var queryCurrentUser = new Parse.Query('EconomicPeople');
+   queryCurrentUser.equalTo('fbId', parseInt(req.params.current_user_id));
+   queryCurrentUser.limit(1);
+   var xx = queryCurrentUser.find().then(function(user) {
+   	currentUser = user;
+   		return Promise.resolve(user);
+   });
+ 
    query.descending('score');
    query.limit(10);//so 
    query.find().then(function(users) {// query to fetch top scorers
@@ -69,12 +77,20 @@ function loadRootPage(req,res,next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: users, cluster : "untold", password:"4loc4"}
+        body: {leaderboard_list: users, cluster : "economic", password:"4loc4"}
      };
 
       requestLib(data);
        var randomFirstCard = (Math.floor(Math.random() * 9) );
-	  res.render('index', { current_person: users[randomFirstCard], leaderboard_list: users });
+       console.log("reqqqqqq" + req.params.current_user_id);
+       if(req.params.current_user_id == null || currentUser == null){
+       	 currentUser = users[randomFirstCard];
+       	 	console.log("currentUser1 " + JSON.stringify(currentUser));
+       } else {
+       	currentUser = currentUser[0];
+       	console.log("currentUser2 " + JSON.stringify(currentUser));
+       }
+	  res.render('index', { current_user_id: currentUser.fbId, current_person: currentUser, leaderboard_list: users });
 	}, function(err) {// when error
 	  console.log("err3" + JSON.stringify(err));
 	  res.render('index', { error: "undefined"}); 
@@ -128,8 +144,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('UntoldPeople');
-   var query = new Parse.Query('UntoldPeople');
+   var obj = new Parse.Object('EconomicPeople');
+   var query = new Parse.Query('EconomicPeople');
    var hasUser = 0;
    var hasTop = false;
    
@@ -147,7 +163,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "untold", password:"4loc4"}
+        body: {fbId: sessid, cluster : "economic", password:"4loc4"}
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
@@ -161,8 +177,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
 		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
-		  	 var obj = new Parse.Object('UntoldPeople');
-  		     var queryUser = new Parse.Query('UntoldPeople');
+		  	 var obj = new Parse.Object('EconomicPeople');
+  		     var queryUser = new Parse.Query('EconomicPeople');
 	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
 			   if(gender != "both"){
@@ -175,7 +191,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 				  nextUserToVote = users;
 			//	  console.log("leaderBoard" + JSON.stringify(leaderboard));
 			//	  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
-				  res.render('index', { current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
+				  res.render('index', { current_user_id: 4, current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
 			//	  console.log("next user to vote" + JSON.stringify(users));
 				  hasUser = 1;
 				}, function(err) {// when error
@@ -195,7 +211,7 @@ router.post("/interested_in", function(req, res){
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessionId: sessid, cluster : "untold", password:"4loc4", gender: req.body.interested_in}
+        body: {sessionId: sessid, cluster : "economic", password:"4loc4", gender: req.body.interested_in}
      };
    requestLib(data);
 	if(req.body.interested_in == "male") 
