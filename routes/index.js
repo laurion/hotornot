@@ -10,8 +10,8 @@ router.post('/login', function(req, res) {//todo for
 	console.log("req body" + JSON.stringify(req.body));
 		var sessid = req.session.id;
 	console.log("sessid" + sessid);
-	var obj = new Parse.Object('EconomicPeople');
-   var query = new Parse.Query('EconomicPeople');
+	var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
 
    
    query.contains('name', req.body.name);
@@ -21,7 +21,7 @@ router.post('/login', function(req, res) {//todo for
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('EconomicPeople');
+  	   	  var newobj = new Parse.Object('UntoldPeople');
   	   	  var randomScore = (Math.floor(Math.random() * 2) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 50)) + 1;
   	   	  newobj.set('score', randomScore);
@@ -59,9 +59,9 @@ function loadRootPage(req,res,next) {
      console.log("postUrl" + postUrl);
      
    var currentUser;
-   var obj = new Parse.Object('EconomicPeople');
-   var query = new Parse.Query('EconomicPeople');
-   var queryCurrentUser = new Parse.Query('EconomicPeople');
+   var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
+   var queryCurrentUser = new Parse.Query('UntoldPeople');
    queryCurrentUser.equalTo('fbId', parseInt(req.params.current_user_id));
    queryCurrentUser.limit(1);
    var xx = queryCurrentUser.find().then(function(user) {
@@ -77,7 +77,7 @@ function loadRootPage(req,res,next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: users, cluster : "economic", password:"4loc4"}
+        body: {leaderboard_list: users, cluster : "untold", password:"4loc4"}
      };
 
       requestLib(data);
@@ -144,8 +144,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('EconomicPeople');
-   var query = new Parse.Query('EconomicPeople');
+   var obj = new Parse.Object('UntoldPeople');
+   var query = new Parse.Query('UntoldPeople');
    var hasUser = 0;
    var hasTop = false;
    
@@ -163,7 +163,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "economic", password:"4loc4"}
+        body: {fbId: sessid, cluster : "untold", password:"4loc4"}
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
@@ -177,8 +177,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
 		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
-		  	 var obj = new Parse.Object('EconomicPeople');
-  		     var queryUser = new Parse.Query('EconomicPeople');
+		  	 var obj = new Parse.Object('UntoldPeople');
+  		     var queryUser = new Parse.Query('UntoldPeople');
 	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
 			   if(gender != "both"){
@@ -211,7 +211,7 @@ router.post("/interested_in", function(req, res){
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessionId: sessid, cluster : "economic", password:"4loc4", gender: req.body.interested_in}
+        body: {sessionId: sessid, cluster : "untold", password:"4loc4", gender: req.body.interested_in}
      };
    requestLib(data);
 	if(req.body.interested_in == "male") 
