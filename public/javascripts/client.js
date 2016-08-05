@@ -94,10 +94,11 @@ if (response.status === 'connected') {
     current_user.name = responseGraph.name;
     current_user.gender = responseGraph.gender;
     current_user.age_range = responseGraph.age_range;
+    console.log("current user" + JSON.stringify(current_user));
 
        $.post( "/login", { "id": responseGraph.id, "name": responseGraph.name, "gender": responseGraph.gender, "age_range": responseGraph.age_range })
       .done(function( data ) {
-        $("#current_user_score")[0].innerHTML = parseFloat(data);//TODO
+        $("#current_user_score")[0].innerHTML = data ;//TODO
 
         $(".display-when-logged-in").css("display","block");
         $(".display-when-logged-out").css("display","none");
@@ -213,12 +214,13 @@ $(document).ready(function(){
 
   $("#genderForm>p>input").on("click", function(event){
     current_user.interested_in = event.target.getAttribute("data");
+    console.log("current_user genderInt" + current_user.interested_in);
     $("#genderModal").closeModal();
     $.post( "/interested_in", { interested_in: current_user.interested_in })
       .done(function( data ) {
         //
         console.log("chosenGender POST response:");
-        console.log(data);
+      //  console.log(data);
       });
   })
   

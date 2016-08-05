@@ -10,6 +10,10 @@ router.post('/login', function(req, res) {//todo for
 	console.log("req body" + JSON.stringify(req.body));
 	var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
+		var sessid = req.session.id;
+	console.log("sessid" + sessid);
+
+   
    query.contains('name', req.body.name);
    query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
@@ -58,8 +62,7 @@ function loadRootPage(req,res,next) {
    var obj = new Parse.Object('Oameni');
    var query = new Parse.Query('Oameni');
    query.descending('score');
-   query.limit(10);//so
-   
+   query.limit(10);//so 
    query.find().then(function(users) {// query to fetch top scorers
 	  console.log("load data at refresh" + JSON.stringify(users));
 	  var data = {
@@ -69,12 +72,14 @@ function loadRootPage(req,res,next) {
         body: {leaderboard_list: users, cluster : "untold", password:"4loc4"}
      };
 
-     requestLib(data);
-	  res.render('index', { current_person: users[0], leaderboard_list: users });
+      requestLib(data);
+       var randomFirstCard = (Math.floor(Math.random() * 9) );
+	  res.render('index', { current_person: users[randomFirstCard], leaderboard_list: users });
 	}, function(err) {// when error
 	  console.log("err3" + JSON.stringify(err));
 	  res.render('index', { error: "undefined"}); 
 	});
+
    /*res.render('index', { current_person: current_person, leaderboard_list: query.find() });*/
 	console.log("xxx");//asa, nu pot sa vb.....BA
 }
@@ -107,8 +112,11 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 
 	//var cookie = req.cookies.espress:sessid;
 	//console.log('Cookies: ', cookie);
+
 	console.log("req id" + JSON.stringify(req.session.id));
 	var sessid = req.session.id;
+
+ var gender ;
   //register vote to parse for last generated person for this user (only if exists)
    var vote = parseInt(req.params.voteValue);
    var nrOfVotes = parseInt(req.params.nrOfVotes);
@@ -143,7 +151,13 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
+		
 		if(redis.body != null) {
+			gender = redis.body.gender;
+			if(gender == null){
+				console.log("gender null");
+				gender = "female";
+			}
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
 		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
@@ -151,6 +165,10 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
   		     var queryUser = new Parse.Query('Oameni');
 	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
+			   if(gender != "both"){
+			   	 	console.log("AAAAAAAAAAAAAA");
+			   		queryUser.equalTo('gender', gender);
+			   }
 			   queryUser.skip(skip);
 			   queryUser.find().then(function(users) {// query to fetch top scorers
 				  console.log("users fetch from query" + JSON.stringify(users));
@@ -170,6 +188,16 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 router.post("/interested_in", function(req, res){
 	console.log("POSTed interested_in");
 	console.log(req.body);
+	var sessid = req.session.id;
+	 var postUrl = "http://52.31.174.126:8001/api/identifyUserByGender";
+     console.log("postUrl" + postUrl);
+     var data = {
+        url: postUrl,
+        method: 'POST',
+        json: true,
+        body: {sessionId: sessid, cluster : "untold", password:"4loc4", gender: req.body.interested_in}
+     };
+   requestLib(data);
 	if(req.body.interested_in == "male") 
 		loadRootPage(req,res);//I want to refresh page - go to next card; not sure this works
 	else
