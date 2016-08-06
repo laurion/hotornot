@@ -81,7 +81,7 @@ function loadRootPage(req,res,next) {
      };
 
       requestLib(data);
-       var randomFirstCard = (Math.floor(Math.random() * 9) );
+       var randomFirstCard = (Math.floor(Math.random() * 38) );
        console.log("reqqqqqq" + req.params.current_user_id);
        if(req.params.current_user_id == null || currentUser == null){
        	 currentUser = users[randomFirstCard];
