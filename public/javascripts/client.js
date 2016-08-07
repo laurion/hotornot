@@ -211,15 +211,33 @@ FB.api('/me', function(response) {
 $(document).ready(function(){
 
   //gender chooser
-  if(!localStorage["notNewSession"]){
-    $("#genderModal").openModal();
+//   localStorage["nrOfSessions"] = localStorage["nrOfSessions"] + 1 || 0;
+//   if(parseInt(localStorage["nrOfSessions"]) == 2){
+//     $("#genderModal").openModal();
+//   }
+//   else{
+// //     $("ul.tabs").children()[0].childNodes[0].className = "";
+//     $("ul.tabs").children()[1].childNodes[0].click();
+// //     $("ul.tabs").children().first().removeClass(".active");
+// //     $("ul.tabs").children().first().removeClass(".active");
+//   }
+  if(localStorage["notNewSession"]){
+    $("#voting_tab_link").click();
+  }
+  else {
     localStorage["notNewSession"] = true;
   }
+  $("#voting_tab_link").on("click", function(event){
+    if(!localStorage["chosenGender"]){
+      $("#genderModal").openModal();
+    }
+  })
 
   $("#genderForm>p>input").on("click", function(event){
     current_user.interested_in = event.target.getAttribute("data");
     console.log("current_user genderInt" + current_user.interested_in);
     $("#genderModal").closeModal();
+    localStorage["chosenGender"] = current_user.interested_in;
     $.post( "/interested_in", { interested_in: current_user.interested_in })
       .done(function( data ) {
         //
