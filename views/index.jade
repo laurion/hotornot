@@ -34,7 +34,7 @@ block content
     #voting_tab.col.s12
       .wrapperCenter
         h5.voting-title
-          | Cât de hot sunt cei din Tiberiu Popoviciu?
+          | Cât de hot sunt cei din Avram Iancu?
       .voting-card.card
         .card-image.waves-effect.waves-block.waves-light
           img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person.fbId}/picture?width=350&height=350')
@@ -47,7 +47,7 @@ block content
             | #{current_person.name}
             i.material-icons.right close
           #send_person
-            .fb-send(data-href="http://popoviciu.catdehot.com/profile/#{current_person.fbId}", data-size="large")
+            .fb-send(data-href="http://iancu.catdehot.com/profile/#{current_person.fbId}", data-size="large")
           if !current_person.hideFb
               a.fb-add-button.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{current_person.fbId}", target="_blank")
                 i.fa.fa-facebook
@@ -74,7 +74,7 @@ block content
     #leaderboard_tab.col.s12
       .wrapperCenter
           h5.voting-title
-            | Cei mai hot 40 din Tiberiu Popoviciu
+            | Cei mai hot 40 din Avram Iancu
       ul.leaderboard-list
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
@@ -108,9 +108,9 @@ block content
             .card-content
               if current_user_id
                   #send_my_profile
-                      .fb-send(data-href="http://popoviciu.catdehot.com/profile/#{current_user_id}", data-size="large")
+                      .fb-send(data-href="http://iancu.catdehot.com/profile/#{current_user_id}", data-size="large")
                       //
-                        .fb-send(data-href="http://popoviciu.catdehot.com/voted/9/100005187391913/11/1.1", data-size="large")
+                        .fb-send(data-href="http://iancu.catdehot.com/voted/9/100005187391913/11/1.1", data-size="large")
               span#current_user_score_wrapper.activator.card-title
                 | Nota: 
                 span#current_user_score
@@ -135,7 +135,7 @@ block content
             a#delete_my_account_button.btn.btn-lg.settings-button(href="#", onclick="delete_my_account();") Ștergere cont
       a#fb_login_button.btn.btn-block.btn-social.btn-lg.btn-facebook.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();")
         i.fa.fa-facebook
-        | Verifică-ți nota cu Facebook
+        | Verifică-ți nota cu Facebook.
 
       
       //
