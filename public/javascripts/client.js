@@ -5,8 +5,9 @@ var appId = '154672038273096';
   //appId = "155244454882521";
 
 var current_person; //the current person we are shown to vote
-appId =  156499721423661;//sincai
-//event handlers
+//appId =  156499721423661;//sincai
+appId =1131740773541327; //tiberiu popoviciu
+ //event handlers
 function isNumeric(n){
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -18,7 +19,7 @@ var current_user = {
 function inviteFb(){
   FB.ui({
    method: 'send',
-   link: "http://sincai.catdehot.com"
+   link: "http://popoviciu.catdehot.com"
   },function(response) {
    if (response) {
     alert('Successfully Invited');
