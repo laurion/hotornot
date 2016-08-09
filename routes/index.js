@@ -10,18 +10,21 @@ router.post('/login', function(req, res) {//todo for
 	console.log("req body" + JSON.stringify(req.body));
 		var sessid = req.session.id;
 	console.log("sessid" + sessid);
-	var obj = new Parse.Object('iancu');
-   var query = new Parse.Query('iancu');
+	var obj = new Parse.Object('moisil');
+   var query = new Parse.Query('moisil');
 
-   
+   var gender = req.body.gender;
    query.contains('name', req.body.name);
+   if(gender == "male") {
+      res.end("Doar fetele isi pot afla nota. Te invitam sa le votezi!");
+   } else {
    query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
       if(objAgain != null){
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('iancu');
+  	   	  var newobj = new Parse.Object('moisil');
   	   	  var randomScore = (Math.floor(Math.random() * 4) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 2)) + 1;
   	   	  newobj.set('score', randomScore);
@@ -40,6 +43,7 @@ router.post('/login', function(req, res) {//todo for
        res.end("5");
       console.log(err); 
     });
+ }
 });
 router.get('/profile/:current_user_id', function(req, res, next) {//todo for 
 	console.log("bb");
@@ -59,9 +63,9 @@ function loadRootPage(req,res,next) {
      console.log("postUrl" + postUrl);
      
    var currentUser;
-   var obj = new Parse.Object('iancu');
-   var query = new Parse.Query('iancu');
-   var queryCurrentUser = new Parse.Query('iancu');
+   var obj = new Parse.Object('moisil');
+   var query = new Parse.Query('moisil');
+   var queryCurrentUser = new Parse.Query('moisil');
    queryCurrentUser.equalTo('fbId', parseInt(req.params.current_user_id));
    queryCurrentUser.limit(1);
    var xx = queryCurrentUser.find().then(function(user) {
@@ -70,6 +74,7 @@ function loadRootPage(req,res,next) {
    });
  
    query.descending('score');
+   query.equalTo('gender', 'female');
    query.limit(40);//so 
    query.find().then(function(users) {// query to fetch top scorers
 	  console.log("load data at refresh" + JSON.stringify(users));
@@ -77,7 +82,7 @@ function loadRootPage(req,res,next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: users, cluster : "iancu", password:"4loc4"}
+        body: {leaderboard_list: users, cluster : "moisil", password:"4loc4"}
      };
 
       requestLib(data);
@@ -144,8 +149,8 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
    var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('iancu');
-   var query = new Parse.Query('iancu');
+   var obj = new Parse.Object('moisil');
+   var query = new Parse.Query('moisil');
    var hasUser = 0;
    var hasTop = false;
    
@@ -163,7 +168,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "iancu", password:"4loc4"}
+        body: {fbId: sessid, cluster : "moisil", password:"4loc4"}
      };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		console.log("bucket" + JSON.stringify(redis));
@@ -177,14 +182,14 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 		  	 //skip = redis.body.;
 		  	 leaderboard = redis.body.leaderboard_list;
 		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
-		  	 var obj = new Parse.Object('iancu');
-  		     var queryUser = new Parse.Query('iancu');
+		  	 var obj = new Parse.Object('moisil');
+  		     var queryUser = new Parse.Query('moisil');
 	  		 queryUser.ascending('createdAt');
 			   queryUser.limit(1);//so
-			   if(gender != "both"){
+			 //  if(gender != "both"){
 			   	 	console.log("AAAAAAAAAAAAAA");
-			   		queryUser.equalTo('gender', gender);
-			   }
+			   		queryUser.equalTo('gender', 'female');
+			  // }
 			   queryUser.skip(skip);
 			   queryUser.find().then(function(users) {// query to fetch top scorers
 				  console.log("users fetch from query" + JSON.stringify(users));
@@ -211,7 +216,7 @@ router.post("/interested_in", function(req, res){
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessionId: sessid, cluster : "iancu", password:"4loc4", gender: req.body.interested_in}
+        body: {sessionId: sessid, cluster : "moisil", password:"4loc4", gender: req.body.interested_in}
      };
    requestLib(data);
 	if(req.body.interested_in == "male") 

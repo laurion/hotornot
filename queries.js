@@ -2,9 +2,10 @@
 var Promise = require('bluebird');
 
 exports.updateUserWithScore = function(fbId, score) {
-   var obj = new Parse.Object('iancu');
-   var query = new Parse.Query('iancu');
+   var obj = new Parse.Object('moisil');
+   var query = new Parse.Query('moisil');
    query.equalTo('fbId', parseInt(fbId));
+      query.equalTo('gender', 'female');
    var promise = query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
       var nrVotes = parseInt(objAgain.get('nrOfVotes'));
@@ -32,9 +33,10 @@ exports.updateUserWithScore = function(fbId, score) {
 }
 
 exports.getUsersOrderedByScore = function(limit) {
-   var obj = new Parse.Object('iancu');
-   var query = new Parse.Query('iancu');
+   var obj = new Parse.Object('moisil');
+   var query = new Parse.Query('moisil');
    query.ascending('score');
+   query.equalTo('gender', 'female');
    query.limit(limit);
 
    var users = query.find();

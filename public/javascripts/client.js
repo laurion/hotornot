@@ -7,7 +7,8 @@ var appId = '154672038273096';
 var current_person; //the current person we are shown to vote
 //appId =  156499721423661;//sincai
 //appId =1131740773541327; //tiberiu popoviciu
-appId = '156819451391688';//avram
+//appId = '156819451391688';//avram
+appId = '156955914711375'; //moisil
  //event handlers
 function isNumeric(n){
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -20,7 +21,7 @@ var current_user = {
 function inviteFb(){
   FB.ui({
    method: 'send',
-   link: "http://iancu.catdehot.com"
+   link: "http://moisil.catdehot.com"
   },function(response) {
    if (response) {
     alert('Successfully Invited');
@@ -229,11 +230,7 @@ $(document).ready(function(){
   else {
     localStorage["notNewSession"] = true;
   }
-  $("#voting_tab_link").on("click", function(event){
-    if(!localStorage["chosenGender"]){
-      $("#genderModal").openModal();
-    }
-  })
+  
 
   $("#genderForm>p>input").on("click", function(event){
     current_user.interested_in = event.target.getAttribute("data");
