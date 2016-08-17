@@ -21,7 +21,7 @@ change "brown" to something of your choosing
 }
 
 .voting-card {
-  width: 100%;
+  width: 50%;
   margin-bottom: 0.2rem;
 }
 
@@ -277,4 +277,8 @@ label {
 }
 #send_person {
     margin-top: 10px;
+}
+
+#facemash_cards {
+    display: flex;
 }
