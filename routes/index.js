@@ -59,7 +59,8 @@ router.get('/', function (req, res, next) {
 });
 
 function loadRootPage(req,res,next) {
-
+   var currentUser_1;
+   var currentUser_2;
    var postUrl = "http://52.31.174.126:8001/api/saveLastLocation";
      console.log("postUrl" + postUrl);
      
@@ -87,16 +88,18 @@ function loadRootPage(req,res,next) {
      };
 
       requestLib(data);
-       var randomFirstCard = (Math.floor(Math.random() * 10) );
+      // var randomFirstCard = (Math.floor(Math.random() * 10) );
        console.log("reqqqqqq" + req.params.current_user_id);
        if(req.params.current_user_id == null || currentUser == null){
-       	 currentUser = users[randomFirstCard];
+         currentUser_1 = users[8];
+         currentUser_2 = users[9];
        	 	console.log("currentUser1 " + JSON.stringify(currentUser));
        } else {
-       	currentUser = currentUser[0];
+       	currentUser_1 = users[8];
+        currentUser_2 = users[9];
        	console.log("currentUser2 " + JSON.stringify(currentUser));
        }
-	  res.render('index', { current_user_id: currentUser.fbId, current_person: currentUser, leaderboard_list: users });
+	  res.render('index', { current_user_id: currentUser_2.fbId, current_person_2: currentUser_2, current_person_1: currentUser_1, leaderboard_list: users });
 	}, function(err) {// when error
 	  console.log("err3" + JSON.stringify(err));
 	  res.render('index', { error: "undefined"}); 
@@ -106,32 +109,8 @@ function loadRootPage(req,res,next) {
 	console.log("xxx");//asa, nu pot sa vb.....BA
 }
 
-/*router.get('/leaderboard/:leaderBoardSize', function(req, res, next) {
-	console.log("rq" + req.params.leaderBoardSize);
-	var limit = parseInt(req.params.leaderBoardSize);
-
-
-	//TODO move back to queries
-   var obj = new Parse.Object('Oameni');
-   var query = new Parse.Query('Oameni');
-   query.ascending('score');
-   query.limit(limit);
-
-   query.find().then(function(users) {
-      console.log(JSON.stringify(users));
-       var leaderboard_list = [];
-	  for(var i = 0; i < users.lenght; i ++)
-	    leaderboard_list.push(users[i]);
-	  res.render('index', { current_person: current_person, leaderboard_list: leaderboard_list });
-    }, function(err) {
-      console.log("err" + err);
-	  res.render('index', { error: "undefined"});
-      console.log(err); 
-    });
-  
-});*/
-router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next) {
-	console.log("req id" + JSON.stringify(req.session.id));
+router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, next) {
+	console.log("req id" + JSON.stringify(req.params));
 	var sessid = req.session.id;
   var user1;
   var user2;
@@ -143,12 +122,12 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
    var scoreA = 1200;
    var scoreB = 1400;
    var scoreAverage = 0;
-   var userfetched = queries.updateUserWithScoreForFaceMash(req.params.fbId, "100001708273358", scoreA, scoreB, 0);
+   var userfetched = queries.updateUserWithScoreForFaceMash(req.params.fbId, req.params.fbId2, scoreA, scoreB, 0);
    var leaderboard = [];
    var skip = 0;
    var obj = new Parse.Object('moisil');
    var query = new Parse.Query('moisil');
-
+   var cardOne,cardTwo;
     var postUrl = "http://52.31.174.126:8001/api/saveVote";
      console.log("postUrl" + postUrl);
      var data = {
@@ -161,6 +140,10 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 		    console.log("bucket" + JSON.stringify(redis));
     		if(redis.body != null) {
     			gender = redis.body.gender;
+          cardOne = parseInt(redis.body.cardOne);
+          cardTwo = parseInt(redis.body.cardTw0/10);
+          console.log("cardone" + cardOne);
+          console.log("cardTw0" + cardTwo);
 		  	  leaderboard = redis.body.leaderboard_list;
 		  	  skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
 		  	  
@@ -169,7 +152,7 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
 	  	  	queryUser.ascending('createdAt');
 			    queryUser.limit(1);//so
 			   	queryUser.equalTo('gender', 'female');
-    			queryUser.skip(10);//TODO modify
+    			queryUser.skip(cardOne);//TODO modify
     			queryUser.find().then(function(users) {// query to fetch top scorers
     				  
               console.log("users fetch from query" + JSON.stringify(users));
@@ -177,13 +160,13 @@ router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next)
               var queryUser2 = new Parse.Query('moisil');
               queryUser2.ascending('createdAt');
               queryUser2.limit(1);//so
-              queryUser2.skip(11);//todo modify
+              queryUser2.skip(cardTwo);//todo modify
               queryUser2.equalTo('gender', 'female');
               queryUser2.find().then(function(users) {
                 user2 = users[0];
                 console.log("users fetch from query2 " + JSON.stringify(users));
                 nextUserToVote = users;
-                res.render('index', { current_user_id: nextUserToVote[0].fbId, current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
+                res.render('index', { current_user_id: user1.fbId, current_person_1: user1, current_person_2: user2, leaderboard_list: leaderboard ,  prevGivenScore: 9 , prevAvgScore : scoreAverage });
                });
     				}, function(err) {// when error
     				  console.log("er2" + err);

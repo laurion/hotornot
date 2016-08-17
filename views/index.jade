@@ -6,11 +6,9 @@ block content
     .col.s12
       ul.tabs
         li.tab.col.s3
-          a#profile_tab_link.active(href='#profile_tab') Nota mea
-        li.tab.col.s3
           a#voting_tab_link(href='#voting_tab') Votează
         li.tab.col.s3
-          a#leaderboard_tab_link(href='#leaderboard_tab') Clasament
+          a#leaderboard_tab_link(href='#leaderboard_tab') TOP 10
         
 
     // Modal Structure
@@ -34,62 +32,33 @@ block content
     #voting_tab.col.s12
       .wrapperCenter
         h5.voting-title
-          | Cât de hot sunt cele din Moisil
+          | Care e mai hot?Click pt a alege
       #facemash_cards
-          .voting-card.card
+          .voting-card.card(href="#", onclick="facemash_vote([#{current_person_1.fbId}, #{current_person_2.fbId}, #{current_person_1.score}, #{current_person_2.score}, #{0}]);")
             .card-image.waves-effect.waves-block.waves-light
-              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_1.fbId}/picture?width=350&height=350')
+              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_1.fbId}/picture?width=250&height=350')
             .card-content
               span.activator.card-title
-                | #{current_person_1.name}
-                i.material-icons.right more_vert
-            .card-reveal
-              span.card-title.grey-text.text-darken-4
-                | #{current_person_1.name}
-                i.material-icons.right close
-              #send_person
-                .fb-send(data-href="http://moisil.catdehot.com/profile/#{current_person_1.fbId}", data-size="large")
-              if !current_person_1.hideFb
-                  a.fb-add-button.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{current_person_1.fbId}", target="_blank")
-                    i.fa.fa-facebook
-                    | Profil facebook
-              a.claim-fb-button.btn.btn-lg.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();") Acesta este profilul meu
-              //
-                a.share-person-button.btn.btn-lg(href="#", onclick="share_fb();") Send to a friend
-              a.report-button.btn.btn-lg(href="#", onclick="report_profile(#{current_person_1.fbId});") Report this profile
-          .voting-card.card
+                p
+                  | #{current_person_1.name}
+                p
+                  | Scor: #{current_person_1.score}
+          .voting-card.card(href="#", onclick="facemash_vote([#{current_person_1.fbId}, #{current_person_2.fbId}, #{current_person_1.score}, #{current_person_2.score}, #{1}]);")
             .card-image.waves-effect.waves-block.waves-light
-              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_2.fbId}/picture?width=350&height=350')
+              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_2.fbId}/picture?width=250&height=350')
             .card-content
               span.activator.card-title
-                | #{current_person_2.name}
-                i.material-icons.right more_vert
-            .card-reveal
-              span.card-title.grey-text.text-darken-4
-                | #{current_person_2.name}
-                i.material-icons.right close
-              #send_person_2
-                .fb-send(data-href="http://moisil.catdehot.com/profile/#{current_person_2.fbId}", data-size="large")
-              if !current_person_2.hideFb
-                  a.fb-add-button.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{current_person_2.fbId}", target="_blank")
-                    i.fa.fa-facebook
-                    | Profil facebook
-              a.claim-fb-button.btn.btn-lg.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();") Acesta este profilul meu
-              //
-                a.share-person-button.btn.btn-lg(href="#", onclick="share_fb();") Send to a friend
-              a.report-button.btn.btn-lg(href="#", onclick="report_profile(#{current_person_2.fbId});") Report this profile
+                p
+                  | #{current_person_2.name}
+                p
+                  | Scor: #{current_person_2.score}
       #hiddenData
         #prevGivenScore(data= prevGivenScore)
         #prevAvgScore(data= prevAvgScore)
-
-
-
-
-
     #leaderboard_tab.col.s12
       .wrapperCenter
           h5.voting-title
-            | Cele mai hot 40 din Moisil
+            |  Top 10 cele mai hot fete
       ul.leaderboard-list
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
@@ -112,46 +81,5 @@ block content
                   | Voturi: 
                   span= person.nrOfVotes
 
-
-
-
-    #profile_tab.col.s12
-      .display-when-logged-in
-          .voting-card.card
-            .card-image
-              img#current_user_img.bigCardPic
-            .card-content
-              if current_user_id
-                  #send_my_profile
-                      .fb-send(data-href="http://moisil.catdehot.com/profile/#{current_user_id}", data-size="large")
-                      //
-                        .fb-send(data-href="http://moisil.catdehot.com/voted/9/100005187391913/11/1.1", data-size="large")
-              span#current_user_score_wrapper.activator.card-title
-                | Nota: 
-                span#current_user_score
-                //
-                    p 
-                      | Voturi: 
-                      span#current_user_votes
-                //
-                  i.material-icons.right more_vert
-            //
-              .card-reveal
-                span.card-title.grey-text.text-darken-4
-                  | Setări
-                  i.material-icons.right close
-          
-         
-
-          a#fb_logout_button.btn.btn-lg.settings-button.display-when-logged-in(onclick="fbLogOut();") Logout of facebook
-
-          a#hide_my_fb_button.btn.btn-lg.settings-button.display-when-logged-in(href="#", onclick="hide_my_fb();") Ascunde profilul meu de Facebook
-
-            a#delete_my_account_button.btn.btn-lg.settings-button(href="#", onclick="delete_my_account();") Ștergere cont
-      a#fb_login_button.btn.btn-block.btn-social.btn-lg.btn-facebook.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();")
-        i.fa.fa-facebook
-        | Verifică-ți nota cu Facebook.
-
-      
       //
         #status

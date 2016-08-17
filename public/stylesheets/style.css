@@ -22,9 +22,9 @@ change "brown" to something of your choosing
 
 .voting-card {
   width: 50%;
+  margin: 10px;
   margin-bottom: 0.2rem;
 }
-
 .voting-title {
   overflow-x: scroll;
   white-space: nowrap;
@@ -75,6 +75,10 @@ change "brown" to something of your choosing
 .leaderboard-card{
     margin-top: -20px;
 /*     padding: 0px 20px 20px 20px; */
+}
+
+.card-title{
+    font-size: 8px;
 }
 
 .card-content-left {

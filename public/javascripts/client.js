@@ -71,6 +71,17 @@ function report_profile(fbId){
   }
 }
 
+function facemash_vote(data){
+  var fbId1 = data[0];
+  var fbId2 = data[1];
+  var url = "/voted/" + JSON.stringify(data[0]) +"/" + JSON.stringify(data[1]) + "/" + JSON.stringify(data[2]) + "/" + JSON.stringify(data[3]) + "/" + JSON.stringify(data[4]);
+  window.location = url;
+ // $.get(url,  {});
+  console.log("fbID1" + JSON.stringify(fbId1));
+  console.log("fbId2" + JSON.stringify(fbId2));
+ 
+}
+
 // ---- init fb things: ----
 
 // This is called with the results from from FB.getLoginStatus().
