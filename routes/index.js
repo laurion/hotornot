@@ -3,6 +3,7 @@ var router = express.Router();
 var functions = require('../functions.js');
 var queries = require('../queries.js');
 var Promise = require('bluebird');
+var elo = require('elo-rank')(15);
 var requestLib = Promise.promisify(require("request"));
 
 
@@ -75,9 +76,9 @@ function loadRootPage(req,res,next) {
  
    query.descending('score');
    query.equalTo('gender', 'female');
-   query.limit(40);//so 
+   query.limit(10);//so 
    query.find().then(function(users) {// query to fetch top scorers
-	  console.log("load data at refresh" + JSON.stringify(users));
+	  console.log("load data at refresh" + JSON.stringify(users.length));
 	  var data = {
         url: postUrl,
         method: 'POST',
@@ -86,7 +87,7 @@ function loadRootPage(req,res,next) {
      };
 
       requestLib(data);
-       var randomFirstCard = (Math.floor(Math.random() * 38) );
+       var randomFirstCard = (Math.floor(Math.random() * 10) );
        console.log("reqqqqqq" + req.params.current_user_id);
        if(req.params.current_user_id == null || currentUser == null){
        	 currentUser = users[randomFirstCard];
@@ -130,80 +131,67 @@ function loadRootPage(req,res,next) {
   
 });*/
 router.get('/voted/:voteValue/:fbId/:nrOfVotes/:score', function(req, res, next) {
-
-	//var cookie = req.cookies.espress:sessid;
-	//console.log('Cookies: ', cookie);
-
 	console.log("req id" + JSON.stringify(req.session.id));
 	var sessid = req.session.id;
-
- var gender ;
+  var user1;
+  var user2;
+  var gender;
   //register vote to parse for last generated person for this user (only if exists)
-   var vote = parseInt(req.params.voteValue);
-   var nrOfVotes = parseInt(req.params.nrOfVotes);
-   var lastScore = parseFloat(req.params.score);
-   var scoreAverage = parseFloat((vote + lastScore*nrOfVotes)/(nrOfVotes + 1));;
-   
-   scoreAverage = parseFloat((parseInt(scoreAverage * 100))/100);
-  
-   var userFetched = queries.updateUserWithScore(req.params.fbId, parseInt(req.params.voteValue));/// score,fbId
+
+  // var cardSelected = parseInt(req.params.selected);
+  var nextUserToVote ;
+   var scoreA = 1200;
+   var scoreB = 1400;
+   var scoreAverage = 0;
+   var userfetched = queries.updateUserWithScoreForFaceMash(req.params.fbId, "100001708273358", scoreA, scoreB, 0);
    var leaderboard = [];
    var skip = 0;
    var obj = new Parse.Object('moisil');
    var query = new Parse.Query('moisil');
-   var hasUser = 0;
-   var hasTop = false;
-   
-   
-  /* query.find().then(function(users) {// query to fetch top scorers
-	  console.log("users fetch from query" + JSON.stringify(users));
-	  leaderboard = users;
-	  hasTop = true;
-	}, function(err) {// when error
-	  console.log("err" + err);
-	});*/
-     var postUrl = "http://52.31.174.126:8001/api/saveLastMacObjects";
+
+    var postUrl = "http://52.31.174.126:8001/api/saveVote";
      console.log("postUrl" + postUrl);
      var data = {
         url: postUrl,
         method: 'POST',
         json: true,
         body: {fbId: sessid, cluster : "moisil", password:"4loc4"}
-     };
+    };
     return Promise.resolve(requestLib(data)).then(function(redis ){
-		console.log("bucket" + JSON.stringify(redis));
-		
-		if(redis.body != null) {
-			gender = redis.body.gender;
-			if(gender == null){
-				console.log("gender null");
-				gender = "female";
-			}
-		  	 //skip = redis.body.;
-		  	 leaderboard = redis.body.leaderboard_list;
-		  	 skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
-		  	 var obj = new Parse.Object('moisil');
-  		     var queryUser = new Parse.Query('moisil');
-	  		 queryUser.ascending('createdAt');
-			   queryUser.limit(1);//so
-			 //  if(gender != "both"){
-			   	 	console.log("AAAAAAAAAAAAAA");
-			   		queryUser.equalTo('gender', 'female');
-			  // }
-			   queryUser.skip(skip);
-			   queryUser.find().then(function(users) {// query to fetch top scorers
-				  console.log("users fetch from query" + JSON.stringify(users));
-				  nextUserToVote = users;
-			//	  console.log("leaderBoard" + JSON.stringify(leaderboard));
-			//	  console.log("score scoreAverage" + JSON.stringify(scoreAverage));
-				  res.render('index', { current_user_id: nextUserToVote[0].fbId, current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
-			//	  console.log("next user to vote" + JSON.stringify(users));
-				  hasUser = 1;
-				}, function(err) {// when error
-				  console.log("er2" + err);
-		    });
-		}
-   });
+		    console.log("bucket" + JSON.stringify(redis));
+    		if(redis.body != null) {
+    			gender = redis.body.gender;
+		  	  leaderboard = redis.body.leaderboard_list;
+		  	  skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
+		  	  
+          var obj = new Parse.Object('moisil');
+  		    var queryUser = new Parse.Query('moisil');
+	  	  	queryUser.ascending('createdAt');
+			    queryUser.limit(1);//so
+			   	queryUser.equalTo('gender', 'female');
+    			queryUser.skip(10);//TODO modify
+    			queryUser.find().then(function(users) {// query to fetch top scorers
+    				  
+              console.log("users fetch from query" + JSON.stringify(users));
+              user1 = users[0];
+              var queryUser2 = new Parse.Query('moisil');
+              queryUser2.ascending('createdAt');
+              queryUser2.limit(1);//so
+              queryUser2.skip(11);//todo modify
+              queryUser2.equalTo('gender', 'female');
+              queryUser2.find().then(function(users) {
+                user2 = users[0];
+                console.log("users fetch from query2 " + JSON.stringify(users));
+                nextUserToVote = users;
+                res.render('index', { current_user_id: nextUserToVote[0].fbId, current_person: nextUserToVote[0], leaderboard_list: leaderboard ,  prevGivenScore: parseInt(req.params.voteValue) , prevAvgScore : scoreAverage });
+               });
+    				}, function(err) {// when error
+    				  console.log("er2" + err);
+        });
+    	} else {
+          console.log("redis body null");
+      }
+    });
 });
 
 router.post("/interested_in", function(req, res){
