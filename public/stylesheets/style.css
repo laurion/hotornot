@@ -95,7 +95,7 @@ span.activator.card-title {
     overflow-x: scroll;
     max-width: 50%;
     white-space: nowrap;
-    font-size: 22px;
+    font-size: 14px;
 }
 
 .card-content-left > p {
