@@ -22,13 +22,17 @@ change "brown" to something of your choosing
 
 .voting-card {
   width: 50%;
-  margin: 10px;
+  margin: 5px;
   margin-bottom: 0.2rem;
 }
 .voting-title {
   overflow-x: scroll;
   white-space: nowrap;
   font-size: 1.4rem;
+}
+
+img.bigCardPic.activator {
+    height: 40%;
 }
 
 .voting-buttons {
