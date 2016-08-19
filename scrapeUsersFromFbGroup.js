@@ -1,4 +1,4 @@
-peopleLinks = document.querySelectorAll("div.fsl.fwb.fcb > a")
+var peopleLinks = document.querySelectorAll("div.fsl.fwb.fcb > a")
 var finalObjects=[];
 for(var i = 0; i < peopleLinks.length; i ++){ 
 	var obj={};  
