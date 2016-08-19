@@ -79,7 +79,7 @@ function facemash_vote(data){
  // $.get(url,  {});
   console.log("fbID1" + JSON.stringify(fbId1));
   console.log("fbId2" + JSON.stringify(fbId2));
- 
+
 }
 
 // ---- init fb things: ----

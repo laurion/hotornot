@@ -11,8 +11,8 @@ router.post('/login', function(req, res) {//todo for
 	console.log("req body" + JSON.stringify(req.body));
 		var sessid = req.session.id;
 	console.log("sessid" + sessid);
-	var obj = new Parse.Object('moisil');
-   var query = new Parse.Query('moisil');
+	var obj = new Parse.Object('baritiu');
+   var query = new Parse.Query('baritiu');
 
    var gender = req.body.gender;
    query.contains('name', req.body.name);
@@ -25,7 +25,7 @@ router.post('/login', function(req, res) {//todo for
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('moisil');
+  	   	  var newobj = new Parse.Object('baritiu');
   	   	  var randomScore = (Math.floor(Math.random() * 4) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 2)) + 1;
   	   	  newobj.set('score', randomScore);
@@ -65,9 +65,9 @@ function loadRootPage(req,res,next) {
      console.log("postUrl" + postUrl);
      
    var currentUser;
-   var obj = new Parse.Object('moisil');
-   var query = new Parse.Query('moisil');
-   var queryCurrentUser = new Parse.Query('moisil');
+   var obj = new Parse.Object('baritiu');
+   var query = new Parse.Query('baritiu');
+   var queryCurrentUser = new Parse.Query('baritiu');
    queryCurrentUser.equalTo('fbId', parseInt(req.params.current_user_id));
    queryCurrentUser.limit(1);
    var xx = queryCurrentUser.find().then(function(user) {
@@ -79,25 +79,25 @@ function loadRootPage(req,res,next) {
    query.equalTo('gender', 'female');
    query.limit(10);//so 
    query.find().then(function(users) {// query to fetch top scorers
-	  console.log("load data at refresh" + JSON.stringify(users.length));
+	  console.log("load data at refresh" + JSON.stringify(users));
 	  var data = {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: users, cluster : "moisil", password:"4loc4"}
+        body: {leaderboard_list: users, cluster : "baritiu", password:"4loc4"}
      };
 
       requestLib(data);
-      // var randomFirstCard = (Math.floor(Math.random() * 10) );
+      var randomFirstCard = parseInt(Math.floor(Math.random() * 8) );
        console.log("reqqqqqq" + req.params.current_user_id);
        if(req.params.current_user_id == null || currentUser == null){
-         currentUser_1 = users[8];
-         currentUser_2 = users[9];
-       	 	console.log("currentUser1 " + JSON.stringify(currentUser));
+         currentUser_1 = users[randomFirstCard];
+         currentUser_2 = users[randomFirstCard+1];
+       	 	console.log("currentUser1 " + JSON.stringify(currentUser_1));
        } else {
        	currentUser_1 = users[8];
         currentUser_2 = users[9];
-       	console.log("currentUser2 " + JSON.stringify(currentUser));
+       	console.log("currentUser2 " + JSON.stringify(currentUser_2));
        }
 	  res.render('index', { current_user_id: currentUser_2.fbId, current_person_2: currentUser_2, current_person_1: currentUser_1, leaderboard_list: users });
 	}, function(err) {// when error
@@ -118,15 +118,16 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
   //register vote to parse for last generated person for this user (only if exists)
 
   // var cardSelected = parseInt(req.params.selected);
-  var nextUserToVote ;
-   var scoreA = 1200;
-   var scoreB = 1400;
+   var nextUserToVote ;
+   var scoreA = parseInt(req.params.scoreA);
+   var scoreB = parseInt(req.params.scoreB);
+   var selected = parseInt(req.params.selected);
    var scoreAverage = 0;
-   var userfetched = queries.updateUserWithScoreForFaceMash(req.params.fbId, req.params.fbId2, scoreA, scoreB, 0);
+   var userfetched = queries.updateUserWithScoreForFaceMash(req.params.fbId1, req.params.fbId2, scoreA, scoreB, selected);
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('moisil');
-   var query = new Parse.Query('moisil');
+   var obj = new Parse.Object('baritiu');
+   var query = new Parse.Query('baritiu');
    var cardOne,cardTwo;
     var postUrl = "http://52.31.174.126:8001/api/saveVote";
      console.log("postUrl" + postUrl);
@@ -134,21 +135,21 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "moisil", password:"4loc4"}
+        body: {fbId: sessid, cluster : "baritiu", password:"4loc4"}
     };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		    console.log("bucket" + JSON.stringify(redis));
     		if(redis.body != null) {
     			gender = redis.body.gender;
           cardOne = parseInt(redis.body.cardOne);
-          cardTwo = parseInt(redis.body.cardTw0/10);
+          cardTwo = parseInt(redis.body.cardTw0);
           console.log("cardone" + cardOne);
           console.log("cardTw0" + cardTwo);
 		  	  leaderboard = redis.body.leaderboard_list;
 		  	  skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
 		  	  
-          var obj = new Parse.Object('moisil');
-  		    var queryUser = new Parse.Query('moisil');
+          var obj = new Parse.Object('baritiu');
+  		    var queryUser = new Parse.Query('baritiu');
 	  	  	queryUser.ascending('createdAt');
 			    queryUser.limit(1);//so
 			   	queryUser.equalTo('gender', 'female');
@@ -157,7 +158,7 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
     				  
               console.log("users fetch from query" + JSON.stringify(users));
               user1 = users[0];
-              var queryUser2 = new Parse.Query('moisil');
+              var queryUser2 = new Parse.Query('baritiu');
               queryUser2.ascending('createdAt');
               queryUser2.limit(1);//so
               queryUser2.skip(cardTwo);//todo modify
@@ -187,7 +188,7 @@ router.post("/interested_in", function(req, res){
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessionId: sessid, cluster : "moisil", password:"4loc4", gender: req.body.interested_in}
+        body: {sessionId: sessid, cluster : "baritiu", password:"4loc4", gender: req.body.interested_in}
      };
    requestLib(data);
 	if(req.body.interested_in == "male") 

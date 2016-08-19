@@ -2,10 +2,10 @@
 var Promise = require('bluebird');
 var elo = require('elo-rank')(15);
 exports.updateUserWithScore = function(fbId, score) {
-   var obj = new Parse.Object('moisil');
-   var query = new Parse.Query('moisil');
+   var obj = new Parse.Object('baritiu');
+   var query = new Parse.Query('baritiu');
    query.equalTo('fbId', parseInt(fbId));
-      query.equalTo('gender', 'female');
+   query.equalTo('gender', 'female');
    var promise = query.first().then(function(objAgain) {
       console.log("user found" + JSON.stringify(objAgain));
       var nrVotes = parseInt(objAgain.get('nrOfVotes'));
@@ -28,19 +28,24 @@ exports.updateUserWithScore = function(fbId, score) {
       return Promise.resolve("5");
       console.log(err); 
     });
-
    return promise;
 }
 
 exports.updateUserWithScoreForFaceMash = function(fbId1, fbId2, scoreA, scoreB, selected) {
   console.log("updateeeee");
-   var obj = new Parse.Object('moisil');
-   var query = new Parse.Query('moisil');
+   var obj = new Parse.Object('baritiu');
+   var query = new Parse.Query('baritiu');
+   console.log("fbId1 " + parseInt(fbId1));
    query.equalTo('fbId', parseInt(fbId1));
    query.equalTo('gender', 'female');
-
-  var playerA = 1200;
-  var playerB = 1400;
+  
+  if(scoreA < 150)
+    scoreA = 150;
+  
+  if(scoreB < 150)
+    scoreB =  150;
+  var playerA = scoreA;
+  var playerB = scoreB;
   console.log("scoreA" + playerA);
   console.log("scoreB" + playerB);
   //Gets expected score for first parameter 
@@ -66,7 +71,7 @@ exports.updateUserWithScoreForFaceMash = function(fbId1, fbId2, scoreA, scoreB, 
       user1.set('score', newscoreA);
       user1.save().then(function(obj) {
           console.log("savee" + JSON.stringify(obj));
-          var query2 = new Parse.Query('moisil');
+          var query2 = new Parse.Query('baritiu');
           query2.equalTo('fbId', parseInt(fbId2));
           query2.equalTo('gender', 'female');
           query2.first().then(function(user2){
@@ -93,13 +98,12 @@ exports.updateUserWithScoreForFaceMash = function(fbId1, fbId2, scoreA, scoreB, 
 }
 
 exports.getUsersOrderedByScore = function(limit) {
-   var obj = new Parse.Object('moisil');
-   var query = new Parse.Query('moisil');
-   query.ascending('score');
-   query.equalTo('gender', 'female');
-   query.limit(limit);
-
-   var users = query.find();
+ var obj = new Parse.Object('baritiu');
+ var query = new Parse.Query('baritiu');
+ query.ascending('score');
+ query.equalTo('gender', 'female');
+ query.limit(limit);
+ var users = query.find();
 
   return Promise.resolve(users);
 }
