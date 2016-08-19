@@ -2,8 +2,8 @@
 var Promise = require('bluebird');
 var elo = require('elo-rank')(15);
 exports.updateUserWithScore = function(fbId, score) {
-   var obj = new Parse.Object('ferdinand');
-   var query = new Parse.Query('ferdinand');
+   var obj = new Parse.Object('antipa');
+   var query = new Parse.Query('antipa');
    query.equalTo('fbId', parseInt(fbId));
    query.equalTo('gender', 'female');
    var promise = query.first().then(function(objAgain) {
@@ -33,8 +33,8 @@ exports.updateUserWithScore = function(fbId, score) {
 
 exports.updateUserWithScoreForFaceMash = function(fbId1, fbId2, scoreA, scoreB, selected) {
   console.log("updateeeee");
-   var obj = new Parse.Object('ferdinand');
-   var query = new Parse.Query('ferdinand');
+   var obj = new Parse.Object('antipa');
+   var query = new Parse.Query('antipa');
    console.log("fbId1 " + parseInt(fbId1));
    query.equalTo('fbId', parseInt(fbId1));
    query.equalTo('gender', 'female');
@@ -98,8 +98,8 @@ exports.updateUserWithScoreForFaceMash = function(fbId1, fbId2, scoreA, scoreB, 
 }
 
 exports.getUsersOrderedByScore = function(limit) {
- var obj = new Parse.Object('ferdinand');
- var query = new Parse.Query('ferdinand');
+ var obj = new Parse.Object('antipa');
+ var query = new Parse.Query('antipa');
  query.ascending('score');
  query.equalTo('gender', 'female');
  query.limit(limit);

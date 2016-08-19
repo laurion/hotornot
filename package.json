@@ -1,6 +1,6 @@
 {
   "name": "myapp",
-  "version": "5.1.0",
+  "version": "5.5.6",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
