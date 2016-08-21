@@ -11,8 +11,8 @@ router.post('/login', function(req, res) {//todo for
 	console.log("req body" + JSON.stringify(req.body));
 		var sessid = req.session.id;
 	console.log("sessid" + sessid);
-	var obj = new Parse.Object('antipa');
-   var query = new Parse.Query('antipa');
+	var obj = new Parse.Object('ghica');
+   var query = new Parse.Query('ghica');
 
    var gender = req.body.gender;
    query.contains('name', req.body.name);
@@ -25,7 +25,7 @@ router.post('/login', function(req, res) {//todo for
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
   	   } else {
-  	   	  var newobj = new Parse.Object('antipa');
+  	   	  var newobj = new Parse.Object('ghica');
   	   	  var randomScore = (Math.floor(Math.random() * 4) )+ 3;
           var randomNrOfVotes = (Math.floor(Math.random() * 2)) + 1;
   	   	  newobj.set('score', randomScore);
@@ -65,9 +65,9 @@ function loadRootPage(req,res,next) {
      console.log("postUrl" + postUrl);
      
    var currentUser;
-   var obj = new Parse.Object('antipa');
-   var query = new Parse.Query('antipa');
-   var queryCurrentUser = new Parse.Query('antipa');
+   var obj = new Parse.Object('ghica');
+   var query = new Parse.Query('ghica');
+   var queryCurrentUser = new Parse.Query('ghica');
    queryCurrentUser.equalTo('fbId', parseInt(req.params.current_user_id));
    queryCurrentUser.limit(1);
    var xx = queryCurrentUser.find().then(function(user) {
@@ -84,7 +84,7 @@ function loadRootPage(req,res,next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: users, cluster : "antipa", password:"4loc4"}
+        body: {leaderboard_list: users, cluster : "ghica", password:"4loc4"}
      };
 
       requestLib(data);
@@ -126,8 +126,8 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
    var userfetched = queries.updateUserWithScoreForFaceMash(req.params.fbId1, req.params.fbId2, scoreA, scoreB, selected);
    var leaderboard = [];
    var skip = 0;
-   var obj = new Parse.Object('antipa');
-   var query = new Parse.Query('antipa');
+   var obj = new Parse.Object('ghica');
+   var query = new Parse.Query('ghica');
    var cardOne,cardTwo;
     var postUrl = "http://52.31.174.126:8001/api/saveVote";
      console.log("postUrl" + postUrl);
@@ -135,7 +135,7 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "antipa", password:"4loc4"}
+        body: {fbId: sessid, cluster : "ghica", password:"4loc4"}
     };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		    console.log("bucket" + JSON.stringify(redis));
@@ -148,8 +148,8 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
 		  	  leaderboard = redis.body.leaderboard_list;
 		  	  skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
 		  	  
-          var obj = new Parse.Object('antipa');
-  		    var queryUser = new Parse.Query('antipa');
+          var obj = new Parse.Object('ghica');
+  		    var queryUser = new Parse.Query('ghica');
 	  	  	queryUser.ascending('createdAt');
 			    queryUser.limit(1);//so
 			   	queryUser.equalTo('gender', 'female');
@@ -158,7 +158,7 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
     				  
               console.log("users fetch from query" + JSON.stringify(users));
               user1 = users[0];
-              var queryUser2 = new Parse.Query('antipa');
+              var queryUser2 = new Parse.Query('ghica');
               queryUser2.ascending('createdAt');
               queryUser2.limit(1);//so
               queryUser2.skip(cardTwo);//todo modify
@@ -188,7 +188,7 @@ router.post("/interested_in", function(req, res){
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessionId: sessid, cluster : "antipa", password:"4loc4", gender: req.body.interested_in}
+        body: {sessionId: sessid, cluster : "ghica", password:"4loc4", gender: req.body.interested_in}
      };
    requestLib(data);
 	if(req.body.interested_in == "male") 
