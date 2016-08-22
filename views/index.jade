@@ -8,7 +8,9 @@ block content
         li.tab.col.s3
           a#voting_tab_link(href='#voting_tab') Votează
         li.tab.col.s3
-          a#leaderboard_tab_link(href='#leaderboard_tab') TOP 10
+          a#leaderboard_tab_link(href='#leaderboard_tab') TOP 10 fete
+        li.tab.col.s3
+          a#leaderboardLicee_tab_link(href='#leaderboardLicee_tab') TOP 10 licee
         
 
     // Modal Structure
@@ -43,6 +45,8 @@ block content
                   | #{current_person_1.name}
                 p
                   | Scor: #{current_person_1.score}
+                p
+                  | Liceu: #{current_person_1.liceu}
           .voting-card.card(href="#", onclick="facemash_vote([#{current_person_1.fbId}, #{current_person_2.fbId}, #{current_person_1.score}, #{current_person_2.score}, #{1}]);")
             .card-image.waves-effect.waves-block.waves-light
               img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_2.fbId}/picture?width=250&height=350')
@@ -52,6 +56,8 @@ block content
                   | #{current_person_2.name}
                 p
                   | Scor: #{current_person_2.score}
+                p
+                  | Liceu: #{current_person_2.liceu}
       #hiddenData
         #prevGivenScore(data= prevGivenScore)
         #prevAvgScore(data= prevAvgScore)
@@ -67,7 +73,7 @@ block content
 
             .card-content.leaderboard-card
               .card-content-left
-                p= person.name
+                  | #{person.name}(#{person.liceu})
               .extraContent
                 a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
                   i.fa.fa-facebook
@@ -77,5 +83,20 @@ block content
                 p
                   | Scor:  
                   span= person.score
+    #leaderboardLicee_tab.col.s12
+      .wrapperCenter
+          h5.voting-title
+            |  Top 10 licee dupa clasament fete
+      ul.leaderboard-list
+        each person in highSchoolsLeaderBoard
+          .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
+            .card-content.leaderboard-card
+              .card-content-left
+                  | #{person.liceu}
+              .card-content-right
+                p
+                  | Scor:  
+                  span= person.score            
+
       //
         #status

@@ -86,7 +86,7 @@ img.bigCardPic.activator {
 }
 
 .card-content-left {
-    font-size: 16px;
+    font-size: 12px;
     padding-top: 20px;
 }
 
@@ -99,7 +99,7 @@ span.activator.card-title {
     overflow-x: scroll;
     max-width: 50%;
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 10px;
 }
 
 .card-content-left > p {
