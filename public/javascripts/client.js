@@ -225,16 +225,31 @@ FB.api('/me', function(response) {
 $(document).ready(function(){
 
   //gender chooser
-//   localStorage["nrOfSessions"] = localStorage["nrOfSessions"] + 1 || 0;
-//   if(parseInt(localStorage["nrOfSessions"]) == 2){
-//     $("#genderModal").openModal();
-//   }
-//   else{
-// //     $("ul.tabs").children()[0].childNodes[0].className = "";
-//     $("ul.tabs").children()[1].childNodes[0].click();
-// //     $("ul.tabs").children().first().removeClass(".active");
-// //     $("ul.tabs").children().first().removeClass(".active");
-//   }
+ // var sessions = parseInt(localStorage["nrOfSessions"]);
+  ///console.log("sessions" + JSON.stringify(localStorage["nrOfSessions"]));
+    
+    var object = JSON.parse(localStorage.getItem('testObject'));
+    var sessions = 0;
+    if(object != null){
+      if(object.sessions  != null){
+       sessions = object.sessions + 1;
+      } else {
+        sessions = 1;
+      }
+    } else {
+      sessions = 1;
+    }
+    localStorage.setItem('testObject', JSON.stringify({"sessions" : sessions}));
+    console.log("sessions" + sessions);
+   if(sessions % 15 == 0 && sessions < 300){
+     $("#genderModal").openModal();
+   }
+   else{
+      $("ul.tabs").children()[0].childNodes[0].className = "";
+     $("ul.tabs").children()[1].childNodes[0].click();
+     $("ul.tabs").children().first().removeClass(".active");
+    $("ul.tabs").children().first().removeClass(".active");
+   }
   if(localStorage["notNewSession"]){
     $("#voting_tab_link").click();
   }
@@ -246,14 +261,26 @@ $(document).ready(function(){
   $("#genderForm>p>input").on("click", function(event){
     current_user.interested_in = event.target.getAttribute("data");
     console.log("current_user genderInt" + current_user.interested_in);
+    if(current_user.interested_in == "female"){
+       var win = window.open('http://hyperurl.co/a8r9h5', '_blank');
+        if (win) {
+            //Browser has allowed it to be opened
+            localStorage.setItem('testObject', JSON.stringify({"sessions" : (sessions + 300)}));
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+
+    } else if(current_user.interested_in == "male" ){
+
+    } else {
+      localStorage.setItem('testObject', JSON.stringify({"sessions" : (sessions + 300)}));
+    }
+   
     $("#genderModal").closeModal();
     localStorage["chosenGender"] = current_user.interested_in;
-    $.post( "/interested_in", { interested_in: current_user.interested_in })
-      .done(function( data ) {
-        //
-        console.log("chosenGender POST response:");
-      //  console.log(data);
-      });
+    
   })
   
 //   initFacebookThings();

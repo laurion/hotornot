@@ -8,7 +8,7 @@ var requestLib = Promise.promisify(require("request"));
 
 
 router.post('/login', function(req, res) {//todo for 
-	//console.log("req body" + JSON.stringify(req.body));
+	console.log("req body" + JSON.stringify(req.body));
 		var sessid = req.session.id;
 	console.log("sessid" + sessid);
 	var obj = new Parse.Object('liceenib');
@@ -20,7 +20,7 @@ router.post('/login', function(req, res) {//todo for
       res.end("Doar fetele isi pot afla nota. Te invitam sa le votezi!");
    } else {
    query.first().then(function(objAgain) {
-     // console.log("user found" + JSON.stringify(objAgain));
+      console.log("user found" + JSON.stringify(objAgain));
       if(objAgain != null){
     	  var score = objAgain.get('score');
       	  res.end(JSON.stringify(score));
@@ -79,7 +79,7 @@ function loadRootPage(req,res,next) {
    query.equalTo('gender', 'female');
    query.limit(10);//so 
    query.find().then(function(users) {// query to fetch top scorers
-	  //console.log("load data at refresh" + JSON.stringify(users));
+	  console.log("load data at refresh" + JSON.stringify(users));
     console.log("help2");
     var licee =[];
     licee[0] = []; licee[1] = [];licee[2] = [];licee[3] = [];licee[4] = [];licee[5] = [];
@@ -124,7 +124,7 @@ function loadRootPage(req,res,next) {
           console.log("ELSEE");
         }
       }
-      // console.log("score before" + JSON.stringify(scoreHash));
+       console.log("score before" + JSON.stringify(scoreHash));
    for(var i = 0; i< users.length ; i++){
     idx[i] = [];
     idx[i]=i;}
@@ -138,9 +138,9 @@ function loadRootPage(req,res,next) {
           } 
        }
     }
-  //  console.log("score after" + JSON.stringify(scoreHash));
-   // console.log("liceee" + JSON.stringify(licee));
-   // console.log("idx" + JSON.stringify(idx));
+    console.log("score after" + JSON.stringify(scoreHash));
+    console.log("liceee" + JSON.stringify(licee));
+    console.log("idx" + JSON.stringify(idx));
    
     rating[0] = 100000;rating[1] = 75000;rating[2] = 60000;rating[3] = 55000;rating[4] = 50000;
     rating[5] = 40000;rating[6] = 30000;rating[7] = 20000;rating[8] = 15000;rating[9] = 10000;
@@ -148,7 +148,7 @@ function loadRootPage(req,res,next) {
         highSchoolsLeaderBoard[i] = [];
         highSchoolsLeaderBoard[i] =  { liceu:licee[idx[i]] , score :( scoreHash[i] + rating[i])};
     }
-    //console.log("highSchoolsLeaderBoard  " + JSON.stringify(highSchoolsLeaderBoard));
+    console.log("highSchoolsLeaderBoard  " + JSON.stringify(highSchoolsLeaderBoard));
     //sort
 	  var data = {
         url: postUrl,
@@ -164,11 +164,11 @@ function loadRootPage(req,res,next) {
        if(req.params.current_user_id == null || currentUser == null){
          currentUser_1 = users[randomFirstCard];
          currentUser_2 = users[randomFirstCard+1];
-      // 	 	console.log("currentUser1 " + JSON.stringify(currentUser_1));
+       	 	console.log("currentUser1 " + JSON.stringify(currentUser_1));
        } else {
        	currentUser_1 = users[8];
         currentUser_2 = users[9];
-       	//console.log("currentUser2 " + JSON.stringify(currentUser_2));
+       	console.log("currentUser2 " + JSON.stringify(currentUser_2));
        }
      
 
@@ -183,7 +183,7 @@ function loadRootPage(req,res,next) {
 }
 
 router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, next) {
-	//console.log("req id" + JSON.stringify(req.params));
+	console.log("req id" + JSON.stringify(req.params));
 	var sessid = req.session.id;
   var user1;
   var user2;
@@ -236,6 +236,7 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
           cardTwo = pair[randomPair][1];
           console.log("cardone" + cardOne);
           console.log("cardTw0" + cardTwo);
+          console.log("pair" +randomPair);
 		  	  leaderboard = redis.body.leaderboard_list;
 		  	  skip = parseInt(redis.body.bucket) * 10 + parseInt(redis.body.userIndex);
 		  	  console.log("skip" + skip);
@@ -263,8 +264,8 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
                 nextUserToVote = users;
                 var topfete  = leaderboard[0].leaderboard_list;
                 var toplicee = leaderboard[1].highSchoolsLeaderBoard;
-    //            console.log("top fete" + JSON.stringify(topfete));
-      //          console.log("top licee" + JSON.stringify(toplicee));
+                console.log("top fete" + JSON.stringify(topfete));
+                console.log("top licee" + JSON.stringify(toplicee));
                 res.render('index', { current_user_id: user1.fbId, current_person_1: user1, current_person_2: user2, leaderboard_list: topfete ,  prevGivenScore: 9 , prevAvgScore : scoreAverage, highSchoolsLeaderBoard : toplicee });
                });
     				}, function(err) {// when error
