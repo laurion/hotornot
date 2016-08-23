@@ -1,5 +1,5 @@
 extends layout
-
+ 
 block content
   .state-indicator
   .row
@@ -8,11 +8,10 @@ block content
         li.tab.col.s3
           a#voting_tab_link(href='#voting_tab') Votează
         li.tab.col.s3
-          a#leaderboard_tab_link(href='#leaderboard_tab') TOP 10 fete
+          a#leaderboard_tab_link(href='#leaderboard_tab') TOP 40 fete
         li.tab.col.s3
           a#leaderboardLicee_tab_link(href='#leaderboardLicee_tab') TOP 10 licee
-        
-
+     
     // Modal Structure
     #genderModal.modal.bottom-sheet
       .modal-content
@@ -23,11 +22,11 @@ block content
             label(for='femaleGender') OK. Hai sa vedem cum merge
           p
             input#maleGender(name='group1', type='radio', data="male")
-            label(for='maleGender') Mai tarziu 
+            label(for='maleGender') Mai tarziu
           p
             input#bothGender(name='group1', type='radio', data="both")
             label(for='bothGender') Nu ma intereseaza
-
+ 
       //
         .modal-footer
             a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href='#!') Agree
@@ -61,28 +60,31 @@ block content
       #hiddenData
         #prevGivenScore(data= prevGivenScore)
         #prevAvgScore(data= prevAvgScore)
+ 
+ 
     #leaderboard_tab.col.s12
       .wrapperCenter
           h5.voting-title
-            |  Top 10 cele mai hot fete
+            | Cele mai hot 40 liceence
       ul.leaderboard-list
         each person in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-image
               img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=350")
-
+ 
             .card-content.leaderboard-card
               .card-content-left
                   | #{person.name}(#{person.liceu})
-              .extraContent
-                a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
-                  i.fa.fa-facebook
-                  | Facebook profile
-                a.claim-fb-button.btn.btn-lg.display-when-logged-out(scope='public_profile,email', onclick="fbLogIn();") Claim profile
-              .card-content-right
-                p
-                  | Scor:  
-                  span= person.score
+                .extraContent
+                  a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
+                    i.fa.fa-facebook
+                    | Facebook profile
+                .card-content-right
+                  p
+                    | Scor:  
+                    span= person.score
+                  p
+ 
     #leaderboardLicee_tab.col.s12
       .wrapperCenter
           h5.voting-title
@@ -97,6 +99,6 @@ block content
                 p
                   | Scor:  
                   span= person.score            
-
+ 
       //
         #status

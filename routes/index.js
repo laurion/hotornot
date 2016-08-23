@@ -77,7 +77,7 @@ function loadRootPage(req,res,next) {
  
    query.descending('score');
    query.equalTo('gender', 'female');
-   query.limit(10);//so 
+   query.limit(40);//so 
    query.find().then(function(users) {// query to fetch top scorers
 	  console.log("load data at refresh" + JSON.stringify(users));
     console.log("help2");
@@ -91,13 +91,13 @@ function loadRootPage(req,res,next) {
     var highSchoolsLeaderBoard = [];
     var Vranceanu; var rating = [];
     var idx = [];
-    for(var i = 0; i< users.length ; i++){
+    for(var i = 0; i< users.length && i < 10 ; i++){
       rating[i] = [];rating[i] = 0;
       scoreHash[i] = [];
       scoreHash[i] = 0;
     idx[i] = [];
     idx[i]=i;}
-    for(var i = 0; i < users.length; i++){
+    for(var i = 0; i < users.length && i < 10; i++){
         //calculate score
      //   console.log("users licee"  + users[i].get("liceu"));
         var liceu = users[i].get("liceu");
@@ -125,11 +125,11 @@ function loadRootPage(req,res,next) {
         }
       }
        console.log("score before" + JSON.stringify(scoreHash));
-   for(var i = 0; i< users.length ; i++){
+   for(var i = 0; i< users.length && i < 10; i++){
     idx[i] = [];
     idx[i]=i;}
-    for(var i = 0; i< users.length - 1 ; i++){
-       for(var j = i + 1; j < users.length ; j++){
+    for(var i = 0; i< 9 ; i++){
+       for(var j = i + 1; j < 10 ; j++){
         var scoreAux;
           if(scoreHash[i] <= scoreHash[j]){
             aux = scoreHash[j];scoreHash[j] =scoreHash[i];
@@ -144,7 +144,7 @@ function loadRootPage(req,res,next) {
    
     rating[0] = 100000;rating[1] = 75000;rating[2] = 60000;rating[3] = 55000;rating[4] = 50000;
     rating[5] = 40000;rating[6] = 30000;rating[7] = 20000;rating[8] = 15000;rating[9] = 10000;
-    for(var i=0 ; i < users.length; i++){
+    for(var i=0 ; i < 10; i++){
         highSchoolsLeaderBoard[i] = [];
         highSchoolsLeaderBoard[i] =  { liceu:licee[idx[i]] , score :( scoreHash[i] + rating[i])};
     }

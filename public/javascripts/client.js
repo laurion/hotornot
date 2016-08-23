@@ -285,16 +285,11 @@ $(document).ready(function(){
   
 //   initFacebookThings();
 
-  current_person = {
-    id: $(".fb-add-button",$("div#voting_tab"))[0].href.replace(/.*facebook\.com\//g,"")
-  };
+  //current_person = {
+//    id: $(".fb-add-button",$("div#voting_tab"))[0].href.replace(/.*facebook\.com\//g,"")
+ // };
 
-  var prevGivenScore = $("#prevGivenScore")[0].getAttribute("data");
-  var prevAvgScore = $("#prevAvgScore")[0].getAttribute("data");
-  if(isNumeric(prevGivenScore) && isNumeric(prevAvgScore)){
-    var $toastContent = $('<span> Ai dat nota ' + prevGivenScore + '. Scor mediu: ' + prevAvgScore +'</span>');
-    Materialize.toast($toastContent, 1500);
-  }
+ 
   
 //   $(".voting-button-li").on("click", function(event){ 
 //     // Materialize.toast(message, displayLength, className, completeCallback);
@@ -307,7 +302,7 @@ $(document).ready(function(){
 //   });
 
   $(".leaderboard-item").on("click", function(event){
-//     console.log(event.currentTarget);
+     console.log(event.currentTarget);//
     var currentCard = $(event.currentTarget);
     if(currentCard.hasClass("horizontal")){
       currentCard.removeClass("horizontal");

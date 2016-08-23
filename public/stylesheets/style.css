@@ -32,7 +32,7 @@ change "brown" to something of your choosing
 }
 
 img.bigCardPic.activator {
-    height: 40%;
+    height: 60%;
 }
 
 .voting-buttons {
@@ -86,7 +86,7 @@ img.bigCardPic.activator {
 }
 
 .card-content-left {
-    font-size: 16px;
+    font-size: 12px;
     padding-top: 20px;
 }
 
