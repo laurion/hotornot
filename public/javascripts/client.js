@@ -241,7 +241,7 @@ $(document).ready(function(){
     }
     localStorage.setItem('testObject', JSON.stringify({"sessions" : sessions}));
     console.log("sessions" + sessions);
-   if(sessions % 15 == 0 && sessions < 300){
+   if(sessions % 8 == 0 && sessions < 300){
      $("#genderModal").openModal();
    }
    else{

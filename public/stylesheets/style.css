@@ -1,4 +1,9 @@
 /* default state, desktop */
+body {
+        font-family: Verdana;
+        font-size: 13px;
+        background: #F44336;
+}
 .state-indicator {
     position: absolute;
     top: -999em;
@@ -29,6 +34,7 @@ change "brown" to something of your choosing
   overflow-x: scroll;
   white-space: nowrap;
   font-size: 1.4rem;
+  color : #FFFFFF;
 }
 
 img.bigCardPic.activator {

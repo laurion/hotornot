@@ -15,17 +15,14 @@ block content
     // Modal Structure
     #genderModal.modal.bottom-sheet
       .modal-content
-        h4 Hei! Avem aplicatia Intersect pt tine prin care vorbesti cu liceeni cu care te intersectezi
+        h4 Descarca aplicatia pentru mobil! Ai mai multe suprize acolo :D
         form#genderForm(action='#')
           p
             input#femaleGender(name='group1', type='radio', data="female")
-            label(for='femaleGender') OK. Hai sa vedem cum merge
+            label(for='femaleGender') Descarca
           p
             input#maleGender(name='group1', type='radio', data="male")
             label(for='maleGender') Mai tarziu
-          p
-            input#bothGender(name='group1', type='radio', data="both")
-            label(for='bothGender') Nu ma intereseaza
  
       //
         .modal-footer
@@ -37,7 +34,7 @@ block content
       #facemash_cards
           .voting-card.card(href="#", onclick="facemash_vote([#{current_person_1.fbId}, #{current_person_2.fbId}, #{current_person_1.score}, #{current_person_2.score}, #{0}]);")
             .card-image.waves-effect.waves-block.waves-light
-              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_1.fbId}/picture?width=250&height=350')
+              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_1.fbId}/picture?width=150&height=250')
             .card-content
               span.activator.card-title
                 p
@@ -48,7 +45,7 @@ block content
                   | Liceu: #{current_person_1.liceu}
           .voting-card.card(href="#", onclick="facemash_vote([#{current_person_1.fbId}, #{current_person_2.fbId}, #{current_person_1.score}, #{current_person_2.score}, #{1}]);")
             .card-image.waves-effect.waves-block.waves-light
-              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_2.fbId}/picture?width=250&height=350')
+              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_2.fbId}/picture?width=150&height=250')
             .card-content
               span.activator.card-title
                 p
@@ -67,14 +64,14 @@ block content
           h5.voting-title
             | Cele mai hot 40 liceence
       ul.leaderboard-list
-        each person in leaderboard_list
+        each person, index in leaderboard_list
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-image
               img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=350")
  
             .card-content.leaderboard-card
               .card-content-left
-                  | #{person.name}(#{person.liceu})
+                  | #{index + 1}. #{person.name}(#{person.liceu})
                 .extraContent
                   a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
                     i.fa.fa-facebook
@@ -90,15 +87,14 @@ block content
           h5.voting-title
             |  Top 10 licee dupa clasament fete
       ul.leaderboard-list
-        each person in highSchoolsLeaderBoard
+        each person, index in highSchoolsLeaderBoard
           .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
             .card-content.leaderboard-card
               .card-content-left
-                  | #{person.liceu}
+                  |  #{index + 1}.#{person.liceu}
               .card-content-right
                 p
                   | Scor:  
                   span= person.score            
- 
       //
         #status
