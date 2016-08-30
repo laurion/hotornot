@@ -72,6 +72,7 @@ function report_profile(fbId){
 }
 
 function facemash_vote(data){
+  console.log("daaa" + JSON.stringify(data));
   var fbId1 = data[0];
   var fbId2 = data[1];
   var url = "/voted/" + JSON.stringify(data[0]) +"/" + JSON.stringify(data[1]) + "/" + JSON.stringify(data[2]) + "/" + JSON.stringify(data[3]) + "/" + JSON.stringify(data[4]);
@@ -245,10 +246,6 @@ $(document).ready(function(){
      $("#genderModal").openModal();
    }
    else{
-      $("ul.tabs").children()[0].childNodes[0].className = "";
-     $("ul.tabs").children()[1].childNodes[0].click();
-     $("ul.tabs").children().first().removeClass(".active");
-    $("ul.tabs").children().first().removeClass(".active");
    }
   if(localStorage["notNewSession"]){
     $("#voting_tab_link").click();
@@ -301,25 +298,43 @@ $(document).ready(function(){
 //     Materialize.toast($toastContent, 500);
 //   });
 
-  $(".leaderboard-item").on("click", function(event){
-     console.log(event.currentTarget);//
-    var currentCard = $(event.currentTarget);
-    if(currentCard.hasClass("horizontal")){
-      currentCard.removeClass("horizontal");
-      var pic = currentCard.find(".smallCardPic");
-      pic.removeClass("smallCardPic");
-      pic.addClass("bigCardPic");
-      currentCard.find(".extraContent").css("display","block");
-    }
-    else {
-      var pic = currentCard.find(".bigCardPic");
-      pic.removeClass("bigCardPic");
-      pic.addClass("smallCardPic");
-      currentCard.find(".extraContent").css("display","none");
-      $(event.target.parentNode).addClass("horizontal");
-    }
+  $("i.heart.outline.like.icon").on("click",function(event){
+   var data = event.target.getAttribute("data");
+    console.log("click heart" + JSON.stringify(data));
+    var url = "/liked/" + parseInt(data);
+    window.location = url;
   });
 
+  $("i.comment.icon").on("click",function(event){
+    var data = event.target.getAttribute("data");
+    console.log("click comment" + JSON.stringify(data));
+   
+  });
+
+  $("input").keypress(function(e){
+    window.mixpanel.track(
+    "test",
+    {"genre": "hip-hop"});
+
+
+
+    var data = e.target.getAttribute("data");
+     var type = e.target.getAttribute("type");
+     console.log("type " + type);
+     if(e.which == 13) {
+      var value=$(this).val();
+      var url = "";
+      if(type == "comment"){
+      console.log("click comment" + JSON.stringify(data) + value);
+       url = "/comment/" + parseInt(data) + "/"  +value ;
+      }else {
+        console.log("save new post" + JSON.stringify(data));
+         url = "/posts/" + value  ;
+      }
+      window.location = url;
+    }
+  });
+  
   $(".voting-button").on("click", function(event){
     console.log("voted: " + event.target.name)
     console.log(event);

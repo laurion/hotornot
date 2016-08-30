@@ -2,7 +2,7 @@
 body {
         font-family: Verdana;
         font-size: 13px;
-        background: #F44336;
+        background: #FFFFFF;
 }
 .state-indicator {
     position: absolute;
@@ -38,9 +38,13 @@ change "brown" to something of your choosing
 }
 
 img.bigCardPic.activator {
-    height: 60%;
+    height: 40%;
 }
-
+.content-center {
+    height: 40%;
+    background: #FFFFFF;
+    background-color: rgba(200, 10, 172, 0.65);
+}
 .voting-buttons {
     /* padding-left: 0px; */
     /* list-style-type: none; */
@@ -136,19 +140,31 @@ span.activator.card-title {
 .bigCardPic {
     width: 350px;
     height: 350px;
+    background-color: #fff;
 }
-
+.summary {
+    background : #00000;
+}
+p.card-content{
+    text-align: center;
+}
+.ui.card.content {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 .smallCardPic {
     width: 60px;
     height: 82px;
 }
-
 .wrapperInlineBlock {
     display: inline-block;
 }
 
 .wrapperCenter {
     text-align: center;
+}
+.summary.p {
+  text-align: center;   
 }
 
 #fb_login_button {
@@ -260,6 +276,10 @@ span.activator.card-title {
       width: 250px;
       height: 250px;
     }
+    .content-center {
+        width: 250px;
+        height: 250px;
+    }
 }
 
 @media only screen and (max-width: 600px) {
@@ -293,6 +313,11 @@ label {
     margin-top: 10px;
 }
 
+.extra.content{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 #facemash_cards {
-    display: flex;
+   margin-bottom: 20px;
+    margin-top: 20px;
 }

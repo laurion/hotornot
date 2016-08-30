@@ -6,95 +6,47 @@ block content
     .col.s12
       ul.tabs
         li.tab.col.s3
-          a#voting_tab_link(href='#voting_tab') Votează
-        li.tab.col.s3
-          a#leaderboard_tab_link(href='#leaderboard_tab') TOP 40 fete
-        li.tab.col.s3
-          a#leaderboardLicee_tab_link(href='#leaderboardLicee_tab') TOP 10 licee
-     
-    // Modal Structure
-    #genderModal.modal.bottom-sheet
-      .modal-content
-        h4 Descarca aplicatia pentru mobil! Ai mai multe suprize acolo :D
-        form#genderForm(action='#')
-          p
-            input#femaleGender(name='group1', type='radio', data="female")
-            label(for='femaleGender') Descarca
-          p
-            input#maleGender(name='group1', type='radio', data="male")
-            label(for='maleGender') Mai tarziu
- 
-      //
-        .modal-footer
-            a.modal-action.modal-close.waves-effect.waves-green.btn-flat(href='#!') Agree
+          a#voting_tab_link(href='#voting_tab') Posturi anonime din Buzesti
+
     #voting_tab.col.s12
       .wrapperCenter
-        h5.voting-title
-          | Care e mai hot? Click pt a alege
+        .ui.card
+                .content
+                  .header Te-am numit #{userName}
+                  .description
+                    |  Vrei sa impartasesti ceva anonim cu colegii tai?
+                  .extra.content
+                    .ui.large.transparent.left.icon.input
+                      i.announcement.icon
+                      input(type='post', placeholder='Ce vrei sa spui?')
       #facemash_cards
-          .voting-card.card(href="#", onclick="facemash_vote([#{current_person_1.fbId}, #{current_person_2.fbId}, #{current_person_1.score}, #{current_person_2.score}, #{0}]);")
-            .card-image.waves-effect.waves-block.waves-light
-              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_1.fbId}/picture?width=150&height=250')
-            .card-content
-              span.activator.card-title
-                p
-                  | #{current_person_1.name}
-                p
-                  | Scor: #{current_person_1.score}
-                p
-                  | Liceu: #{current_person_1.liceu}
-          .voting-card.card(href="#", onclick="facemash_vote([#{current_person_1.fbId}, #{current_person_2.fbId}, #{current_person_1.score}, #{current_person_2.score}, #{1}]);")
-            .card-image.waves-effect.waves-block.waves-light
-              img.bigCardPic.activator(src='https://graph.facebook.com/#{current_person_2.fbId}/picture?width=150&height=250')
-            .card-content
-              span.activator.card-title
-                p
-                  | #{current_person_2.name}
-                p
-                  | Scor: #{current_person_2.score}
-                p
-                  | Liceu: #{current_person_2.liceu}
-      #hiddenData
-        #prevGivenScore(data= prevGivenScore)
-        #prevAvgScore(data= prevAvgScore)
- 
- 
-    #leaderboard_tab.col.s12
-      .wrapperCenter
-          h5.voting-title
-            | Cele mai hot 40 liceence
-      ul.leaderboard-list
-        each person, index in leaderboard_list
-          .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
-            .card-image
-              img.smallCardPic.activator(src="https://graph.facebook.com/#{person.fbId}/picture?width=350&height=350")
- 
-            .card-content.leaderboard-card
-              .card-content-left
-                  | #{index + 1}. #{person.name}(#{person.liceu})
-                .extraContent
-                  a.fb-add-button.fb-add-button-leaderboard.btn.btn-block.btn-social.btn-lg.btn-facebook(href="https://facebook.com/#{person.fbId}", target="_blank")
-                    i.fa.fa-facebook
-                    | Facebook profile
-                .card-content-right
-                  p
-                    | Scor:  
-                    span= person.score
-                  p
- 
-    #leaderboardLicee_tab.col.s12
-      .wrapperCenter
-          h5.voting-title
-            |  Top 10 licee dupa clasament fete
-      ul.leaderboard-list
-        each person, index in highSchoolsLeaderBoard
-          .card.horizontal.leaderboard-item.waves-effect.waves-block.waves-light
-            .card-content.leaderboard-card
-              .card-content-left
-                  |  #{index + 1}.#{person.liceu}
-              .card-content-right
-                p
-                  | Scor:  
-                  span= person.score            
-      //
+        ul.leaderboard-list
+          each post in posts
+            .ui.card
+              .content
+                .right.floated.meta 14h
+                |  #{userName}
+              h4.ui.sub.header
+              .ui.large.feed
+                .event
+                  .content
+                    .summary
+                      p.card-content
+                        | #{post.text}
+              .content
+                span.right.floated
+                  i.heart.outline.like.icon( data="#{post.index}")
+                  |       #{post.nrOfLikes} likes
+                span.left.floated
+                  i.comment.icon
+                  |     #{post.comments.length} comentarii
+              .extra.content
+                  if post.comments 
+                    each comment in post.comments
+                      p
+                        i.user.icon
+                        |  #{comment.name} : #{comment.text}
+                .ui.large.transparent.left.icon.input
+                  i.heart.outline.icon
+                  input(type='comment', placeholder='Lasa comentariu...', data="#{post.index}")
         #status

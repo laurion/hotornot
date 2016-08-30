@@ -8,7 +8,7 @@ var requestLib = Promise.promisify(require("request"));
 
 
 router.post('/login', function(req, res) {//todo for 
-	console.log("req body" + JSON.stringify(req.body));
+	//console.log("req body" + JSON.stringify(req.body));
 		var sessid = req.session.id;
 	console.log("sessid" + sessid);
 	var obj = new Parse.Object('liceenib');
@@ -53,137 +53,101 @@ router.get('/profile/:current_user_id', function(req, res, next) {//todo for
 	loadRootPage(req, res,next);
 });
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-	loadRootPage(req,res,next);
-});
 
-function loadRootPage(req,res,next) {
-   var currentUser_1;
-   var currentUser_2;
-   var postUrl = "http://52.31.174.126:8001/api/saveLastLocation";
-     console.log("postUrl" + postUrl);
-     
-   var currentUser;
-   var obj = new Parse.Object('liceenib');
-   var query = new Parse.Query('liceenib');
-   var queryCurrentUser = new Parse.Query('liceenib');
-   queryCurrentUser.equalTo('fbId', parseInt(req.params.current_user_id));
-   queryCurrentUser.limit(1);
-   var xx = queryCurrentUser.find().then(function(user) {
-   	currentUser = user;
-   		return Promise.resolve(user);
-   });
+router.get('/liked/:likedIndex', function (req, res, next) {
+  console.log("like render" + JSON.stringify(req.params));
+  var likedIndex = req.params.likedIndex;
  
-   query.descending('score');
-   query.equalTo('gender', 'female');
-   query.limit(40);//so 
-   query.find().then(function(users) {// query to fetch top scorers
-	  console.log("load data at refresh" + JSON.stringify(users));
-    console.log("help2");
-    var licee =[];
-    licee[0] = []; licee[1] = [];licee[2] = [];licee[3] = [];licee[4] = [];licee[5] = [];
-    licee[0] = "Ghica"; licee[1] = "V.Alecsandri"; licee[2] = "G.Antipa"; licee[3] = "Ferdinand I";
-    licee[4] = "Vranceanu"; licee[5] = "Stefan Cel Mare";licee[6] = "M.Eminescu";licee[7] = "Karpen";
-    licee[8] = "Sf.Iosif"; licee[9] = "Henri Coanda";
-    console.log("heeeeelp");
-    var scoreHash = [];
-    var highSchoolsLeaderBoard = [];
-    var Vranceanu; var rating = [];
-    var idx = [];
-    for(var i = 0; i< users.length && i < 10 ; i++){
-      rating[i] = [];rating[i] = 0;
-      scoreHash[i] = [];
-      scoreHash[i] = 0;
-    idx[i] = [];
-    idx[i]=i;}
-    for(var i = 0; i < users.length && i < 10; i++){
-        //calculate score
-     //   console.log("users licee"  + users[i].get("liceu"));
-        var liceu = users[i].get("liceu");
-        if(liceu == "Ghica"){
-          scoreHash[0] += 1000;
-          console.log("A");
-        } else if(liceu == "V.Alecsandri"){
-         
-          scoreHash[1] += 1000;
-           console.log("B");
-        } else if(liceu == "G.Antipa"){
-          scoreHash[2] += 1000;
-           console.log("C");
-        } else if(liceu == "Ferdinand I"){
-          scoreHash[3] += 1000;
-           console.log("D");
-        } else if(liceu == "Vranceanu"){
-          scoreHash[4] += 1000;
-           console.log("E");
-        } else if(liceu == "Stefan Cel Mare"){
-          scoreHash[5] += 1000;
-           console.log("F");
-        } else {
-          console.log("ELSEE");
-        }
-      }
-       console.log("score before" + JSON.stringify(scoreHash));
-   for(var i = 0; i< users.length && i < 10; i++){
-    idx[i] = [];
-    idx[i]=i;}
-    for(var i = 0; i< 9 ; i++){
-       for(var j = i + 1; j < 10 ; j++){
-        var scoreAux;
-          if(scoreHash[i] <= scoreHash[j]){
-            aux = scoreHash[j];scoreHash[j] =scoreHash[i];
-            scoreHash[i]= aux;
-            aux = idx[j]; idx[j]= idx[i];idx[i]=aux;
-          } 
-       }
-    }
-    console.log("score after" + JSON.stringify(scoreHash));
-    console.log("liceee" + JSON.stringify(licee));
-    console.log("idx" + JSON.stringify(idx));
-   
-    rating[0] = 100000;rating[1] = 75000;rating[2] = 60000;rating[3] = 55000;rating[4] = 50000;
-    rating[5] = 40000;rating[6] = 30000;rating[7] = 20000;rating[8] = 15000;rating[9] = 10000;
-    for(var i=0 ; i < 10; i++){
-        highSchoolsLeaderBoard[i] = [];
-        highSchoolsLeaderBoard[i] =  { liceu:licee[idx[i]] , score :( scoreHash[i] + rating[i])};
-    }
-    console.log("highSchoolsLeaderBoard  " + JSON.stringify(highSchoolsLeaderBoard));
-    //sort
-	  var data = {
+  var sessid = req.session.id;
+  var postUrl = "http://52.31.174.126:8001/api/likePost";
+  console.log("postUrl" + postUrl);
+
+  var data = {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {leaderboard_list: [{ leaderboard_list : users }, {highSchoolsLeaderBoard : highSchoolsLeaderBoard}] , cluster : "liceenib", password : "4loc4"}
-    };
+        body: {fbId: sessid, cluster : "aftertest3", password:"4loc4", "likedIndex" : likedIndex}
+  };
   
+  return Promise.resolve(requestLib(data)).then(function(redis ){
+    if(redis.body != null && redis.body != "failed") {
+      console.log("redis like body" + JSON.stringify(redis.body));
+      var array =  redis.body.posts;
+      res.data = { "posts" : array, userName : redis.body.userName};
+      res.redirect('/');
+    } else {
+       loadRootPage(req,res,next);
+      console.log("redis like body failed");
+    }
+  });
+  loadRootPage(req,res,next);
+});
 
-      requestLib(data);
-      var randomFirstCard = parseInt(Math.floor(Math.random() * 8) );
-       console.log("reqqqqqq" + req.params.current_user_id);
-       if(req.params.current_user_id == null || currentUser == null){
-         currentUser_1 = users[randomFirstCard];
-         currentUser_2 = users[randomFirstCard+1];
-       	 	console.log("currentUser1 " + JSON.stringify(currentUser_1));
-       } else {
-       	currentUser_1 = users[8];
-        currentUser_2 = users[9];
-       	console.log("currentUser2 " + JSON.stringify(currentUser_2));
-       }
-     
+router.get('/comment/:commentIndex/:comment', function (req, res, next) {
+  console.log("comment render" + JSON.stringify(req.params));
+  var commentIndex = req.params.commentIndex;
+  var comment = req.params.comment;
+  var sessid = req.session.id;
+  var postUrl = "http://52.31.174.126:8001/api/saveComment";
+  console.log("postUrl" + postUrl);
+  var data = {
+    url: postUrl,
+    method: 'POST',
+    json: true,
+    body: {sessid: sessid, cluster : "aftertest3", password:"4loc4", "commentIndex" : commentIndex, comment : comment}
+  };
+  
+  return Promise.resolve(requestLib(data)).then(function(redis ){
+    if(redis.body != null && redis.body != "failed") {
+      console.log("redis like body" + JSON.stringify(redis.body));
+      var array =  redis.body.posts;
+      res.data = { "posts" : array, userName : redis.body.userName};
+      res.redirect('/');
+    } else {
+       loadRootPage(req,res,next);
+      console.log("redis like body failed");
+    }
+  });
+  loadRootPage(req,res,next);
+});
 
-	  res.render('index', { current_user_id: currentUser_2.fbId, current_person_2: currentUser_2, current_person_1: currentUser_1, leaderboard_list: users, highSchoolsLeaderBoard : highSchoolsLeaderBoard });
-	}, function(err) {// when error
-	  console.log("err3" + JSON.stringify(err));
-	  res.render('index', { error: "undefined"}); 
-	});
 
+/* GET home page. */
+router.get('/', function (req, res, next) {
+  if(res.data != null) {
+    res.render('index', res.data);
+  } else {
+    loadRootPage(req,res,next);  
+  }
+});
+
+function loadRootPage(req,res,next) {
+   var postUrl = "http://52.31.174.126:8001/api/getPOSTS";
+   var sessid = req.session.id;
+    var data = {
+        url: postUrl,
+        method: 'POST',
+        json: true,
+        body: {sessid : sessid, cluster : "aftertest3", password : "4loc4"}
+    };
+
+   return Promise.resolve(requestLib(data)).then(function(redis ){
+    if(redis.body != null && redis.body != "failed") {
+      console.log("redis like body" + JSON.stringify(redis.body));
+      var array =  redis.body.posts;
+      array = array.reverse();
+      res.render('index', { "posts" : array, userName : redis.body.userName});
+    } else {
+      loadRootPage(req,res,next);
+      console.log("redis like body failed");
+    }
+  });
    /*res.render('index', { current_person: current_person, leaderboard_list: query.find() });*/
 	console.log("xxx");//asa, nu pot sa vb.....BA
 }
 
 router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, next) {
-	console.log("req id" + JSON.stringify(req.params));
+	//console.log("req id" + JSON.stringify(req.params));
 	var sessid = req.session.id;
   var user1;
   var user2;
@@ -208,7 +172,7 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "liceenib", password:"4loc4"}
+        body: {fbId: sessid, cluster : "afterschooltest", password:"4loc4"}
     };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		   // console.log("bucket" + JSON.stringify(redis));
@@ -266,7 +230,7 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
                 var toplicee = leaderboard[1].highSchoolsLeaderBoard;
                 console.log("top fete" + JSON.stringify(topfete));
                 console.log("top licee" + JSON.stringify(toplicee));
-                res.render('index', { current_user_id: user1.fbId, current_person_1: user1, current_person_2: user2, leaderboard_list: topfete ,  prevGivenScore: 9 , prevAvgScore : scoreAverage, highSchoolsLeaderBoard : toplicee });
+                res.render('index', { posts: p, current_user_id: user1.fbId, current_person_1: user1, current_person_2: user2, leaderboard_list: topfete ,  prevGivenScore: 9 , prevAvgScore : scoreAverage, highSchoolsLeaderBoard : toplicee });
                });
     				}, function(err) {// when error
     				  console.log("er2" + err);
@@ -275,6 +239,33 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
           console.log("redis body null");
       }
     });
+});
+
+
+router.get('/posts/:text', function(req, res, next) {
+  console.log("req id" + JSON.stringify(req.params));
+  var sessid = req.session.id;
+  var text =  req.params.text;
+  var postUrl = "http://52.31.174.126:8001/api/savePost";
+   console.log("postUrl" + postUrl);
+   var data = {
+      url: postUrl,
+      method: 'POST',
+      json: true,
+      body: {sessid: sessid, cluster : "aftertest3", password:"4loc4", "text" : text}
+  };
+  return Promise.resolve(requestLib(data)).then(function(redis ){
+      console.log("bucket" + JSON.stringify(redis));
+      if(redis.body != null) {
+        console.log("redis body" + JSON.stringify(redis));
+        var array =  redis.body.posts;
+        res.data = { "posts" : array, userName : redis.body.userName};
+        res.redirect('/');
+      } else {
+        res.render('index', { "ana" : 3, posts: [{"index" : 0, "nrOfLikes" : 0, "text" : "A4"},{"index" : 0, "nrOfLikes" : 0, "text" : "A3"}]});
+          console.log("redis body null");
+      }
+  });
 });
 
 router.post("/interested_in", function(req, res){
@@ -287,7 +278,7 @@ router.post("/interested_in", function(req, res){
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessionId: sessid, cluster : "liceenib", password:"4loc4", gender: req.body.interested_in}
+        body: {sessionId: sessid, cluster : "aftertest3", password:"4loc4", gender: req.body.interested_in}
      };
    requestLib(data);
 	if(req.body.interested_in == "male") 
