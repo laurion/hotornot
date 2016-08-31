@@ -240,13 +240,10 @@ $(document).ready(function(){
     } else {
       sessions = 1;
     }
+    window.mixpanel.track("sessions",{"sessionsNo": sessions});
     localStorage.setItem('testObject', JSON.stringify({"sessions" : sessions}));
     console.log("sessions" + sessions);
-   if(sessions % 8 == 0 && sessions < 300){
-     $("#genderModal").openModal();
-   }
-   else{
-   }
+  
   if(localStorage["notNewSession"]){
     $("#voting_tab_link").click();
   }
@@ -300,7 +297,8 @@ $(document).ready(function(){
 
   $("i.heart.outline.like.icon").on("click",function(event){
    var data = event.target.getAttribute("data");
-    console.log("click heart" + JSON.stringify(data));
+    window.mixpanel.track("like",{"asd": "asd"});
+    console.log("click heart" + JSON.stringify(data) );
     var url = "/liked/" + parseInt(data);
     window.location = url;
   });
@@ -312,24 +310,21 @@ $(document).ready(function(){
   });
 
   $("input").keypress(function(e){
-    window.mixpanel.track(
-    "test",
-    {"genre": "hip-hop"});
-
-
-
+   
     var data = e.target.getAttribute("data");
-     var type = e.target.getAttribute("type");
+    var type = e.target.getAttribute("type");
      console.log("type " + type);
      if(e.which == 13) {
       var value=$(this).val();
       var url = "";
       if(type == "comment"){
-      console.log("click comment" + JSON.stringify(data) + value);
-       url = "/comment/" + parseInt(data) + "/"  +value ;
+        window.mixpanel.track("comment",{"asd": value});
+        console.log("click comment" + JSON.stringify(data) + value);
+        url = "/comment/" + parseInt(data) + "/"  +value ;
       }else {
+        window.mixpanel.track("post",{"postText": value});
         console.log("save new post" + JSON.stringify(data));
-         url = "/posts/" + value  ;
+        url = "/posts/" + value  ;
       }
       window.location = url;
     }

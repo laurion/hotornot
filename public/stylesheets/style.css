@@ -1,8 +1,8 @@
 /* default state, desktop */
 body {
-        font-family: Verdana;
-        font-size: 13px;
-        background: #FFFFFF;
+    font-family: Verdana;
+    font-size: 13px;
+    background: #000000;
 }
 .state-indicator {
     position: absolute;
@@ -24,7 +24,6 @@ change "brown" to something of your choosing
  of the button to still show through. */
     background-color: rgba(10, 10, 172, 0.65);
 }
-
 .voting-card {
   width: 50%;
   margin: 5px;
@@ -120,7 +119,6 @@ span.activator.card-title {
 .leaderboard-item > i.material-icons.right {
     /* top: -100px; */
     transform: translateY(-1900%);
-    margin-right: 20px;
     position: relative;
     background-color: #fff;
 }
@@ -319,5 +317,6 @@ label {
 }
 #facemash_cards {
    margin-bottom: 20px;
-    margin-top: 20px;
+   margin-top: 20px;
+   align:content-center;
 }

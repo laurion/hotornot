@@ -60,15 +60,16 @@ router.get('/liked/:likedIndex', function (req, res, next) {
  
   var sessid = req.session.id;
   var postUrl = "http://52.31.174.126:8001/api/likePost";
-  console.log("postUrl" + postUrl);
+  
 
   var data = {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "aftertest3", password:"4loc4", "likedIndex" : likedIndex}
+        body: {sessid: sessid, cluster : "afterBuzesti", password:"4loc4", "likedIndex" : likedIndex}
   };
   
+  console.log("postUrl" + postUrl);
   return Promise.resolve(requestLib(data)).then(function(redis ){
     if(redis.body != null && redis.body != "failed") {
       console.log("redis like body" + JSON.stringify(redis.body));
@@ -78,6 +79,7 @@ router.get('/liked/:likedIndex', function (req, res, next) {
     } else {
        loadRootPage(req,res,next);
       console.log("redis like body failed");
+      res.redirect('/');
     }
   });
   loadRootPage(req,res,next);
@@ -94,18 +96,19 @@ router.get('/comment/:commentIndex/:comment', function (req, res, next) {
     url: postUrl,
     method: 'POST',
     json: true,
-    body: {sessid: sessid, cluster : "aftertest3", password:"4loc4", "commentIndex" : commentIndex, comment : comment}
+    body: {sessid: sessid, cluster : "afterBuzesti", password:"4loc4", "commentIndex" : commentIndex, comment : comment}
   };
   
   return Promise.resolve(requestLib(data)).then(function(redis ){
     if(redis.body != null && redis.body != "failed") {
-      console.log("redis like body" + JSON.stringify(redis.body));
+      console.log("redis comment body" + JSON.stringify(redis.body));
       var array =  redis.body.posts;
       res.data = { "posts" : array, userName : redis.body.userName};
       res.redirect('/');
     } else {
        loadRootPage(req,res,next);
       console.log("redis like body failed");
+      res.redirect('/');
     }
   });
   loadRootPage(req,res,next);
@@ -128,12 +131,12 @@ function loadRootPage(req,res,next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessid : sessid, cluster : "aftertest3", password : "4loc4"}
+        body: {sessid : sessid, cluster : "afterBuzesti", password : "4loc4"}
     };
 
    return Promise.resolve(requestLib(data)).then(function(redis ){
     if(redis.body != null && redis.body != "failed") {
-      console.log("redis like body" + JSON.stringify(redis.body));
+      console.log("redis load body" + JSON.stringify(redis.body));
       var array =  redis.body.posts;
       array = array.reverse();
       res.render('index', { "posts" : array, userName : redis.body.userName});
@@ -172,7 +175,7 @@ router.get('/voted/:fbId1/:fbId2/:scoreA/:scoreB/:selected', function(req, res, 
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {fbId: sessid, cluster : "afterschooltest", password:"4loc4"}
+        body: {fbId: sessid, cluster : "afterBuzesti", password:"4loc4"}
     };
     return Promise.resolve(requestLib(data)).then(function(redis ){
 		   // console.log("bucket" + JSON.stringify(redis));
@@ -252,7 +255,7 @@ router.get('/posts/:text', function(req, res, next) {
       url: postUrl,
       method: 'POST',
       json: true,
-      body: {sessid: sessid, cluster : "aftertest3", password:"4loc4", "text" : text}
+      body: {sessid: sessid, cluster : "afterBuzesti", password:"4loc4", "text" : text}
   };
   return Promise.resolve(requestLib(data)).then(function(redis ){
       console.log("bucket" + JSON.stringify(redis));
@@ -278,7 +281,7 @@ router.post("/interested_in", function(req, res){
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessionId: sessid, cluster : "aftertest3", password:"4loc4", gender: req.body.interested_in}
+        body: {sessionId: sessid, cluster : "afterBuzesti", password:"4loc4", gender: req.body.interested_in}
      };
    requestLib(data);
 	if(req.body.interested_in == "male") 

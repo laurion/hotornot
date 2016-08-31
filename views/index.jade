@@ -24,8 +24,8 @@ block content
           each post in posts
             .ui.card
               .content
-                .right.floated.meta 14h
-                |  #{userName}
+                .right.floated.meta 
+                |  #{post.name}
               h4.ui.sub.header
               .ui.large.feed
                 .event
@@ -47,6 +47,6 @@ block content
                         i.user.icon
                         |  #{comment.name} : #{comment.text}
                 .ui.large.transparent.left.icon.input
-                  i.heart.outline.icon
+                  i.comment.icon
                   input(type='comment', placeholder='Lasa comentariu...', data="#{post.index}")
         #status
