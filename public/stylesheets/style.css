@@ -2,7 +2,7 @@
 body {
     font-family: Verdana;
     font-size: 13px;
-    background: #000000;
+    background: #82b1ff;
 }
 .state-indicator {
     position: absolute;
@@ -39,6 +39,13 @@ change "brown" to something of your choosing
 img.bigCardPic.activator {
     height: 40%;
 }
+.center {
+    background: #e6ee9c;
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
 .content-center {
     height: 40%;
     background: #FFFFFF;
@@ -65,7 +72,7 @@ img.bigCardPic.activator {
 }
 
 .leaderboard-list {
-    margin-right: 0px;
+
 }
 
 .card.horizontal.leaderboard-item > .card-content {
@@ -146,9 +153,17 @@ span.activator.card-title {
 p.card-content{
     text-align: center;
 }
-.ui.card.content {
-    margin-bottom: 20px;
-    margin-top: 20px;
+.ui.card{
+  width: 97%;
+  margin: 5px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.ui.card.header{
+  width: 97%;
+  margin: 5px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .smallCardPic {
     width: 60px;
@@ -180,7 +195,9 @@ p.card-content{
 /*     position: fixed;
     bottom: 0; */
 }
-
+.ui.massive.transparent.left.icon.input{
+    margin-left: 5px;
+}
 .fb-add-button {
     margin-top: 30px;
     background-color: #3b5998;

@@ -6,19 +6,16 @@ block content
     .col.s12
       ul.tabs
         li.tab.col.s3
-          a#voting_tab_link(href='#voting_tab') Posturi anonime din Buzesti
-
+          a#voting_tab_link(href='#voting_tab') Posturi anonime Buzesti
     #voting_tab.col.s12
       .wrapperCenter
-        .ui.card
-                .content
-                  .header Te-am numit #{userName}
-                  .description
-                    |  Vrei sa impartasesti ceva anonim cu colegii tai?
-                  .extra.content
-                    .ui.large.transparent.left.icon.input
-                      i.announcement.icon
-                      input(type='post', placeholder='Ce vrei sa spui?')
+        .ui.card.header
+            .content
+              .header Vrei sa impartasesti ceva anonim cu colegii tai?
+              .extra.content
+                .ui.medium.transparent.left.icon.input
+                  i.announcement.icon
+                  input(type='post', placeholder='Ce vrei sa spui?')
       #facemash_cards
         ul.leaderboard-list
           each post in posts
@@ -35,18 +32,28 @@ block content
                         | #{post.text}
               .content
                 span.right.floated
-                  i.heart.outline.like.icon( data="#{post.index}")
-                  |       #{post.nrOfLikes} likes
+                  .ui.mini.labeled.button(tabindex='0')
+                    .ui.red.button.mini(id="likes#{post.index}", data="#{post.index}")
+                      i.heart.icon
+                      |  Like
+                    a.ui.basic.red.left.pointing.label
+                      p(id="likesNo#{post.index}") #{post.nrOfLikes}
+
+                
                 span.left.floated
-                  i.comment.icon
-                  |     #{post.comments.length} comentarii
-              .extra.content
-                  if post.comments 
+                    i.comment.icon
+                    p(id="comments#{post.index}") #{post.comments.length} comentarii
+              .extra.content(id="e#{post.index}")
+
+                  if post.comments
                     each comment in post.comments
                       p
                         i.user.icon
                         |  #{comment.name} : #{comment.text}
-                .ui.large.transparent.left.icon.input
-                  i.comment.icon
-                  input(type='comment', placeholder='Lasa comentariu...', data="#{post.index}")
+                .ui.massive.transparent.left.icon.input
+                     span.right.floated
+                        i.comment.icon
+                        input(type='comment', placeholder='Lasa comentariu...', data = "#{post.index}" , userName = "#{userName}")
+        .shareaholic-canvas(data-app='share_buttons', data-app-id='25631666')
+
         #status

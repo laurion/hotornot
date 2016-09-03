@@ -282,7 +282,9 @@ $(document).ready(function(){
   //current_person = {
 //    id: $(".fb-add-button",$("div#voting_tab"))[0].href.replace(/.*facebook\.com\//g,"")
  // };
-
+  setTimeout(function(){
+   window.location.reload(1);
+  }, 5 * 60000);
  
   
 //   $(".voting-button-li").on("click", function(event){ 
@@ -295,12 +297,27 @@ $(document).ready(function(){
 //     Materialize.toast($toastContent, 500);
 //   });
 
-  $("i.heart.outline.like.icon").on("click",function(event){
+  $(".ui.red.button.mini").on("click",function(event){
+    console.log("click like");
    var data = event.target.getAttribute("data");
     window.mixpanel.track("like",{"asd": "asd"});
-    console.log("click heart" + JSON.stringify(data) );
-    var url = "/liked/" + parseInt(data);
-    window.location = url;
+    var index = data;
+    var likesRef = "#likesNo" + data ;
+    console.log("before ref " + $(likesRef)[0].innerHTML);
+    var likeRefText  =  ($(likesRef)[0].innerHTML).split(" ");
+    console.log("likes ref tex" + likeRefText.length);
+    if(likeRefText.length > 1) {
+      console.log("already liked");
+    } else {
+        $(likesRef)[0].innerHTML  =  JSON.stringify((parseInt(likeRefText[0]) + 1 )) + " ";
+          // $('#postss')[0].innerHTML = JSON.stringify([{"text" :"pula", "name" : "nada"}]) ;
+        console.log("click heart" + JSON.stringify(data) );
+        //var url = "/liked/" + parseInt(data);
+         $.post( "/liked", {"likedIndex" : parseInt(data)})
+            .done(function( data ) {
+              console.log("like sent");
+        });
+    }
   });
 
   $("i.comment.icon").on("click",function(event){
@@ -315,18 +332,35 @@ $(document).ready(function(){
     var type = e.target.getAttribute("type");
      console.log("type " + type);
      if(e.which == 13) {
-      var value=$(this).val();
+      var value = $(this).val();
       var url = "";
       if(type == "comment"){
+       var userName = e.target.getAttribute("userName");
+     //     console.log("click comment" + JSON.stringify(data.userName) + value);
         window.mixpanel.track("comment",{"asd": value});
-        console.log("click comment" + JSON.stringify(data) + value);
-        url = "/comment/" + parseInt(data) + "/"  +value ;
-      }else {
+        var divToAdd = '<p><i class="user icon"></i>' + userName + ' : ' + value + '</p>';
+        var mySecondDiv=$('<p><i class="user icon"></i> Calul : pula</p>');
+        var keyDiv= '#e' + data;
+        $(keyDiv).append(divToAdd);
+        $(this).val("");
+
+        var commentRef = "#comments" + data;
+        var commentRefText  =  ($(commentRef)[0].innerHTML).slice(" ");
+        $(commentRef)[0].innerHTML  =  JSON.stringify((parseInt(commentRefText[0]) + 1 )) + " comentarii";
+       // url = "/comment/" + parseInt(data) + "/"  +value ;
+
+        $.post( "/comment", {"comment" : value , commentIndex : parseInt(data) })
+        .done(function( data ) {
+          console.log("comment sent");
+        });
+
+      } else {
         window.mixpanel.track("post",{"postText": value});
         console.log("save new post" + JSON.stringify(data));
         url = "/posts/" + value  ;
+        window.location = url;
       }
-      window.location = url;
+//
     }
   });
   
