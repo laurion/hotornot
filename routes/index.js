@@ -20,7 +20,7 @@ router.post('/liked', function (req, res, next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessid: sessid, cluster : "afterBuzesti", password:"4loc4", "likedIndex" : likedIndex}
+        body: {sessid: sessid, cluster : "aftercuza", password:"4loc4", "likedIndex" : likedIndex}
   };
   
   requestLib(data);
@@ -51,7 +51,7 @@ router.post('/comment', function (req, res, next) {
     url: postUrl,
     method: 'POST',
     json: true,
-    body: {sessid: sessid, cluster : "afterBuzesti", password:"4loc4", "commentIndex" : commentIndex, comment : comment}
+    body: {sessid: sessid, cluster : "aftercuza", password:"4loc4", "commentIndex" : commentIndex, comment : comment}
   };
 
   requestLib(data);
@@ -88,7 +88,7 @@ function loadRootPage(req,res,next) {
         url: postUrl,
         method: 'POST',
         json: true,
-        body: {sessid : sessid, cluster : "afterBuzesti", password : "4loc4"}
+        body: {sessid : sessid, cluster : "aftercuza", password : "4loc4"}
     };
 
    return Promise.resolve(requestLib(data)).then(function(redis ){
@@ -117,7 +117,7 @@ router.get('/posts/:text', function(req, res, next) {
       url: postUrl,
       method: 'POST',
       json: true,
-      body: {sessid: sessid, cluster : "afterBuzesti", password:"4loc4", "text" : text}
+      body: {sessid: sessid, cluster : "aftercuza", password:"4loc4", "text" : text}
   };
   return Promise.resolve(requestLib(data)).then(function(redis ){
       console.log("bucket" + JSON.stringify(redis));

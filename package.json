@@ -1,7 +1,6 @@
 {
   "name": "myapp",
-  "version": "7.6.1",
-  "private": true,
+  "version": "7.7.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/Semantic-Org/Semantic-UI.git"
